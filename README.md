@@ -58,7 +58,7 @@ This design makes recommendations easier to interpret: students can review not o
 
 ### 4. Dashboard interaction and user experience
 
-The midterm work also includes dashboard interface, login, and interaction improvements. The login flow separates student and academic-advisor entry points and stores lightweight session information for the prototype. Course-level interaction work introduces a foundation for peer feedback through course comments.
+The mid-term work also includes an interactive mechanism based on user comments. The updated account system enables students to post their own comments or delete them on the corresponding course ID detail page. Students can assess the future course planning by browsing these comments, or they can express their personal experiences by posting comments.
 
 These functions are prototypes rather than a production identity or social system. Official SSO integration, persistent account management, moderation, authorization, and security hardening remain outside the current midterm scope.
 
