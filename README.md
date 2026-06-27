@@ -37,8 +37,7 @@ The crawler and export scripts are located in [`tools/sis-crawler/`](tools/sis-c
 
 The previous skill categories and course-skill matrix elements were largely designed manually. To support campus-wide expansion, the revised workflow separates competency analysis into two stages.
 
-First, `major_competency_identifier.skill` analyzes programme study schemes and identifies curriculum-supported competencies. It uses evidence from required courses, electives, streams, concentrations, capstones, internships, laboratories, practicums, and seminars. It distinguishes core, supporting, and optional specialization competencies without assigning a quantitative score to the programme itself.
-
+First, `major_competency_identifier.skill` analyzes programme study schemes and identifies curriculum-supported competencies.
 Second, major-level competencies are consolidated into school-level competency pools. Courses with valid outlines are evaluated against the competency pool associated with their offering school. The analysis uses course descriptions, learning outcomes, syllabi, assessment information, title signals, course-code signals, and matched outline evidence.
 
 The final analysis contains:
@@ -53,7 +52,7 @@ The skill, scripts, evidence files, study-scheme sources, and final workbooks ar
 
 ### 3. Course navigation and detail information
 
-The course-planning workflow was improved so that students can move from an available-course entry to more detailed course information. The detail view connects course metadata with major and general competency sub-attributes, reducing the need to switch repeatedly between the dashboard and SIS.
+The course-planning workflow was improved so that students can move from an available-course entry to more detailed course information. After clicking the course id corresponding to "Available courses", the user will be redirected to the detail interface of the corresponding course id.
 
 This design makes recommendations easier to interpret: students can review not only which course is suggested, but also what the course covers and why it may contribute to a competency area.
 
