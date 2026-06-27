@@ -1,0 +1,160 @@
+Name: Major Competency Identifier
+
+Purpose:
+Analyze a university study scheme PDF and infer the basic professional competencies that the school expects students in the major to develop.
+
+Use this skill when the input is a study scheme, curriculum plan, programme requirement, course list, recommended course pattern, or similar PDF/document that contains required courses, elective courses, streams/concentrations, and course titles.
+
+Core Principle:
+Do not infer competencies from the major name alone. The analysis must be grounded in evidence from the study scheme, especially:
+- major requirement structure
+- required courses
+- elective course groups
+- streams / concentrations
+- recommended course pattern
+- course list
+- course titles in English and Chinese
+- capstone, project, internship, lab, practicum, or seminar requirements
+
+The goal is not to score the programme quantitatively. The goal is to summarize the main competencies that the curriculum appears to require or cultivate.
+
+Input:
+The user may provide:
+- a study scheme PDF
+- extracted text from a study scheme
+- a course list
+- a major programme requirement table
+- recommended course pattern
+- course outline data
+
+If a PDF is provided, read both the programme requirement pages and the course list pages. Do not only read the first page.
+
+Analysis Workflow:
+
+1. Identify Basic Programme Information
+Extract:
+- programme / major name
+- applicable cohort or admission year
+- total required units
+- required courses
+- elective courses
+- school package / faculty package / foundation courses
+- streams, concentrations, or specialization options
+- capstone, project, practicum, internship, or seminar requirements
+
+2. Separate Course Types
+Classify courses into:
+- school / faculty package
+- major required courses
+- major elective courses
+- stream-specific courses
+- language / writing / communication courses
+- technology / computing / data courses
+- domain application courses
+- capstone / project / seminar courses
+
+3. Infer Competencies From Course Evidence
+Infer competencies based on repeated or structurally important course evidence.
+
+Use the following competency families when applicable, but do not force every major into every category:
+
+- Foundational Disciplinary Knowledge
+- Theoretical Understanding
+- Methodological / Analytical Ability
+- Mathematical or Quantitative Reasoning
+- Statistical Reasoning
+- Programming / Computing Ability
+- Data / Digital / AI Literacy
+- Language Ability
+- Writing Ability
+- Communication Ability
+- Cross-cultural or Intercultural Competence
+- Domain-specific Professional Knowledge
+- Research Ability
+- Practical / Applied Problem-solving Ability
+- Project Management / Capstone Execution
+- Ethical / Social / Institutional Awareness
+- Industry or Workplace Readiness
+
+For humanities, language, translation, communication, and social science programmes, also consider:
+- textual analysis
+- bilingual or multilingual competence
+- translation / interpreting competence
+- cultural mediation
+- professional communication
+- media / legal / financial / technical domain translation
+- localization and language technology
+- corpus tools and language technologies
+- critical reading and writing
+
+For STEM, business, data, engineering, and health programmes, adapt the competency families to the discipline, but still require course evidence.
+
+4. Distinguish Core vs Supporting Competencies
+Mark each competency as one of:
+- Core competency: clearly required by required courses, streams, or repeated elective structure
+- Supporting competency: present in school package, electives, or adjacent courses
+- Optional specialization competency: available through a stream/concentration/elective cluster
+
+Do not assign numeric scores unless the user explicitly asks for scoring.
+
+5. Evidence Rules
+For each competency, cite concrete curriculum evidence:
+- course codes
+- course titles
+- requirement category, such as required course / elective / stream
+- relevant note from the study scheme
+
+Use at least two pieces of evidence for a major competency when possible.
+If evidence is thin, say so clearly.
+
+6. Avoid Overclaiming
+Do not claim that a programme trains a competency strongly merely because one isolated elective exists.
+Do not claim employment outcomes unless the user asks for career analysis and job-market evidence is provided.
+Do not assume course content beyond the course title unless descriptions or outlines are provided.
+
+Output Format:
+
+Return the analysis in the following structure:
+
+1. Programme Summary
+- Major name
+- Total major units
+- Main requirement structure
+- Streams or specialization tracks, if any
+
+2. Competency Profile
+Use a table:
+
+| Competency | Status | Curriculum Evidence | Interpretation |
+|---|---|---|---|
+| ... | Core / Supporting / Optional Specialization | course codes and titles | what this suggests students are expected to master |
+
+3. Required Professional Foundation
+Summarize the basic professional abilities that all students in the major are expected to develop through required courses.
+
+4. Elective / Stream-Based Specializations
+Summarize abilities that depend on elective choices or specialization streams.
+
+5. Overall Interpretation
+Answer:
+"What kind of graduate does this programme appear to be designed to train?"
+
+6. Limitations
+Mention missing evidence, such as:
+- course descriptions are not available
+- learning outcomes are not available
+- the analysis is based mainly on course titles and requirements
+
+Example Interpretation Style:
+
+For a Translation study scheme, if the curriculum includes required courses such as Principles of Translation, Communication and Translation, Introduction to Interpreting, Theory of Translation, and Capstone Translation Project, and electives such as Culture and Translation, Consecutive Interpreting, Simultaneous Interpreting, Corpus and Translation, Translation and Language Technologies, Natural Language Processing, Computer Programming for Natural Language Processing, Legal Translation, Financial Translation, and Film and Television Subtitles Translation, then the inferred competencies may include:
+
+- translation theory and disciplinary foundation
+- bilingual communication and translation practice
+- interpreting competence
+- cross-cultural and textual analysis ability
+- domain-specific translation ability
+- language technology and digital translation literacy
+- applied project execution through capstone work
+
+The analysis should explicitly separate what is required for all students from what is available through optional streams such as Translation, Interpreting, or Translation with New Technologies.
