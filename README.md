@@ -2,7 +2,7 @@
 
 The Student Study Progress Dashboard is an academic planning and competency-visualization platform developed for AIE 4902 AI Capstone Project II. It is intended to help students understand their academic progress, explore course options, and connect course selection with professional competency development. It also provides academic advisors with a consolidated view of advisee progress and risk indicators.
 
-This midterm implementation extends a predecessor prototype by strengthening its course-data foundation, redesigning its competency-analysis workflow, improving course navigation, and adding a more complete user-interaction flow.
+This midterm implementation extends a predecessor prototype by strengthening its course-data foundation, redesigning its competency-analysis workflow, improving course navigation and user interaction, and refining the GPA trajectory and skill-matrix interfaces.
 
 ## Project Motivation
 
@@ -52,15 +52,21 @@ The skill, scripts, evidence files, study-scheme sources, and final workbooks ar
 
 ### 3. Course navigation and detail information
 
-The course-planning workflow was improved so that students can move from an available-course entry to more detailed course information. After clicking the course id corresponding to "Available courses", the user will be redirected to the detail interface of the corresponding course id.
+The Available Course panel was improved so that course IDs link directly to their corresponding detail pages. These pages display course introductions together with major-skill and general-skill sub-attribute values.
 
 This design makes recommendations easier to interpret: students can review not only which course is suggested, but also what the course covers and why it may contribute to a competency area.
 
+The current detail pages still use the structured `data.js` database inherited from the predecessor dashboard. The newly collected SIS course outlines and competency-analysis results have not yet been integrated into the student-facing interface. Updating the data-loading interface and field mappings is therefore a priority for the next stage.
+
 ### 4. Dashboard interaction and user experience
 
-The mid-term work also includes an interactive mechanism based on user comments. The updated account system enables students to post their own comments or delete them on the corresponding course ID detail page. Students can assess the future course planning by browsing these comments, or they can express their personal experiences by posting comments.
+The updated prototype includes nickname input, automatic avatar generation, direct course navigation, and course-level comments. Users can post comments on course detail pages and delete comments they created, providing a lightweight personalization and peer-feedback layer.
 
 These functions are prototypes rather than a production identity or social system. Official SSO integration, persistent account management, moderation, authorization, and security hardening remain outside the current midterm scope.
+
+### 5. GPA trajectory and skill-matrix presentation
+
+The GPA trajectory's vertical axis was changed from 0-4.0 to 2.0-4.0, reducing unnecessary blank space and making performance changes easier to interpret. The skill matrix was reorganized according to each course's major category and simplified to reduce irrelevant columns and visual clutter.
 
 ## Core Features
 
@@ -294,6 +300,7 @@ SIS access must only be used by authorized users and in accordance with universi
 | Replace one universal skill list with discipline-aware competency pools | Major competency analysis and school-level competency pools |
 | Produce reusable course-competency results | 1,591 scored courses and 13,907 relevance records |
 | Improve course-planning interpretability | Course-detail navigation and competency sub-attribute display |
+| Improve visualization clarity | Revised 2.0-4.0 GPA scale and major-specific skill-matrix presentation |
 | Provide verifiable implementation evidence | Source code, datasets, workbooks, screenshots, and video demonstration |
 
 ## Demonstration Evidence
@@ -324,6 +331,8 @@ The midterm prototype is evaluated through the following checks:
 - Account and comment functionality requires persistent storage, authorization, moderation, and security testing before production use.
 - Course exemptions, credit transfers, exchange courses, and approved substitutions require a manual-input workflow.
 - 1,631 SIS records do not currently contain complete outline information.
+- The expanded SIS and competency-analysis datasets have not yet been integrated into the student-facing interface, which still relies on the inherited `data.js` database.
+- The revised GPA trajectory still uses a unified 2.0-4.0 scale. A future version should adjust the scale according to each student's GPA variance and distribution while retaining suitable visual margins.
 - Competency relevance is an AI-assisted analytical result and requires human review.
 - The competency score represents relevance, not student mastery, course quality, or career value.
 - The prototype has not been tested against a full production student database or university identity system.
@@ -331,22 +340,22 @@ The midterm prototype is evaluated through the following checks:
 
 ## Plan Toward Final Delivery
 
-The remaining development direction includes:
+The next development stage will:
 
-- integrating the expanded course database into all dashboard workflows;
-- adding overall, UCore, and major-requirement progress indicators;
-- supporting manual entry of exemptions and transferred credits;
-- strengthening account, comment, authorization, and moderation logic;
-- validating competency results through expert review and representative course samples;
-- adding career-oriented analysis based on job descriptions and required skills; and
-- conducting broader functional, usability, and data-quality testing.
+- integrate the expanded SIS course database and AI-generated competency results into the dashboard's built-in data source;
+- develop graduation-progress calculations and progress bars for overall, UCore, and major-specific requirements;
+- build an initial career-oriented module that connects major-related employment skills with university courses and open online learning resources;
+- add AI-assisted summaries of course comments if development time permits; and
+- design a reusable AI skill that adapts the course-crawling workflow to other universities and data formats.
+
+Database integration and graduation-progress calculation are the first priorities. The team will then aim to complete an initial career-oriented recommendation function, while comment summarization will depend on the remaining development time.
 
 ## Team Contributions
 
 | Team member | Primary contribution | Main deliverables |
 |---|---|---|
-| **Gao Jingwen** | Course catalogue expansion and AI-assisted competency-analysis workflow | SIS crawler, export workflow, expanded course database, major competency skill, analysis scripts, evidence files, and final Excel workbooks |
-| **Qu Yicheng** | Dashboard usability and interaction improvements | Dashboard basic-function updates, GPA and skill-matrix UI improvements, course navigation, login/interface work, and course-interaction design |
+| **Gao Jingwen** | Course catalogue expansion and AI-assisted competency evaluation | SIS crawler and export workflow, expanded course database, major competency skill, school-level competency pools, course-competency analysis, repository evidence, and report documentation |
+| **Qu Yicheng** | Dashboard analysis, implementation, and repository organization | Review of inherited code, GPA and skill-matrix UI improvements, login and profile personalization, course navigation and comments, repository setup, and report revision |
 
 Git commit history and the submitted report provide additional evidence of individual contributions.
 
