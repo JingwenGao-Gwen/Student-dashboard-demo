@@ -657,7 +657,7 @@ function renderCourseList(){
   const q = document.getElementById('course-search').value.trim().toLowerCase();
   const list = visibleCourses().filter(c =>
     !q || c.code.toLowerCase().includes(q) || c.title.toLowerCase().includes(q)
-  ).slice(0, 200); // cap for perf
+  ).slice(0, 500); // cap for perf
   document.getElementById('course-count-label').textContent = `${visibleCourses().length} courses`;
   document.getElementById('course-list').innerHTML = list.length
     ? list.map(c => {
@@ -1109,7 +1109,7 @@ function renderMatrix(){
     });
   }
   // Limit rows for perf
-  courses = courses.slice(0, 250);
+  courses = courses.slice(0, 500);
 
   const arrow = col => matrixSortCol===col ? (matrixSortDir==='asc'?'↑':'↓') : '↕';
   const thead = `<thead><tr>
