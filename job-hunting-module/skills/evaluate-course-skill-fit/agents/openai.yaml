@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evaluate Course-Skill Fit"
+  short_description: "AI-evaluate whether courses genuinely cultivate job skills"
+  default_prompt: "Use $evaluate-course-skill-fit to judge whether course syllabi genuinely cultivate the target job skills, with quoted evidence."

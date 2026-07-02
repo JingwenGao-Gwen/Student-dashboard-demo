@@ -1,0 +1,11 @@
+{
+  "name": "job-hunting-module",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "export:semantic-courses": "node src/export/build_semantic_course_recommendations.mjs"
+  },
+  "dependencies": {
+    "@oai/artifact-tool": "latest"
+  }
+}

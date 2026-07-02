@@ -1,0 +1,28 @@
+# Raw / intermediate data
+data/
+raw/
+jobs/
+*.jsonl
+*.ndjson
+*.log
+crawl-error.log
+crawl_failures.csv
+course_data.json
+course_recommendations.json
+semantic_course_recommendations.json
+ai_course_review_decisions.json
+ai-course-review-batches/
+
+# Local source files that should not be published without permission
+sis_course_outlines_export.xlsx
+Course_List_byInitial.xlsx
+wechat*
+*.mp4
+*.png
+
+# Runtime artifacts
+__pycache__/
+*.pyc
+node_modules/
+.venv/
+venv/
