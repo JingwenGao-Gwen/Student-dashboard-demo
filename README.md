@@ -338,6 +338,56 @@ Important AI-related limitations include incomplete source records, possible ove
 
 The repository is intended to contain demonstration data and academic course information used for the prototype. Passwords, API keys, production credentials, confidential institutional records, and real personal data must not be committed.
 
+## Recent Implementation Update
+
+This update extends the prototype with a database-backed course catalogue, richer student-facing course pages, transcript-aware GPA handling, and an initial graduation-progress module.
+
+### Course database integration
+
+- Replaced the inherited static course-source workflow with a MySQL-backed course catalogue served through FastAPI.
+- Added `tools/import_sis_courses.py` to import `course_list_database/sis_course_outlines_export.xlsx`.
+- Imported the full SIS course list for transcript recognition while hiding no-outline or ghost courses from the student-facing course browser.
+- Kept `students-interface/data.js` as legacy data, but the API-backed student interface no longer depends on it as the course source.
+- Added multilingual course title handling based on the SIS workbook and A-Z course list where available.
+
+### Course UI updates
+
+- Updated `students-interface/course_detail.html` to show fuller SIS course information.
+- Removed the language field from the course information panel.
+- Standardized academic organization display to short English school codes such as `SDS`, `SME`, `SSE`, `MED`, `MUS`, `HSS`, and `SAI`.
+- Converted assessment scheme and course components into table-style UI.
+- Reworked offered terms into a readable term timeline and list.
+- Added separate GE Area pages: `students-interface/ge_area_b.html`, `students-interface/ge_area_c.html`, and `students-interface/ge_area_d.html`.
+- Courses with available outlines link to the course detail page. Courses without syllabus show a notice instead of opening an incomplete detail page.
+
+### Transcript, GPA, and portfolio updates
+
+- Improved transcript parsing and GPA visualization.
+- Excluded `W` and `IP` courses from portfolio, GPA chart, and recorded grades.
+- Counted `DI` courses as credit-bearing portfolio courses but excluded them from GPA calculations.
+- Used transcript summary values for CGPA/MGPA display.
+- Improved chronological term ordering and term-specific course display.
+- Added support for manually entered approved or exempted courses in the progress calculations.
+
+### Graduation-progress scope
+
+The Study Headway section currently includes detailed major-progress analysis for School of Data Science (SDS) programmes only.
+
+Implemented SDS rules:
+
+- Statistics: 2023 entry, 2024 entry, and 2025-and-thereafter rules.
+- Computer Science and Engineering: 2023 entry and 2024-and-thereafter rules.
+- Data Science and Big Data Technology: 2023 entry and 2024-and-thereafter rules.
+
+The SDS progress engine supports admission-year-specific rules, mandatory course groups, `A or B` alternatives, elective areas and streams, breadth and depth requirements, minimum elective units from a specific group, maximum allowed courses at a specific course level, completed/to-take marking inside elective lists, credit progress, and UCore progress.
+
+Detailed major-progress analysis for SME, SSE, HSS, MED, SAI, and other non-SDS programmes is intentionally deferred. The current prototype lacks enough checked student-reference cases for those schools, and their study schemes require careful validation before conversion into the same rule engine. To control development cost and token usage, non-SDS programmes currently remain on a simplified fallback display.
+
+Saved SDS rule notes are located in:
+
+- `graduation_rules/SDS_major_rules_summary.md`
+- `graduation_rules/SDS_major_rules_index.json`
+
 ## Repository
 
 <https://github.com/re-stellaris/Student-dashboard-demo>
