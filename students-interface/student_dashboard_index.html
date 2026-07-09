@@ -9,6 +9,7 @@
 <meta name="build-version" content="v9"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="data.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -48,13 +49,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .nav-logout:hover{background:rgba(255,255,255,.24)}
 
 /* School filter — generous spacing + glass aesthetic */
-.school-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:22px 36px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.school-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:22px 36px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
 .school-bar .label{font-size:12px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.12em;margin-right:10px}
-.filter-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;width:100%}
-.filter-row.subject-row{padding-left:0}
-#initial-chips,#school-chips{display:flex;flex-wrap:wrap;gap:14px}
-.initial-chip{min-width:46px;justify-content:center;padding-left:14px;padding-right:14px}
-.subject-row:empty{display:none}
+#school-chips{display:flex;flex-wrap:wrap;gap:14px}
 .chip{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:22px;
   border:1px solid rgba(0,0,0,.08);
   background:rgba(255,255,255,.7);
@@ -83,7 +80,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .main{display:grid;grid-template-columns:300px 1fr;gap:32px;padding:32px 32px 40px;align-items:start;max-width:1500px;margin:0 auto}
 @media(max-width:1100px){.main{grid-template-columns:1fr;padding:24px;gap:24px}}
 .main > *{min-width:0}
-.left-col{display:flex;flex-direction:column;gap:24px;min-width:0}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .panel-header{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg);display:flex;align-items:center;gap:8px}
 .panel-header h3{font-size:13px;font-weight:700;flex:1}
@@ -151,9 +147,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .chart-block h3{font-size:15px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .chart-block h3 .h3-actions{display:inline-flex;gap:8px;align-items:center}
 .chart-block .csub{font-size:13px;color:var(--text2);margin-bottom:18px}
-.canvas-wrap{position:relative;width:100%;height:560px;min-height:560px}
-.canvas-wrap canvas{display:block;width:100%!important;height:100%!important}
-@media(max-width:900px){.canvas-wrap{height:460px;min-height:460px}}
+.canvas-wrap{position:relative;width:100%;padding-bottom:46%;height:0}
+.canvas-wrap canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}
 
 /* Score rows — 4-tier blue gradient (0/25/50/75/100) + gray dot marker */
 .score-row{display:flex;align-items:center;gap:16px;margin-bottom:14px}
@@ -266,30 +261,6 @@ table.matrix tr:hover td{background:#f8f9ff}
 /* Notice block */
 .notice{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#1e40af;line-height:1.5;overflow-wrap:anywhere}
 .notice b{font-weight:700}
-
-/* Study headway */
-.headway-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 20px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.headway-card h2{font-size:21px;line-height:1.15;margin-bottom:18px;font-weight:900;letter-spacing:0}
-.headway-controls{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:18px}
-.headway-controls label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text3)}
-.headway-controls select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);font-size:12px;font-weight:700;color:var(--text)}
-.progress-block{margin-bottom:18px}
-.progress-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:18px;font-weight:800;margin-bottom:8px}
-.progress-title span:last-child{font-size:15px;font-weight:700;color:var(--text)}
-.progress-track{height:22px;border:2px solid #183b72;border-radius:5px;overflow:hidden;background:#fff}
-.progress-fill{height:100%;background:#4c78cf;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;min-width:0;color:#111;font-size:11px;font-weight:700;transition:width .2s ease}
-.headway-details{font-size:12.5px;line-height:1.45;color:var(--text)}
-.headway-details details{margin:8px 0}
-.headway-details summary{cursor:pointer;font-weight:800;color:var(--text)}
-.headway-details a{color:#2563eb;text-decoration:underline;cursor:pointer}
-.headway-list{margin:5px 0 8px 0;display:flex;flex-direction:column;gap:2px}
-.headway-muted{color:var(--text3);font-size:11.5px;line-height:1.45}
-.headway-pill{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:999px;padding:2px 7px;font-size:11px;font-weight:800;color:var(--text2);margin:0 4px 4px 0}
-.headway-course{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--border);border-radius:8px;padding:5px 7px;background:rgba(255,255,255,.72);font-size:11.5px}
-.headway-course.done{border-color:#35a766;background:rgba(53,167,102,.1)}
-.headway-course .hc-code{font-weight:800;line-height:1.35}
-.headway-course .hc-status{flex-shrink:0;border-radius:999px;padding:2px 6px;font-size:10px;font-weight:900;color:var(--text3);background:var(--bg)}
-.headway-course.done .hc-status{color:#0f7a3a;background:rgba(53,167,102,.14)}
 </style>
 </head>
 <body>
@@ -314,19 +285,15 @@ table.matrix tr:hover td{background:#f8f9ff}
 
 <!-- School filter -->
 <div class="school-bar">
-  <div class="filter-row">
-    <span class="label" data-i18n="filter.schools">📁 Course Category</span>
-    <span class="chip on" data-d="ALL" onclick="toggleInitial('ALL')" data-i18n="filter.all">All</span>
-    <span id="initial-chips"></span>
-  </div>
-  <div class="filter-row subject-row" id="school-chips"></div>
+  <span class="label" data-i18n="filter.schools">🗂️ Course Category</span>
+  <span class="chip on" data-d="ALL" onclick="toggleSchool('ALL')" data-i18n="filter.all">All</span>
+  <span id="school-chips"></span>
   <div class="chip-sec">
     <span data-i18n="filter.term">Term:</span>
     <select id="term-filter" onchange="renderCourseList();renderMatrix()">
       <option value="ALL" data-i18n="filter.any">Any</option>
       <option value="Fall" data-i18n="filter.fall">Fall</option>
       <option value="Spring" data-i18n="filter.spring">Spring</option>
-      <option value="Summer" data-i18n="filter.summer">Summer</option>
     </select>
     <span data-i18n="filter.level">Level:</span>
     <select id="level-filter" onchange="renderCourseList();renderMatrix()">
@@ -341,35 +308,15 @@ table.matrix tr:hover td{background:#f8f9ff}
 
 <div class="main">
 
-  <!-- Left: course browser + graduation progress -->
-  <div class="left-col">
-    <div class="panel" id="course-browser-panel">
-      <div class="panel-header">
-        <h3>📚 Available Courses</h3>
-        <span id="course-count-label">0 courses</span>
-      </div>
-      <div class="panel-body">
-        <input class="search-box" id="course-search" placeholder="Search course code..." oninput="renderCourseList()"/>
-        <div id="course-list"></div>
-      </div>
+  <!-- Left: course browser -->
+  <div class="panel" id="course-browser-panel">
+    <div class="panel-header">
+      <h3>📚 Available Courses</h3>
+      <span id="course-count-label">0 courses</span>
     </div>
-
-    <div class="headway-card" id="study-headway">
-      <h2>Your Study Headway</h2>
-      <div class="headway-controls">
-        <label>Admitted in
-          <select id="admission-year-select" onchange="studyAdmissionYear=this.value;renderStudyHeadway();saveState()">
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
-            <option value="2025">2025</option>
-            <option value="2026">2026</option>
-          </select>
-        </label>
-        <label>Major
-          <select id="study-major-select" onchange="studyMajorKey=this.value;renderStudyHeadway();saveState()"></select>
-        </label>
-      </div>
-      <div id="headway-content"></div>
+    <div class="panel-body">
+      <input class="search-box" id="course-search" placeholder="Search by code or title..." oninput="renderCourseList()"/>
+      <div id="course-list"></div>
     </div>
   </div>
 
@@ -393,7 +340,7 @@ table.matrix tr:hover td{background:#f8f9ff}
       <div class="profile-summary">
         <div class="ps-card" onclick="jumpTo('section-basket')"><div class="ps-val" id="ps-courses">0</div><div class="ps-lbl" data-i18n="ps.courses">📚 Courses</div></div>
         <div class="ps-card" onclick="jumpTo('section-basket')"><div class="ps-val" id="ps-credits">0</div><div class="ps-lbl" data-i18n="ps.credits">⭐ Credits</div></div>
-        <div class="ps-card" onclick="jumpTo('section-gpa')"><div class="ps-val" id="ps-avg">—</div><div class="ps-lbl" data-i18n="ps.avg">🎓 CGPA / MGPA</div></div>
+        <div class="ps-card" onclick="jumpTo('section-gpa')"><div class="ps-val" id="ps-avg">—</div><div class="ps-lbl" data-i18n="ps.avg">🎓 Avg GPA</div></div>
         <div class="ps-card" onclick="jumpTo('section-skill')"><div class="ps-top-list" id="ps-top"><div class="ps-top-row" style="color:var(--text3);font-weight:600">—</div></div><div class="ps-lbl" data-i18n="ps.top">🏆 Top 3 Strengths</div></div>
       </div>
     </div>
@@ -417,11 +364,10 @@ table.matrix tr:hover td{background:#f8f9ff}
 
       <div class="gpa-grid">
         <div>
-          <div class="canvas-wrap"><canvas id="gpa-chart"></canvas></div>
+          <div class="canvas-wrap" style="padding-bottom:52%"><canvas id="gpa-chart"></canvas></div>
         </div>
         <div>
           <div style="font-size:13px;color:var(--text2);margin-bottom:8px;font-weight:700" data-i18n="gpa.add">Add a grade</div>
-          <div style="font-size:12px;color:var(--text3);line-height:1.45;margin:-2px 0 10px" data-i18n="gpa.manualNote">If a waived or approved course does not appear on the transcript, enter it manually with its semester and grade; it will be included in term GPA only.</div>
           <div class="gpa-input">
             <select id="g-sem" title="Semester">
               <option value="F23">FAL 23</option><option value="S24">SPR 24</option><option value="SUM24">SUM 24</option>
@@ -431,7 +377,6 @@ table.matrix tr:hover td{background:#f8f9ff}
             </select>
             <input id="g-code" list="g-code-list" placeholder="Course code (type or pick)" autocomplete="off" style="flex:1;min-width:0"/>
             <datalist id="g-code-list"></datalist>
-            <input id="g-units" type="number" min="0" max="9" step="0.5" value="3" title="Units" style="width:74px;flex:0 0 74px"/>
             <select id="g-grade" title="Letter grade">
               <option>A</option><option>A-</option>
               <option>B+</option><option>B</option><option>B-</option>
@@ -531,112 +476,13 @@ table.matrix tr:hover td{background:#f8f9ff}
 </div>
 
 <script>
-// ── API-backed SIS course catalogue ──
-const API_BASE = window.location.protocol === 'file:' ? 'http://localhost:8080' : '';
-const COMPETENCY_ENABLED = false;
-window.DATA = {departments:{}, general_dimensions:[], courses:[]};
-
-function esc(s){
-  return String(s == null ? '' : s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
+// ── Mock if data.js not yet loaded ──
+if (!window.DATA) {
+  window.DATA = {departments:{}, general_dimensions:[], courses:[]};
+  document.body.insertAdjacentHTML('afterbegin', '<div style="background:#fee2e2;color:#991b1b;padding:12px;text-align:center;font-weight:700">⚠️ data.js not found — please regenerate. Showing empty dashboard.</div>');
 }
 
-function currentLang(){
-  try { return localStorage.getItem('cuhksz_lang') || 'en'; } catch(e){ return 'en'; }
-}
-function courseTitle(c){
-  const lang = currentLang();
-  if (lang === 'zh-CN') return c.title_zh_cn || c.title_zh_tw || c.title_en || c.title || c.code;
-  if (lang === 'zh-TW') return c.title_zh_tw || c.title_zh_cn || c.title_en || c.title || c.code;
-  return c.title_en || c.code;
-}
-const ORG_BY_SUBJECT = {
-  AIE:'SAI',
-  AIR:'SDS', CSC:'SDS', DDA:'SDS', MDS:'SDS', MFE:'SDS', RMS:'SDS', STA:'SDS',
-  ACT:'SME', DMS:'SME', ECO:'SME', FEMBA:'SME', FEX:'SME', FIN:'SME', IBA:'SME', IDE:'SME', MBM:'SME', MGT:'SME', MIS:'SME', MKT:'SME',
-  BIM:'MED', BIO:'MED', BME:'MED', MED:'MED', PHM:'MED',
-  MUS:'MUS',
-  CHM:'SSE', CIE:'SSE', ECE:'SSE', EIE:'SSE', ENE:'SSE', ERG:'SSE', FMA:'SSE', FTE:'SSE', ICS:'SSE', MAT:'SSE', MCE:'SSE', MFM:'SSE', MSE:'SSE', PHY:'SSE', SSE:'SSE',
-  CEC:'HSS', CHI:'HSS', CLC:'HSS', CSS:'HSS', DAI:'HSS', ENB:'HSS', ENG:'HSS', ENL:'HSS', FRN:'HSS', GEA:'HSS', GEB:'HSS', GEC:'HSS', GED:'HSS', GEW:'HSS', GFH:'HSS', GFN:'HSS', GGE:'HSS', GLB:'HSS', HSS:'HSS', ITE:'HSS', JPN:'HSS', KOR:'HSS', LIT:'HSS', PED:'HSS', PSY:'HSS', PUB:'HSS', SPN:'HSS', SUD:'HSS', TRA:'HSS', URB:'HSS', URM:'HSS'
-};
-function academicOrg(c){
-  const text = String(c.academic_org || '').trim();
-  if (/^(SDS|SME|SSE|MED|MUS|HSS|SAI)$/.test(text)) return text;
-  return ORG_BY_SUBJECT[c.subject_code || c.dept] || '';
-}
-function courseOrgLabel(c){
-  return academicOrg(c);
-}
-function ensureTranscriptCourse(row){
-  const code = String(row && row.code || '').toUpperCase().replace(/\s+/g, ' ').replace(/^([A-Z]+)(\d)/, '$1 $2').trim();
-  if (!code) return null;
-  let course = DATA.courses.find(c => c.code === code);
-  if (course) return course;
-  const subject = (code.match(/^([A-Z]+)/) || [,'OTHER'])[1];
-  course = {
-    code,
-    raw_code: code.replace(/\s+/g, ''),
-    dept: subject,
-    subject_code: subject,
-    subject_name: subject,
-    title: row.title || code,
-    title_en: row.title || code,
-    title_zh_cn: row.title || code,
-    title_zh_tw: row.title || code,
-    units: Number(row.credit || 0),
-    credit: Number(row.credit || 0),
-    level: parseInt((code.match(/\d+/) || [0])[0] / 1000) * 1000,
-    academic_org: ORG_BY_SUBJECT[subject] || '',
-    has_outline: false,
-    transcript_only: true
-  };
-  DATA.courses.push(course);
-  return course;
-}
-
-function buildDepartmentsFromCourses(courses){
-  const palette = ['#2563eb','#0891b2','#16a34a','#dc2626','#9333ea','#ea580c','#1e40af','#475569','#be185d','#0f766e'];
-  const out = {};
-  courses.forEach(c => {
-    const code = c.dept || c.subject_code || 'OTHER';
-    if (out[code]) return;
-    out[code] = {
-      name: c.subject_name || code,
-      name_en: c.subject_name || code,
-      color: palette[Object.keys(out).length % palette.length],
-      dimensions: []
-    };
-  });
-  return out;
-}
-
-async function loadCoursesFromApi(){
-  const listEl = document.getElementById('course-list');
-  if (listEl) listEl.innerHTML = '<div style="text-align:center;color:var(--text3);padding:20px;font-size:12px">Loading courses...</div>';
-  const res = await fetch(API_BASE + '/api/courses', {cache:'no-store'});
-  if (!res.ok) throw new Error('Failed to load courses from /api/courses');
-  const payload = await res.json();
-  DATA.courses = Array.isArray(payload.courses) ? payload.courses : [];
-  DATA.departments = payload.departments || buildDepartmentsFromCourses(DATA.courses);
-  DATA.general_dimensions = [];
-}
-
-function disableCompetencyViews(){
-  const hideClosestCard = (selector) => {
-    const el = document.querySelector(selector);
-    const card = el && el.closest('.card');
-    if (card) card.style.display = 'none';
-  };
-  const topCard = document.getElementById('ps-top');
-  if (topCard && topCard.closest('.ps-card')) topCard.closest('.ps-card').style.display = 'none';
-  hideClosestCard('#section-skill');
-  hideClosestCard('[data-i18n="card.advisor"]');
-  hideClosestCard('[data-i18n="card.matrix"]');
-}
-
-// Normalize dimensions for the future competency data shape.
+// Normalize dimensions: support both array and object form from data.js
 function normDims(deptKey){
   const d = DATA.departments[deptKey]; if(!d) return [];
   const dims = d.dimensions;
@@ -681,20 +527,18 @@ function remapCategories(){
   const hssCount = DATA.courses.filter(c => c.dept === 'HSS').length;
   if (hssCount === 0) delete DATA.departments.HSS;
 }
-let ALL_DEPTS = [];
+remapCategories();
+
+let ALL_DEPTS = Object.keys(DATA.departments);
 // Dept colors — fresh palette, all distinct, no HSS/MED
 const DEPT_COLOR = {ACT:'#2563eb',MAT:'#dc2626',MGT:'#0891b2',MKT:'#ea580c',CSC:'#7c2d12',FIN:'#1e40af',MIS:'#9333ea',GE:'#475569',PED:'#16a34a',PSY:'#7c3aed',TRA:'#a855f7',BIO:'#059669'};
 
 // State
 let activeSchools = new Set(['ALL']);
-let activeInitial = 'ALL';
 let selectedCodes = new Set();
-let majorDept = 'ACT';
-let studyAdmissionYear = '2023';
-let studyMajorKey = 'statistics';
+let majorDept = ALL_DEPTS.find(d => d!=='GE' && d!=='PED') || ALL_DEPTS[0] || 'ACT';
 let matrixSortCol = null, matrixSortDir = 'desc';
 let gpaRecords = [];
-let transcriptSummary = { cgpa:null, mgpa:null, totalUnits:null, termSummaries:{} };
 let majorScatter = null, genScatter = null, gpaChart = null;
 let renderMatrixScheduled = false;
 let dragCode = null; // course being dragged
@@ -718,34 +562,20 @@ function applyChartDefaults(){
 // Persistence
 const LS_KEY = 'cuhksz_portfolio';
 function saveState(){
-  try {
-    const transcriptCourses = DATA.courses.filter(c => c.transcript_only);
-    localStorage.setItem(LS_KEY, JSON.stringify({selected:[...selectedCodes],schools:[...activeSchools],initial:activeInitial,majorDept,studyAdmissionYear,studyMajorKey,gpa:gpaRecords,transcriptSummary,transcriptCourses}));
-  } catch(e){}
+  try { localStorage.setItem(LS_KEY, JSON.stringify({selected:[...selectedCodes],schools:[...activeSchools],majorDept,gpa:gpaRecords})); } catch(e){}
 }
 function loadState(){
   try {
     const s = JSON.parse(localStorage.getItem(LS_KEY)||'null');
     if(!s) return;
-    if(Array.isArray(s.transcriptCourses)){
-      s.transcriptCourses.forEach(c => {
-        if (c && c.code && !DATA.courses.some(x => x.code === c.code)){
-          DATA.courses.push({...c, transcript_only:true});
-        }
-      });
-    }
     if(s.selected) selectedCodes = new Set(s.selected);
-    if(s.initial && (s.initial === 'ALL' || ALL_DEPTS.some(d => d.startsWith(s.initial)))) activeInitial = s.initial;
     if(s.schools && s.schools.length){
       // Filter out depts that no longer exist (HSS/MED were remapped)
       const filtered = [...s.schools].filter(k => k === 'ALL' || DATA.departments[k]);
       activeSchools = new Set(filtered.length ? filtered : ['ALL']);
     }
     if(s.majorDept && DATA.departments[s.majorDept]) majorDept = s.majorDept;
-    if(s.studyAdmissionYear) studyAdmissionYear = String(s.studyAdmissionYear);
-    if(s.studyMajorKey) studyMajorKey = String(s.studyMajorKey);
     if(s.gpa) gpaRecords = s.gpa;
-    if(s.transcriptSummary) transcriptSummary = {...transcriptSummary, ...s.transcriptSummary};
   } catch(e){}
 }
 
@@ -766,56 +596,32 @@ function signOut(){
 }
 
 // ── School chips ──
-function deptsForInitial(initial){
-  if (initial === 'ALL') return ALL_DEPTS;
-  return ALL_DEPTS.filter(d => d.startsWith(initial));
-}
-function renderInitialChips(){
-  const initials = [...new Set(ALL_DEPTS.map(d => d[0]).filter(Boolean))].sort();
-  const html = initials.map(initial => {
-    const on = activeInitial === initial;
-    return `<span class="chip initial-chip ${on?'on':''}" data-initial="${initial}" onclick="toggleInitial('${initial}')">${initial}</span>`;
-  }).join('');
-  const el = document.getElementById('initial-chips');
-  if (el) el.innerHTML = html;
-  document.querySelectorAll('.chip[data-d="ALL"]').forEach(c => c.classList.toggle('on', activeInitial === 'ALL'));
-}
 function renderSchoolChips(){
-  const visibleDepts = activeInitial === 'ALL' ? [] : deptsForInitial(activeInitial);
-  const html = visibleDepts.map(d => {
+  const html = ALL_DEPTS.map(d => {
     const dep = DATA.departments[d];
     const name = (dep && (dep.name_en || dep.name)) || d;
     const on = activeSchools.has(d);
     return `<span class="chip ${on?'on':''}" data-d="${d}" onclick="toggleSchool('${d}')" title="${name}">
-      <span class="dot" style="color:${(dep && dep.color) || DEPT_COLOR[d] || '#888'}"></span>${d}</span>`;
+      <span class="dot" style="color:${DEPT_COLOR[d]||'#888'}"></span>${d}</span>`;
   }).join('');
   document.getElementById('school-chips').innerHTML = html;
-}
-function toggleInitial(initial){
-  activeInitial = initial;
-  activeSchools = new Set(['ALL']);
-  renderInitialChips();
-  renderSchoolChips();
-  renderCourseList();
-  renderMatrix();
-  saveState();
+  // Update ALL chip
+  document.querySelectorAll('.chip[data-d="ALL"]').forEach(c => c.classList.toggle('on', activeSchools.has('ALL')));
 }
 function toggleSchool(d){
   if (d==='ALL'){
-    activeInitial = 'ALL';
     activeSchools = new Set(['ALL']);
   } else {
     activeSchools.delete('ALL');
     if (activeSchools.has(d)) activeSchools.delete(d); else activeSchools.add(d);
     if (activeSchools.size === 0) activeSchools = new Set(['ALL']);
   }
-  renderInitialChips();
   renderSchoolChips();
   renderCourseList(); renderMatrix();
   saveState();
 }
 function activeDeptSet(){
-  if (activeSchools.has('ALL')) return new Set(deptsForInitial(activeInitial));
+  if (activeSchools.has('ALL')) return new Set(ALL_DEPTS);
   return new Set([...activeSchools]);
 }
 
@@ -828,7 +634,7 @@ function termMatch(c){
   if (!off || !off.length) return true;
   return off.includes(t);
 }
-// Return display name preferring English when competency dimensions are enabled.
+// Return display name preferring English (data.js mixes name=EN for major dims, name=ZH for general dims)
 function dimName(d){ return d.name_en || d.name || d.id; }
 function isChinese(s){ return /[一-鿿]/.test(String(s||'')); }
 function dimLabel(d){
@@ -845,33 +651,25 @@ function levelMatch(c){
 }
 function visibleCourses(){
   const depts = activeDeptSet();
-  return DATA.courses.filter(c => c.has_outline && !c.transcript_only && depts.has(c.dept) && termMatch(c) && levelMatch(c));
+  return DATA.courses.filter(c => depts.has(c.dept) && termMatch(c) && levelMatch(c));
 }
 function renderCourseList(){
   const q = document.getElementById('course-search').value.trim().toLowerCase();
-  const allVisible = visibleCourses();
-  const list = allVisible.filter(c => {
-    const haystack = [c.code, c.raw_code]
-      .map(x => String(x || '').toLowerCase()).join(' ');
-    return !q || haystack.includes(q);
-  });
-  document.getElementById('course-count-label').textContent = `${allVisible.length} courses`;
+  const list = visibleCourses().filter(c =>
+    !q || c.code.toLowerCase().includes(q) || c.title.toLowerCase().includes(q)
+  ).slice(0, 500); // cap for perf
+  document.getElementById('course-count-label').textContent = `${visibleCourses().length} courses`;
   document.getElementById('course-list').innerHTML = list.length
     ? list.map(c => {
-        const term = (c.offered && c.offered.length ? c.offered.join('/') : (c.offered_terms || c.terms_status || ''));
-        const dep = DATA.departments[c.dept] || {};
-        const col = dep.color || DEPT_COLOR[c.dept] || 'var(--accent)';
-        const title = courseTitle(c);
-        const school = courseOrgLabel(c);
-        const credits = c.units || c.credit || '';
-        const outline = c.has_outline ? 'Outline' : 'No outline';
+        const term = (c.offered||[]).join('/');
+        const col = DEPT_COLOR[c.dept] || 'var(--accent)';
         return `<div class="course-item ${selectedCodes.has(c.code)?'selected':''}"
-          draggable="true" data-code="${esc(c.code)}" data-source="list"
+          draggable="true" data-code="${c.code}" data-source="list"
           style="${selectedCodes.has(c.code)?`border-color:${col};background:${col}15`:''}"
-          title="${esc(title)}">
-          <span class="ci-code" style="color:${col}">${esc(c.code)}</span>
-          <span class="ci-title">${esc(title)}${school ? `<br><small style="color:var(--text3);font-weight:600">${esc(school)}</small>` : ''}</span>
-          <span class="ci-term">${credits ? esc(credits + ' units') : ''}${term ? `<br>${esc(term)}` : ''}<br>${esc(outline)}</span>
+          title="${c.title} — drag to portfolio or click to toggle">
+          <span class="ci-code" style="color:${col}">${c.code}</span>
+          <span class="ci-title">${c.title}</span>
+          <span class="ci-term">${term}</span>
           <span class="ci-check"${selectedCodes.has(c.code)?` style="background:${col};border-color:${col};color:#fff"`:''}>${selectedCodes.has(c.code)?'✓':''}</span>
         </div>`;
       }).join('')
@@ -985,14 +783,13 @@ function renderBasket(){
   basket.innerHTML = [...selectedCodes].map(code => {
     const c = DATA.courses.find(x => x.code===code);
     if(!c) return '';
-    const dep = DATA.departments[c.dept] || {};
-    const col = dep.color || DEPT_COLOR[c.dept] || 'var(--accent)';
+    const col = DEPT_COLOR[c.dept] || 'var(--accent)';
     return `<span class="basket-tag" style="background:${col}"
-      draggable="true" data-code="${esc(code)}" data-source="basket"
-      title="Click or drag out of the box to remove">${esc(code)} ×</span>`;
+      draggable="true" data-code="${code}" data-source="basket"
+      title="Click or drag out of the box to remove">${code} ×</span>`;
   }).join('');
   const sel = DATA.courses.filter(c => selectedCodes.has(c.code));
-  const credits = sel.reduce((s,c) => s + Number(c.units || c.credit || 0), 0);
+  const credits = sel.reduce((s,c) => s + (c.credit||3), 0);
   const psC = document.getElementById('ps-courses'); if(psC) psC.textContent = sel.length;
   const psCr = document.getElementById('ps-credits'); if(psCr) psCr.textContent = credits;
 }
@@ -1044,528 +841,6 @@ function maturity(score){
 }
 
 // ── Charts ──
-function isGpaGrade(grade){ return GRADE_VAL[String(grade || '').toUpperCase()] != null; }
-function isWithdrawnGrade(grade){ return String(grade || '').toUpperCase() === 'W'; }
-function isInProgressGrade(grade){ return String(grade || '').toUpperCase() === 'IP'; }
-function isPortfolioCreditGrade(grade){
-  const g = String(grade || '').toUpperCase();
-  return g !== 'W' && g !== 'IP';
-}
-function courseUnits(code){
-  const c = DATA.courses.find(x => x.code === code);
-  return Number((c && (c.units || c.credit)) || 0);
-}
-function gpaEligibleRecords(){
-  return (gpaRecords || []).filter(g => isGpaGrade(g.grade));
-}
-function gpaSummary(){
-  const rows = gpaEligibleRecords();
-  if (!rows.length) return {cgpa:null, mgpa:null, totalUnits:null};
-  let points = 0, units = 0, majorPoints = 0, majorUnits = 0;
-  rows.forEach(g => {
-    const u = Number(g.credit || courseUnits(g.code) || 0) || 1;
-    const val = gradeToGPA(g.grade);
-    points += val * u;
-    units += u;
-    const m = String(g.code || '').match(/^([A-Z]+)/);
-    if (m && m[1] === majorDept){
-      majorPoints += val * u;
-      majorUnits += u;
-    }
-  });
-  return {
-    cgpa: units ? points / units : null,
-    mgpa: majorUnits ? majorPoints / majorUnits : null,
-    totalUnits: units || null
-  };
-}
-function transcriptCgpaForSem(sem){
-  const entries = Object.entries((transcriptSummary && transcriptSummary.termSummaries) || {})
-    .map(([term, info], i) => {
-      const s = transcriptTermToSem(term);
-      const cgpa = Number(info && info.cumulativeGPA);
-      return {sem:s, sort:semSortValue(s, i), cgpa};
-    })
-    .filter(x => Number.isFinite(x.cgpa))
-    .sort((a,b) => a.sort - b.sort);
-  if (!entries.length){
-    const v = Number(transcriptSummary && transcriptSummary.cgpa);
-    return Number.isFinite(v) ? v : null;
-  }
-  const target = semSortValue(sem, 0);
-  let best = null;
-  entries.forEach(e => { if (e.sort <= target) best = e; });
-  return best ? best.cgpa : entries[0].cgpa;
-}
-
-const STUDY_MAJOR_RULES = {
-  professional_accountancy:{label:'Professional Accountancy', school:'SME', dept:'ACT', total:66, prefixes:['ACT','DMS','ECO','FIN','MGT','MIS','MKT','BMA','STA'], required:['ACT 2111','ACT 2121','ACT 3011','ACT 3121','ACT 3161','ACT 4111','MAT 1005'], electiveUnits:15},
-  economics:{label:'Economics', school:'SME', dept:'ECO', total:63, prefixes:['ECO','FIN','MAT','STA','ACT','DMS','BMA'], required:['ECO 2021','ECO 3011','ECO 3021','ECO 3080','ECO 3090','ECO 3121','MAT 1001'], electiveUnits:21},
-  finance:{label:'Finance', school:'SME', dept:'FIN', total:63, prefixes:['FIN','ECO','MAT','STA','ACT','FTE','RMS'], required:['ACT 2111','ECO 2011','FIN 2010','FIN 3080','FIN 3210','MAT 1002','MAT 3007','STA 2002'], electiveUnits:24},
-  global_business:{label:'Global Business Studies', school:'SME', dept:'GLB', total:63, prefixes:['GLB','MGT','MKT','ECO','FIN','ACT','DMS'], required:['GLB 1001','GLB 2001','GLB 3001'], electiveUnits:21},
-  marketing:{label:'Marketing and Communication', school:'SME', dept:'MKT', total:63, prefixes:['MKT','MGT','ACT','DMS','FIN'], required:['MKT 2010','MKT 3020','MKT 3030','MKT 4040','MKT 4120','MKT 4312'], electiveUnits:30},
-  cse:{label:'Computer Science and Engineering', school:'SDS', dept:'CSC', total:70, prefixes:['CSC','DDA','MAT','STA'], required:['CSC 1001','CSC 1002','CSC 3002','CSC 3050','CSC 3100','CSC 3150','CSC 3170','CSC 4001','CSC 4120','MAT 1001','MAT 1002','MAT 2040','STA 2001'], electiveUnits:21},
-  dsbdt:{label:'Data Science and Big Data Technology', school:'SDS', dept:'DDA', total:70, prefixes:['DDA','CSC','MAT','STA'], required:['CSC 1001','CSC 1002','DDA 2001','DDA 3020','MAT 1001','MAT 1002','MAT 2040','STA 2001','STA 2002'], electiveUnits:24},
-  statistics:{label:'Statistics', school:'SDS', dept:'STA', total:70, prefixes:['STA','MAT','DDA','CSC','RMS'], required:['MAT 1001','MAT 1002','MAT 2050','MAT 3007','STA 2001','STA 2002H','STA 3001','STA 3005','STA 3020','STA 4050'], electiveUnits:24, electivePool:['CSC 3002','CSC 3100','CSC 3170','CSC 4120','DDA 3005','DDA 3020','DDA 4002','DDA 4010','DDA 4210','DDA 4220','DDA 4230','DDA 4240','DDA 4250','DDA 4260','ECE 2050','MAT 2002','MAT 3006','MAT 3040','MAT 3220','MAT 3280','RMS 4001','RMS 4050','RMS 4060','STA 3006','STA 3007','STA 3030','STA 4001','STA 4002','STA 4003','STA 4005','STA 4010','STA 4011','STA 4020','STA 4030','STA 4100','STA 4102']},
-  financial_engineering:{label:'Financial Engineering', school:'Joint', dept:'FTE', total:70, prefixes:['FTE','FIN','STA','MAT','CSC','DDA','RMS'], required:['CSC 1001','ECO 2011','MAT 1001','DDA 3020','ECO 3121','FIN 3080','FIN 3210','MAT 1002','MAT 3007','STA 2002','STA 4050'], electiveUnits:24},
-  chemistry:{label:'Chemistry', school:'SSE', dept:'CHM', total:72, prefixes:['CHM','MAT','PHY','STA'], required:['CHM 1001','CHM 1002','MAT 1001','MAT 1002','PHY 1001'], electiveUnits:18},
-  ece:{label:'Electrical and Computer Engineering', school:'SSE', dept:'ECE', total:72, prefixes:['ECE','CSC','MAT','PHY','STA','ERG'], required:['CSC 3100','ECE 2001','ECE 2050','ECE 3001','ECE 3050','MAT 1002','ERG 4902'], electiveUnits:27},
-  mse:{label:'Materials Science and Engineering', school:'SSE', dept:'MSE', total:72, prefixes:['MSE','CHM','MAT','PHY'], required:['CHM 1001','MAT 1001','MAT 1002','PHY 1001','MSE 2001','MSE 2002'], electiveUnits:18},
-  math:{label:'Mathematics and Applied Mathematics', school:'SSE', dept:'MAT', total:70, prefixes:['MAT','STA','RMS'], required:['MAT 1001','MAT 1002','MAT 2001','MAT 2050','MAT 3007','MAT 3040','MAT 3300','MAT 4001','MAT 4220','MAT 4400'], electiveUnits:21},
-  nese:{label:'New Energy Science and Engineering', school:'SSE', dept:'ENE', total:72, prefixes:['ENE','ECE','MAT','PHY','STA'], required:['ECE 2001','ENE 3004','ENE 3005','ENE 3050','STA 2001','ERG 4902'], electiveUnits:30},
-  physics:{label:'Physics', school:'SSE', dept:'PHY', total:72, prefixes:['PHY','MAT','STA'], required:['MAT 1002','PHY 1010','PHY 1910','PHY 2002','PHY 2020','PHY 2610','PHY 2650','PHY 3110','PHY 3410','STA 2001','PHY 4270','PHY 4280'], electiveUnits:11},
-  applied_psychology:{label:'Applied Psychology', school:'HSS', dept:'PSY', total:72, prefixes:['PSY','HSS'], required:['HSS 1004','HSS 1006','HSS 1008','HSS 1009','PSY 1010','PSY 1020','PSY 2010','PSY 2020','PSY 2030','PSY 3010','PSY 4020','PSY 4030'], electiveUnits:36},
-  english_studies:{label:'English Studies (for Professional Purposes)', school:'HSS', dept:'ENB', total:72, prefixes:['ENB','SFL','HSS'], required:['HSS 1004','HSS 1005','HSS 1006','HSS 1008','HSS 1009','ENB 2001','ENB 2002','ENB 2003','ENB 2004','ENB 3001','ENB 3002','ENB 3003','ENB 3004','ENB 3005','ENB 4001','SFL 1001','SFL 1002'], electiveUnits:18},
-  translation:{label:'Translation', school:'HSS', dept:'TRA', total:69, prefixes:['TRA','ENB','SFL','HSS'], required:['HSS 1004','HSS 1005','HSS 1006','HSS 1008','HSS 1009','TRA 1010','TRA 1020','TRA 2010','TRA 3010','TRA 4030'], electiveUnits:39},
-  bioinformatics:{label:'Bioinformatics', school:'MED', dept:'BIO', total:72, prefixes:['BIO','BIM','BME','CHM','MAT','PHY','CSC'], required:['BIO 1001','CHM 1001','CSC 1001','CSC 1002','MAT 1001','MAT 2040','PHY 1001','STA 2001'], electiveUnits:16},
-  biological_sciences:{label:'Biological Sciences', school:'MED', dept:'BIO', total:72, prefixes:['BIO','BIM','BME','CHM','MAT','PHY','CSC'], required:['BIO 1001','BIO 2001','BIO 2002','BIO 2004','BIO 2101','BIO 2104','BIO 3001','BIO 3002','BIO 3003','BIO 3101','BIO 4901','BIO 4902','CHM 2317'], electiveUnits:16},
-  biomedical:{label:'Biomedical Science and Engineering', school:'MED', dept:'BME', total:72, prefixes:['BME','BIM','BIO','CHM','MAT','PHY'], required:['BIO 1001','CHM 1001','MAT 1001','PHY 1001','BME 2001'], electiveUnits:18},
-  pharmaceutical:{label:'Pharmaceutical Science', school:'MED', dept:'PHM', total:72, prefixes:['PHM','BIO','BME','BIM','CHM','MAT','PHY','MSE'], required:['BIO 1001','CHM 1001','CSC 1001','CSC 1002','MAT 1001','PHY 1001','BIO 2001','BIO 2004','BIO 2101','BME 2001','CHM 2110','CHM 2118','CHM 2317','CHM 2338','PHM 2002','PHM 2003','PHM 2004','PHM 2005','PHM 2006','PHM 2010','PHM 3001','PHM 3002','PHM 3003','PHM 3006'], electiveUnits:2},
-  artificial_intelligence:{label:'Artificial Intelligence', school:'SAI', dept:'AIE', total:72, prefixes:['AIE','CSC','DDA','ECE','MAT','STA'], required:['AIE 1001','AIE 1901','AIE 1902','AIE 1003','AIE 1004','AIE 1903','AIE 1904','AIE 2001','AIE 3007','AIE 3901','AIE 3902','AIE 4901','AIE 4902','CSC 3200','ECE 3300'], electiveUnits:9}
-};
-
-const MAJOR_BY_DEPT = {ACT:'professional_accountancy',ECO:'economics',FIN:'finance',MKT:'marketing',CSC:'cse',DDA:'dsbdt',STA:'statistics',FTE:'financial_engineering',CHM:'chemistry',ECE:'ece',EIE:'ece',MSE:'mse',MAT:'math',ENE:'nese',PHY:'physics',PSY:'applied_psychology',ENB:'english_studies',TRA:'translation',BIO:'biological_sciences',BIM:'bioinformatics',BME:'biomedical',PHM:'pharmaceutical',AIE:'artificial_intelligence'};
-
-const STAT_2024_ELECTIVE_CATEGORIES = [
-  {id:'area1', label:'Area 1 Mathematical Foundation', minCourses:0, courses:['DDA 3005','MAT 3006','MAT 3040',['STA 4001','STA 4001H'],'STA 4100']},
-  {id:'area2', label:'Area 2 Statistical Methodology', minCourses:0, courses:['DDA 4080','STA 3006','STA 3007','STA 3030',['STA 3042','STA 4042'],'STA 4002','STA 4003','STA 4030','STA 4041','STA 4102']},
-  {id:'area3', label:'Area 3 Computing & Machine Learning', minCourses:0, courses:['CSC 3002','CSC 3100',['DDA 3020','DDA 3020H'],'DDA 4010','STA 4012','STA 4606']},
-  {id:'area4', label:'Area 4 Financial Statistics & Risk Management', minCourses:0, courses:['DDA 3600','ECO 3211','FIN 3380','FMA 4200','FMA 4800','MAT 2002','RMS 4001','RMS 4050','RMS 4060','STA 4020']},
-  {id:'comp', label:'Complementary Electives', minCourses:0, courses:['CSC 3001','CSC 3170',['CSC 4120','CSC 4120H'],'DDA 4002','DDA 4210','DDA 4220','DDA 4230','DDA 4240','DDA 4250','DDA 4260','ECE 2050','ECO 3121','FIN 2010','FIN 2020','FIN 3080','FIN 3210','FIN 4110','FIN 4120','MAT 3220','MAT 3280','STA 4005','STA 4010','STA 4011']}
-];
-const STAT_2025_STREAMS = [
-  {id:'math_stat', label:'Mathematical Statistics Stream', courses:['DDA 3005','DDA 4002','DDA 4080','MAT 2002','MAT 3006','MAT 3040','MAT 3220','MAT 3280',['STA 4001','STA 4001H'],'STA 4100']},
-  {id:'method', label:'Statistical Methodology Stream', courses:['DDA 4010','DDA 4080','STA 3001','STA 3006','STA 3007','STA 3030','STA 4002','STA 4003','STA 4005','STA 4030','STA 4041','STA 4102']},
-  {id:'bio', label:'Biostatistics & Bioinformatics Stream', courses:['BIM 2005','BIM 3001','BIM 3007','BIM 3009','DDA 4010','DDA 4080','STA 4005','STA 4012','STA 4030','STA 4041','STA 4102','STA 4606']},
-  {id:'financial', label:'Financial Statistics Stream', courses:['DDA 3600','DDA 4010','DDA 4080','ECO 3211','FIN 3380','FMA 4200','FMA 4800','MAT 2002','RMS 4001','RMS 4050','RMS 4060','STA 4003','STA 4020','STA 4041']},
-  {id:'computing', label:'Computing & Machine Learning Stream', courses:['CSC 3002','CSC 3100',['CSC 4120','CSC 4120H'],['DDA 3020','DDA 3020H'],'DDA 4010','DDA 4080','DDA 4220']},
-  {id:'comp', label:'Complementary Electives', courses:['CSC 3001','CSC 3170','DDA 4210','DDA 4230','DDA 4240','DDA 4250','DDA 4260','ECE 2050','ECO 3121','FIN 2010','FIN 2020','FIN 3080','FIN 3210','FIN 4110','FIN 4120','STA 4010','STA 4011'], complementary:true}
-];
-const CSE_2023_GROUP_A = ['CSC 2003','CSC 3120','CSC 3160','CSC 3180','CSC 3185','CSC 4001','CSC 4005','CSC 4008','CSC 4010','CSC 4012','CSC 4100','CSC 4130','CSC 4140','CSC 4150','CSC 4160','CSC 4180','CSC 4190','CSC 4303','DDA 4080','DDA 4210','DDA 4220','DDA 4230','ECE 3080','ECE 4016'];
-const CSE_2023_GROUP_B = ['BIM 3001','DDA 3003','DDA 3005','DDA 4002','DDA 4240','DDA 4260','DDA 4310','ECE 3060','ECE 3200','ECE 4011','ECE 4310','ECE 4513','ECO 3011','ECO 3121','ECO 3160','EIE 3280','EIE 4005','EIE 4512','ERG 4001','FIN 3380','MAT 3007','MAT 3220','PHY 1002','STA 3005','STA 4001'];
-const CSE_2024_GROUP_A = ['CSC 2003','CSC 3002','CSC 3102','CSC 3120','CSC 3160','CSC 3170','CSC 3180','CSC 3185','CSC 4001','CSC 4005','CSC 4240','CSC 4303','DDA 4080','DDA 4210','DDA 4220','DDA 4230','ECE 3080','ECE 4016'];
-const CSE_2024_GROUP_B = ['BIM 3001','DDA 3003','DDA 3005','DDA 4002','DDA 4240','DDA 4260','DDA 4310','ECE 3060','ECE 3200','ECE 4011','ECE 4310','ECE 4513','ECO 3011','ECO 3121','ECO 3160','EIE 3280','EIE 4005','EIE 4512','ERG 4001','FIN 3380',['MAT 3007','MAT 3007H'],'MAT 3220','PHY 1002','STA 3005',['STA 4001','STA 4001H']];
-const DSBDT_STREAMS = [
-  {id:'method_theory', label:'Methodology and Theory Stream', courses:['CSC 3001','DDA 3003','DDA 3005','DDA 4010','DDA 4080','DDA 4210','DDA 4230','DDA 4240','DDA 4250','DDA 4320','MAT 2002','MAT 2050','MAT 3220','MAT 3280','STA 3020','STA 3005']},
-  {id:'finance_econ', label:'Finance and Economics Stream', courses:['DDA 4080','ECO 3121','ECO 3160','ECO 3211','ECO 4121','FIN 3080','FMA 4200','FMA 4800','STA 4002','STA 4003','STA 4020']},
-  {id:'operations', label:'Operations Management Stream', courses:['DDA 4080','DDA 4260','DMS 2030','DMS 3210','DMS 4010','DMS 4031','ECO 3160','MGT 2020','MKT 4220']},
-  {id:'life_science', label:'Life Science Stream', courses:['BIM 2005','BIM 2006','BIM 3001','BIM 3007','BIM 3009','BIO 3204','BIO 3213','DDA 4080','STA 4012']},
-  {id:'computing', label:'Computing Stream', courses:['CSC 2003','CSC 3001','CSC 3002','CSC 3050','CSC 3150','CSC 3160','CSC 3170','CSC 4001','CSC 4005','CSC 4010','CSC 4107','CSC 4120',['CSC 4120','CSC 4120H'],'CSC 4140','CSC 4150','CSC 4160','CSC 4170','DDA 4080','DDA 4220','DDA 4310','ERG 3010']}
-];
-STUDY_MAJOR_RULES.cse.variants = [
-  {
-    from:2023, to:2023, total:70, source:'CSE study scheme for 2023-24 entry', exactMajorPool:true,
-    mandatoryGroups:[['BIO 1008'],['CSC 1003','CSC 1001'],['CSC 1004','CSC 1002'],['DDA 2001'],['MAT 1001'],['MAT 1002'],['MAT 2041'],['PHY 1001'],['STA 2001','STA 2001H'],['CSC 3001'],['CSC 3002'],['CSC 3050'],['CSC 3100'],['CSC 3150'],['CSC 3170'],['CSC 4120'],['DDA 3020'],['ECE 2050']],
-    electiveUnits:18,
-    electiveCategories:[{id:'group_a', label:'Elective Group A', courses:CSE_2023_GROUP_A}, {id:'group_b', label:'Elective Group B', courses:CSE_2023_GROUP_B}],
-    electiveRules:{minUnitsByCategory:[{categoryId:'group_a', label:'Group A minimum', minUnits:12}]}
-  },
-  {
-    from:2024, total:70, source:'CSE study scheme for 2024-25 and thereafter', exactMajorPool:true,
-    mandatoryGroups:[['BIO 1008'],['CSC 1001','CSC 1003'],['CSC 1002','CSC 1004'],['DDA 2001'],['MAT 1001','MAT 1011'],['MAT 1002','MAT 1012'],['MAT 2041','MAT 2041A'],['PHY 1001'],['STA 2001','STA 2001H'],['CSC 3001'],['CSC 3060'],['CSC 3200'],['CSC 3150'],['CSC 4120','CSC 4120H'],['DDA 3020','DDA 3020H']],
-    electiveUnits:25,
-    electiveCategories:[{id:'group_a', label:'Elective Group A', courses:CSE_2024_GROUP_A}, {id:'group_b', label:'Elective Group B', courses:CSE_2024_GROUP_B}],
-    electiveRules:{minUnitsByCategory:[{categoryId:'group_a', label:'Group A minimum', minUnits:16}]}
-  }
-];
-STUDY_MAJOR_RULES.dsbdt.variants = [
-  {
-    from:2023, to:2023, total:70, source:'DSBDT study scheme for 2023-24 entry', exactMajorPool:true,
-    mandatoryGroups:[['BIO 1008'],['CSC 1001'],['CSC 1002'],['DDA 2001'],['MAT 1001'],['MAT 1002'],['MAT 2041'],['PHY 1001'],['STA 2001','STA 2001H'],['CSC 3100'],['DDA 3020'],['DDA 4002'],['MAT 3007'],['STA 2002','STA 2002H'],['STA 4001']],
-    electiveUnits:27,
-    electiveCategories:DSBDT_STREAMS,
-    electiveRules:{maxLevelCourses:{label:'2000-level elective limit', maxLevel:2000, maxCourses:2}}
-  },
-  {
-    from:2024, total:70, source:'DSBDT study scheme for 2024-25 and thereafter', exactMajorPool:true,
-    mandatoryGroups:[['BIO 1008'],['CSC 1001'],['CSC 1002'],['DDA 2001'],['MAT 1001','MAT 1011'],['MAT 1002','MAT 1012'],['MAT 2041','MAT 2041A'],['PHY 1001'],['STA 2001','STA 2001H'],['CSC 3100'],['DDA 3020','DDA 3020H'],['DDA 4002'],['MAT 3007','MAT 3007H'],['STA 2002','STA 2002H'],['STA 4001','STA 4001H']],
-    electiveUnits:27,
-    electiveCategories:DSBDT_STREAMS,
-    electiveRules:{maxLevelCourses:{label:'2000-level elective limit', maxLevel:2000, maxCourses:2}, streamDeclaration:{label:'Stream specialization requirement', categoryIds:['method_theory','finance_econ','operations','life_science','computing'], minCoursesInDeclaredCategory:4, optional:true}}
-  }
-];
-STUDY_MAJOR_RULES.statistics.variants = [
-  {
-    from:2023, to:2023, total:70, source:'Statistics study scheme for 2022-23 and 2023-24 entry',
-    mandatoryGroups:[['BIO 1008'],['CSC 1001'],['CSC 1002'],['DDA 2001'],['MAT 1001','MAT 1011'],['MAT 1002','MAT 1012'],['MAT 2041','MAT 2041A'],['PHY 1001'],['STA 2001H'],['MAT 2050'],['MAT 3007','MAT 3007H'],['STA 2002H'],['STA 3001'],['STA 3005'],['STA 3020']],
-    electiveUnits:27, electiveCategories:STAT_2024_ELECTIVE_CATEGORIES,
-    electiveRules:{breadth:{label:'Breadth requirement', categoryIds:['area1','area2','area3','area4','comp'], minCategories:3}, depth:{label:'Depth requirement', categoryIds:['area1','area2','area3','area4'], minCoursesInOneCategory:3}}
-  },
-  {
-    from:2024, to:2024, total:70, source:'Statistics study scheme for 2024-25 entry',
-    mandatoryGroups:[['BIO 1008'],['CSC 1001'],['CSC 1002'],['DDA 2001'],['MAT 1001','MAT 1011'],['MAT 1002','MAT 1012'],['MAT 2041','MAT 2041A'],['PHY 1001'],['STA 2001H'],['MAT 2050'],['MAT 3007','MAT 3007H'],['STA 2002H'],['STA 3001'],['STA 3005'],['STA 3020']],
-    electiveUnits:27, electiveCategories:STAT_2024_ELECTIVE_CATEGORIES,
-    electiveRules:{breadth:{label:'Breadth requirement', categoryIds:['area1','area2','area3','area4','comp'], minCategories:3}, depth:{label:'Depth requirement', categoryIds:['area1','area2','area3','area4'], minCoursesInOneCategory:3}}
-  },
-  {
-    from:2025, total:70, source:'Statistics study scheme for 2025-26 and thereafter',
-    mandatoryGroups:[['BIO 1008'],['CSC 1001'],['CSC 1002'],['DDA 2001'],['MAT 1001','MAT 1011'],['MAT 1002','MAT 1012'],['MAT 2041','MAT 2041A'],['PHY 1001'],['STA 2001H'],['MAT 2050'],['MAT 3007','MAT 3007H'],['STA 2002H'],['STA 3005'],['STA 3020'],['STA 3042']],
-    electiveUnits:27, electiveCategories:STAT_2025_STREAMS,
-    electiveRules:{depth:{label:'Depth requirement', categoryIds:['math_stat','method','bio','financial','computing'], minCoursesInOneCategory:3}, streamDeclaration:{label:'Stream declaration requirement', categoryIds:['math_stat','method','bio','financial','computing'], minCoursesInDeclaredCategory:4, optional:true}}
-  }
-];
-
-function normalizeCourseCode(code){
-  return String(code || '').trim().toUpperCase().replace(/\s+/g, ' ').replace(/^([A-Z]+)\s*(\d)/, '$1 $2');
-}
-function codePrefix(code){
-  const m = normalizeCourseCode(code).match(/^([A-Z]+)/);
-  return m ? m[1] : '';
-}
-function compactCode(code){ return normalizeCourseCode(code).replace(/\s+/g, ''); }
-function isPassingGrade(grade){
-  const g = String(grade || '').trim().toUpperCase();
-  return g !== 'W' && g !== 'IP' && g !== 'F';
-}
-function courseLink(code){
-  const norm = normalizeCourseCode(code);
-  const found = DATA.courses.find(c => normalizeCourseCode(c.code) === norm);
-  const label = esc(norm.replace(/\s+/g,''));
-  if (found && found.has_outline){
-    return `<a href="course_detail.html?code=${encodeURIComponent(norm)}">${label}</a>`;
-  }
-  return `<a href="#" onclick="event.preventDefault();alert('The syllabus for ${label} has not been provided yet.');">${label}</a>`;
-}
-function categoryLink(prefix, label){
-  const safeLabel = esc(label || prefix);
-  const p = String(prefix || '').toUpperCase();
-  const pages = {GEB:'ge_area_b.html', GEC:'ge_area_c.html', GED:'ge_area_d.html'};
-  if (pages[p]) return `<a href="${pages[p]}">${safeLabel}</a>`;
-  const safePrefix = esc(prefix);
-  return `<a href="#" onclick="event.preventDefault();showCourseCategoryList('${safePrefix}')">${safeLabel}</a>`;
-}
-function showCourseCategoryList(prefix){
-  const p = String(prefix || '').toUpperCase();
-  const rows = DATA.courses
-    .filter(c => {
-      const compact = compactCode(c.code);
-      if (p === 'PED11') return compact.startsWith('PED11');
-      if (p === 'PED12') return compact.startsWith('PED12');
-      return compact.startsWith(p);
-    })
-    .sort((a,b) => compactCode(a.code).localeCompare(compactCode(b.code)))
-    .map(c => `${compactCode(c.code)} - ${courseTitle(c)}`)
-    .slice(0, 80);
-  alert(rows.length ? `${p} options:\n\n${rows.join('\n')}` : `No ${p} courses are available in the catalogue yet.`);
-}
-function completedCourseMap(){
-  const map = new Map();
-  DATA.courses.forEach(c => {
-    if (selectedCodes.has(c.code)){
-      const norm = normalizeCourseCode(c.code);
-      map.set(norm, Math.max(map.get(norm) || 0, Number(c.units || c.credit || 0) || 3));
-    }
-  });
-  (gpaRecords || []).forEach(g => {
-    if (!isPassingGrade(g.grade)) return;
-    const norm = normalizeCourseCode(g.code);
-    if (!norm) return;
-    map.set(norm, Math.max(map.get(norm) || 0, Number(g.credit || courseUnits(norm) || 0) || 3));
-  });
-  return map;
-}
-function creditProgressUnits(){
-  const transcriptUnits = Number(transcriptSummary && transcriptSummary.totalUnits);
-  if (Number.isFinite(transcriptUnits) && transcriptUnits > 0){
-    const manualUnits = (gpaRecords || [])
-      .filter(g => g.source === 'manual' && isPassingGrade(g.grade))
-      .reduce((s,g) => s + (Number(g.credit || courseUnits(g.code) || 0) || 3), 0);
-    return transcriptUnits + manualUnits;
-  }
-  return Array.from(completedCourseMap().values()).reduce((s,u) => s + u, 0);
-}
-function selectedMajorRule(){
-  const base = STUDY_MAJOR_RULES[studyMajorKey] || STUDY_MAJOR_RULES.statistics;
-  const year = Number(studyAdmissionYear || 2023);
-  const variant = (base.variants || []).find(v => year >= Number(v.from || 0) && (v.to == null || year <= Number(v.to)));
-  return variant ? {...base, ...variant, baseLabel:base.label} : base;
-}
-function fillStudyMajorSelect(){
-  const sel = document.getElementById('study-major-select');
-  if (!sel) return;
-  const opts = Object.entries(STUDY_MAJOR_RULES)
-    .sort((a,b) => (a[1].school + a[1].label).localeCompare(b[1].school + b[1].label))
-    .map(([key, rule]) => `<option value="${key}">${rule.school} - ${rule.label}</option>`)
-    .join('');
-  sel.innerHTML = opts;
-  if (!STUDY_MAJOR_RULES[studyMajorKey]) studyMajorKey = inferStudyMajorKey();
-  sel.value = studyMajorKey;
-  const yearSel = document.getElementById('admission-year-select');
-  if (yearSel) yearSel.value = studyAdmissionYear;
-}
-function inferStudyMajorKey(){
-  const counts = {};
-  Array.from(completedCourseMap().keys()).forEach(code => {
-    const p = codePrefix(code);
-    counts[p] = (counts[p] || 0) + 1;
-  });
-  const bestPrefix = Object.entries(counts).sort((a,b) => b[1] - a[1])[0]?.[0] || majorDept;
-  return MAJOR_BY_DEPT[bestPrefix] || MAJOR_BY_DEPT[majorDept] || 'statistics';
-}
-function progressPercent(done, total){ return Math.max(0, Math.min(100, total ? Math.round(done / total * 100) : 0)); }
-function progressBlock(title, done, total, bodyHtml){
-  const pct = progressPercent(done, total);
-  return `<div class="progress-block">
-    <div class="progress-title"><span>${title}</span><span>${Math.round(done)}/${total}</span></div>
-    <div class="progress-track"><div class="progress-fill" style="width:${pct}%">${pct}%</div></div>
-    <div class="headway-details">${bodyHtml || ''}</div>
-  </div>`;
-}
-function ucoreRuleForYear(year){
-  const y = Number(year || studyAdmissionYear || 2023);
-  if (y >= 2025){
-    return {
-      source:'Academic Curriculum 2025-26 and thereafter',
-      digital:{label:'Digital and AI Literacy', course:'DAI 1000', units:1},
-      ped:[{label:'PED11XX series', prefix:'PED11', units:1}, {label:'PED12XX series', prefix:'PED12', units:1}],
-      geA:{label:'GEA area course', prefix:'GEA'}
-    };
-  }
-  return {
-    source:'Academic Curriculum 2023-24 to 2024-25',
-    digital:{label:'Information Technology', course:'ITE 1000', units:1},
-    ped:[{label:'PED 1001', course:'PED 1001', units:1}, {label:'PED 1002', course:'PED 1002', units:1}],
-    geA:{label:'GEA 2000', course:'GEA 2000'}
-  };
-}
-function hasCompleted(completed, code){ return completed.has(normalizeCourseCode(code)); }
-function completedByCompactPrefix(completed, prefix){
-  const p = String(prefix || '').toUpperCase().replace(/\s+/g, '');
-  return Array.from(completed.entries()).filter(([code]) => compactCode(code).startsWith(p));
-}
-function completedUnitsForPrefix(completed, prefix){
-  return completedByCompactPrefix(completed, prefix).reduce((s, [,u]) => s + u, 0);
-}
-function hasEnglishFamily(completed, family){
-  return completedByCompactPrefix(completed, family).length > 0;
-}
-function englishSlotStatus(completed, rule, slot){
-  const school = rule.school;
-  const isLanguageMajor = studyMajorKey === 'translation' || studyMajorKey === 'english_studies';
-  const isMusic = school === 'MUS';
-  const lowerEnlPair = hasCompleted(completed, 'ENL 1001') && hasCompleted(completed, 'ENL 1003');
-  const upperEnlPair = hasCompleted(completed, 'ENL 1002') && hasCompleted(completed, 'ENL 1004');
-  const engLowerPair = hasEnglishFamily(completed, 'ENG1001') && hasEnglishFamily(completed, 'ENG1002');
-  const engUpperPair = hasEnglishFamily(completed, 'ENG2001') && hasEnglishFamily(completed, 'ENG2002');
-  const kLowerPair = hasCompleted(completed, 'ENG 1001K') && hasCompleted(completed, 'ENG 1002K');
-  const kUpperPair = hasCompleted(completed, 'ENG 2001K') && hasCompleted(completed, 'ENG 2002K');
-  if (isLanguageMajor){
-    const pairSatisfied = slot === 'ENL 1001' || slot === 'ENL 1003' ? (engLowerPair || kLowerPair) : (engUpperPair || kUpperPair);
-    return {code:slot, done:hasCompleted(completed, slot) || pairSatisfied};
-  }
-  if (isMusic){
-    if (slot === 'ENG 1001K') return {code:slot, done:hasCompleted(completed, slot) || hasEnglishFamily(completed, 'ENG1001') || lowerEnlPair};
-    if (slot === 'ENG 1002K') return {code:slot, done:hasCompleted(completed, slot) || hasEnglishFamily(completed, 'ENG1002') || lowerEnlPair};
-    if (slot === 'ENG 2001K') return {code:slot, done:hasCompleted(completed, slot) || hasEnglishFamily(completed, 'ENG2001') || upperEnlPair};
-    return {code:slot, done:hasCompleted(completed, slot) || hasEnglishFamily(completed, 'ENG2002') || upperEnlPair};
-  }
-  if (slot === 'ENG 1001') return {code:slot, done:hasEnglishFamily(completed, 'ENG1001') || lowerEnlPair};
-  if (slot === 'ENG 1002') return {code:slot, done:hasEnglishFamily(completed, 'ENG1002') || lowerEnlPair};
-  if (slot === 'ENG 2001') return {code:slot, done:hasEnglishFamily(completed, 'ENG2001') || upperEnlPair};
-  return {code:slot, done:hasEnglishFamily(completed, 'ENG2002') || upperEnlPair};
-}
-function requiredEnglishSlots(rule){
-  const school = rule.school;
-  if (studyMajorKey === 'translation' || studyMajorKey === 'english_studies') return ['ENL 1001','ENL 1002','ENL 1003','ENL 1004'];
-  if (school === 'MUS') return ['ENG 1001K','ENG 1002K','ENG 2001K','ENG 2002K'];
-  if (school === 'SME') return ['ENG 1001','ENG 1002','ENG 2001','ENG 2002B'];
-  if (school === 'HSS') return ['ENG 1001','ENG 1002','ENG 2001','ENG 2002H'];
-  return ['ENG 1001','ENG 1002','ENG 2001','ENG 2002S'];
-}
-function renderMissingRequirement(item){
-  if (item.kind === 'category') return categoryLink(item.prefix, item.label);
-  return courseLink(item.code);
-}
-function requirementOptions(group){
-  if (Array.isArray(group)) return group.map(normalizeCourseCode);
-  return [normalizeCourseCode(group)];
-}
-function requirementLabel(group){
-  return requirementOptions(group).map(c => c.replace(/\s+/g,'')).join(' / ');
-}
-function requirementSatisfied(completed, group){
-  return requirementOptions(group).some(code => completed.has(code));
-}
-function flattenRequirementCodes(items){
-  const codes = [];
-  (items || []).forEach(item => requirementOptions(item).forEach(code => codes.push(code)));
-  return codes;
-}
-function completedCodesForCategory(completed, category){
-  const seen = new Set();
-  (category.courses || []).forEach(group => {
-    const matched = requirementOptions(group).find(code => completed.has(code));
-    if (matched) seen.add(matched);
-  });
-  return Array.from(seen);
-}
-function completedUnitsForCodes(completed, codes){
-  return Array.from(new Set(codes || [])).reduce((sum, code) => sum + (Number(completed.get(code) || 0) || 3), 0);
-}
-function courseLevel(code){
-  const m = normalizeCourseCode(code).match(/\s(\d)/);
-  return m ? Number(m[1]) * 1000 : null;
-}
-function categoryCourseLinks(category){
-  const completedSet = new Set(category.completedCodes || []);
-  return (category.courses || []).map(group => {
-    const opts = requirementOptions(group);
-    const matched = opts.find(code => completedSet.has(code));
-    const done = !!matched;
-    const links = opts.map(courseLink).join(' / ');
-    return `<div class="headway-course ${done ? 'done' : ''}">
-      <span class="hc-code">${links}</span>
-      <span class="hc-status">${done ? '✓ completed' : 'to take'}</span>
-    </div>`;
-  }).join('');
-}
-function ucoreProgress(completed, rule){
-  const cfg = ucoreRuleForYear(studyAdmissionYear);
-  const missing = [];
-  let doneUnits = 0;
-
-  const addCourse = (section, code, units) => {
-    if (hasCompleted(completed, code)) doneUnits += units;
-    else missing.push({label:section, missing:[{kind:'course', code}]});
-  };
-  const addCategory = (section, prefix, units, label) => {
-    if (completedUnitsForPrefix(completed, prefix) > 0) doneUnits += units;
-    else missing.push({label:section, missing:[{kind:'category', prefix, label}]});
-  };
-
-  addCourse('Chinese', 'CHI 1000', 3);
-
-  const englishSlots = requiredEnglishSlots(rule).map(slot => englishSlotStatus(completed, rule, slot));
-  doneUnits += englishSlots.filter(x => x.done).length * 3;
-  const missingEnglish = englishSlots.filter(x => !x.done).map(x => ({kind:'course', code:x.code}));
-  if (missingEnglish.length) missing.push({label:'English core', missing:missingEnglish});
-
-  addCourse(cfg.digital.label, cfg.digital.course, cfg.digital.units);
-
-  const missingPed = [];
-  cfg.ped.forEach(ped => {
-    if (ped.course){
-      if (hasCompleted(completed, ped.course)) doneUnits += ped.units;
-      else missingPed.push({kind:'course', code:ped.course});
-    } else if (completedUnitsForPrefix(completed, ped.prefix) > 0){
-      doneUnits += ped.units;
-    } else {
-      missingPed.push({kind:'category', prefix:ped.prefix, label:ped.label});
-    }
-  });
-  if (missingPed.length) missing.push({label:'PE and Health', missing:missingPed});
-
-  addCourse('General Education Foundation', 'GFH 1000', 3);
-  addCourse('General Education Foundation', 'GFN 1000', 3);
-
-  if (cfg.geA.course) addCourse('GE Area A', cfg.geA.course, 3);
-  else addCategory('GE Area A', cfg.geA.prefix, 3, cfg.geA.label);
-  ['GEB','GEC','GED'].forEach(p => addCategory(`GE ${p.slice(2)} area`, p, 3, `${p} area course`));
-
-  return {done:Math.min(36, doneUnits), total:36, missing, source:cfg.source};
-}
-function majorProgress(completed, rule){
-  const mandatoryGroups = rule.mandatoryGroups || (rule.required || []).map(code => [code]);
-  const missingRequired = mandatoryGroups.filter(group => !requirementSatisfied(completed, group));
-  const required = flattenRequirementCodes(mandatoryGroups);
-  const categoryCodes = flattenRequirementCodes((rule.electiveCategories || []).flatMap(cat => cat.courses || []));
-  const pool = new Set([...(rule.electivePool || []).map(normalizeCourseCode), ...required, ...categoryCodes]);
-  const prefixSet = new Set(rule.prefixes || [rule.dept]);
-  let majorUnits = 0, electiveUnitsDone = 0;
-  completed.forEach((u, code) => {
-    const inMajor = rule.exactMajorPool ? pool.has(code) : (pool.has(code) || prefixSet.has(codePrefix(code)));
-    if (!inMajor) return;
-    majorUnits += u;
-    if (!required.includes(code)) electiveUnitsDone += u;
-  });
-  const electiveNeed = Number(rule.electiveUnits || 0);
-  const electiveShort = Math.max(0, electiveNeed - electiveUnitsDone);
-  const categoryStats = (rule.electiveCategories || []).map(cat => {
-    const completedCodes = completedCodesForCategory(completed, cat);
-    return {...cat, completedCodes, completedCount:completedCodes.length, completedUnits:completedUnitsForCodes(completed, completedCodes)};
-  });
-  const categoryById = new Map(categoryStats.map(cat => [cat.id, cat]));
-  const ruleResults = [];
-  const rules = rule.electiveRules || {};
-  if (rules.breadth){
-    const ids = rules.breadth.categoryIds || categoryStats.map(c => c.id);
-    const satisfiedCount = ids.filter(id => (categoryById.get(id)?.completedCount || 0) >= 1).length;
-    ruleResults.push({label:rules.breadth.label || 'Breadth requirement', ok:satisfiedCount >= rules.breadth.minCategories, detail:`${satisfiedCount}/${rules.breadth.minCategories} categories covered`});
-  }
-  if (rules.depth){
-    const ids = rules.depth.categoryIds || categoryStats.map(c => c.id);
-    const best = ids.map(id => categoryById.get(id)).filter(Boolean).sort((a,b) => b.completedCount - a.completedCount)[0];
-    const need = Number(rules.depth.minCoursesInOneCategory || 0);
-    ruleResults.push({label:rules.depth.label || 'Depth requirement', ok:(best?.completedCount || 0) >= need, detail:`best: ${best ? best.label : '—'} ${best?.completedCount || 0}/${need}`});
-  }
-  (rules.minUnitsByCategory || []).forEach(req => {
-    const cat = categoryById.get(req.categoryId);
-    const units = Number(cat?.completedUnits || 0);
-    const need = Number(req.minUnits || 0);
-    ruleResults.push({label:req.label || `${cat ? cat.label : req.categoryId} minimum`, ok:units >= need, detail:`${units}/${need} units`});
-  });
-  if (rules.maxLevelCourses){
-    const maxLevel = Number(rules.maxLevelCourses.maxLevel || 2000);
-    const maxCourses = Number(rules.maxLevelCourses.maxCourses || 0);
-    const electiveCodes = new Set();
-    categoryStats.forEach(cat => cat.completedCodes.forEach(code => {
-      if (!required.includes(code)) electiveCodes.add(code);
-    }));
-    const count = Array.from(electiveCodes).filter(code => courseLevel(code) === maxLevel).length;
-    ruleResults.push({label:rules.maxLevelCourses.label || `${maxLevel}-level elective limit`, ok:maxCourses <= 0 || count <= maxCourses, detail:`${count}/${maxCourses} courses`});
-  }
-  if (rules.streamDeclaration && !rules.streamDeclaration.optional){
-    const declared = rule.declaredStream;
-    const cat = categoryById.get(declared);
-    const need = Number(rules.streamDeclaration.minCoursesInDeclaredCategory || 0);
-    ruleResults.push({label:rules.streamDeclaration.label || 'Stream declaration requirement', ok:!!cat && cat.completedCount >= need, detail:`${cat ? cat.label : 'No stream selected'} ${cat?.completedCount || 0}/${need}`});
-  }
-  const incomplete = missingRequired.length > 0 || electiveShort > 0 || ruleResults.some(r => !r.ok) || majorUnits < Number(rule.total || 0);
-  return {done:Math.min(rule.total, majorUnits), total:rule.total, missingRequired, electiveUnitsDone, electiveNeed, electiveShort, categoryStats, ruleResults, incomplete};
-}
-function renderStudyHeadway(){
-  const el = document.getElementById('headway-content');
-  if (!el) return;
-  const rule = selectedMajorRule();
-  const completed = completedCourseMap();
-  const creditDone = creditProgressUnits();
-  const major = majorProgress(completed, rule);
-  const ucore = ucoreProgress(completed, rule);
-  const reqHtml = major.missingRequired.length
-    ? `<div class="headway-list">${major.missingRequired.slice(0,12).map(group => {
-        const opts = requirementOptions(group);
-        if (opts.length === 1) return courseLink(opts[0]);
-        return `<span class="headway-pill">${opts.map(courseLink).join(' / ')}</span>`;
-      }).join(' ')}</div>`
-    : `<div class="headway-muted">Mandatory courses appear satisfied under the current rule.</div>`;
-  const ruleResultHtml = major.ruleResults && major.ruleResults.length
-    ? `<div style="font-weight:700;margin-top:8px">Elective rules:</div>
-      <div class="headway-list">${major.ruleResults.map(r => `<span class="headway-pill" style="border-color:${r.ok ? '#35a766' : '#d33'}">${r.ok ? '✓' : '✕'} ${esc(r.label)} · ${esc(r.detail)}</span>`).join(' ')}</div>`
-    : '';
-  const categoryHtml = major.categoryStats && major.categoryStats.length
-    ? `<div style="font-weight:700;margin-top:8px">Areas / Streams:</div>
-      ${major.categoryStats.map(cat => `<details><summary>${esc(cat.label)}: ${cat.completedCount}/${(cat.courses || []).length} courses · ${Math.round(cat.completedUnits || 0)} units</summary><div class="headway-list">${categoryCourseLinks(cat)}</div></details>`).join('')}`
-    : '';
-  const electiveHtml = `<div class="headway-list">
-      <span class="headway-pill">${Math.round(major.electiveUnitsDone)}/${major.electiveNeed || 0} elective units</span>
-      ${major.electiveShort ? `<span class="headway-muted">Still need about ${Math.round(major.electiveShort)} elective units. Open the major course list and choose courses from the study scheme pool.</span>` : '<span class="headway-muted">Elective unit target appears satisfied.</span>'}
-    </div>${ruleResultHtml}${categoryHtml}`;
-  const majorBody = `<details open><summary>Courses up to take</summary>
-      <div class="headway-muted">${major.incomplete ? 'Major task incomplete.' : 'Major task completed.'}</div>
-      <div style="margin-top:6px;font-weight:700">Mandatory:</div>${reqHtml}
-      <div style="font-weight:700;margin-top:8px">Elective:</div>${electiveHtml}
-      <div class="headway-muted">Rule: ${esc(rule.source || rule.label)} (${studyAdmissionYear} entry), major denominator ${rule.total} units.</div>
-    </details>`;
-  const ucoreBody = `<details open><summary>Courses up to take</summary>
-      ${ucore.missing.length ? ucore.missing.map(x => `<div style="margin-top:7px"><b>${esc(x.label)}:</b><div class="headway-list">${x.missing.map(renderMissingRequirement).join(' ')}</div></div>`).join('') : '<div class="headway-muted">U-core requirements appear satisfied.</div>'}
-      <div class="headway-muted">Rule: ${esc(ucore.source)}. GEW courses are not compulsory for U-core; completed GEW may be declared as free elective up to 6 units.</div>
-    </details>`;
-  el.innerHTML =
-    progressBlock('Credit Progress', Math.min(120, creditDone), 120, '<div class="headway-muted">All passed transcript units plus manually added exemption/approved units.</div>') +
-    progressBlock('Major Progress', major.done, major.total, majorBody) +
-    progressBlock('U-core Progress', ucore.done, ucore.total, ucoreBody);
-}
-
 function renderProfileSummary(majorDims, majorScores, genDims, genScores){
   const all = [...majorDims.map(d => ({d, s:majorScores[d.id]||0})), ...genDims.map(d => ({d, s:genScores[d.id]||0}))];
   // Avg GPA: compute from gpaRecords (4.0 scale) — fall back to '—'
@@ -1577,13 +852,6 @@ function renderProfileSummary(majorDims, majorScores, genDims, genScores){
     } else {
       psAvgEl.textContent = '—';
     }
-  }
-  if (psAvgEl){
-    const cgpa = transcriptSummary.cgpa;
-    const mgpa = transcriptSummary.mgpa;
-    psAvgEl.innerHTML = cgpa == null && mgpa == null
-      ? '—'
-      : `<span style="font-size:1.55rem">${cgpa == null ? '—' : cgpa.toFixed(2)} / ${mgpa == null ? '—' : mgpa.toFixed(2)}</span>`;
   }
   // Top 3 strongest skills
   const psTopEl = document.getElementById('ps-top');
@@ -1687,12 +955,6 @@ function makeScatterChart(canvasId, prevChart, dims, scoreKey){
 }
 
 function renderCharts(){
-  if (!COMPETENCY_ENABLED){
-    const insight = document.getElementById('portfolio-insight');
-    if (insight) insight.style.display = 'none';
-    renderProfileSummary([], {}, [], {});
-    return;
-  }
   const majorDims = normDims(majorDept);
   const genDims = normGenDims();
   const myMajor = aggregateScores(majorDims, 'major_scores');
@@ -1907,8 +1169,7 @@ function transcriptTermToSem(termLabel){
   const y2 = String(parseInt(m[2], 10)).padStart(2, '0');
   const t = m[3].toLowerCase();
   if (t.indexOf('term 1') !== -1) return 'F' + y1;
-  if (t.indexOf('term 2') !== -1) return 'S' + y2;
-  return 'SUM' + y2;
+  return 'S' + y2;
 }
 
 async function extractPdfTranscriptText(file){
@@ -2115,15 +1376,6 @@ function parseCuhkTranscriptText(text){
       if (out.summary.majorGPA == null) out.summary.majorGPA = Number(tableRow[2]);
     }
   }
-  if (out.summary.cumulativeGPA == null || out.summary.majorGPA == null){
-    const gpaPairs = Array.from(summaryBlock.matchAll(/(\d+(?:\.\d+)?)\s*\/\s*4(?:\.0+)?/gi))
-      .map(x => Number(x[1]))
-      .filter(Number.isFinite);
-    if (gpaPairs.length >= 2){
-      if (out.summary.cumulativeGPA == null) out.summary.cumulativeGPA = gpaPairs[gpaPairs.length - 2];
-      if (out.summary.majorGPA == null) out.summary.majorGPA = gpaPairs[gpaPairs.length - 1];
-    }
-  }
   if (out.summary.totalUnitsPassed == null){
     const lastCum = flat.match(/Cumulative\s*Units?\s*Passed\s*[:=\-]?\s*(\d+(?:\.\d+)?)(?![\s\S]*Cumulative\s*Units?\s*Passed)/i);
     if (lastCum) out.summary.totalUnitsPassed = Number(lastCum[1]);
@@ -2153,32 +1405,17 @@ async function importTranscriptFromPdf(file){
     throw new Error('No transcript course rows were detected in the PDF.');
   }
 
-  const termSummaryEntries = Object.entries(parsed.termSummaries || {})
-    .sort((a,b) => semSortValue(transcriptTermToSem(a[0]), 0) - semSortValue(transcriptTermToSem(b[0]), 0));
-  const lastTermSummary = termSummaryEntries.length ? termSummaryEntries[termSummaryEntries.length - 1][1] : {};
-  transcriptSummary = {
-    cgpa: parsed.summary && parsed.summary.cumulativeGPA != null ? parsed.summary.cumulativeGPA : (lastTermSummary.cumulativeGPA ?? null),
-    mgpa: parsed.summary && parsed.summary.majorGPA != null ? parsed.summary.majorGPA : null,
-    totalUnits: parsed.summary && parsed.summary.totalUnitsPassed != null ? parsed.summary.totalUnitsPassed : (lastTermSummary.cumulativeUnits ?? null),
-    termSummaries: parsed.termSummaries || {}
-  };
-
   let added = 0, gradesAdded = 0, matched = 0;
   parsedRows.forEach(r => {
-    let found = DATA.courses.find(c => c.code === r.code);
-    if (!found && isPortfolioCreditGrade(r.grade)){
-      found = ensureTranscriptCourse(r);
-    }
+    const found = DATA.courses.find(c => c.code === r.code);
     if (found){
       matched++;
-      if (isPortfolioCreditGrade(r.grade) && !selectedCodes.has(found.code)){
+      if (!selectedCodes.has(found.code)){
         selectedCodes.add(found.code);
         added++;
-      } else if (!isPortfolioCreditGrade(r.grade) && selectedCodes.has(found.code)){
-        selectedCodes.delete(found.code);
       }
-      if (isGpaGrade(r.grade) && !gpaRecords.some(g => g.sem === r.semester && g.code === found.code && g.grade === r.grade)){
-        gpaRecords.push({ sem: r.semester, code: found.code, grade: r.grade, credit: r.credit, source:'transcript' });
+      if ((GRADE_VAL[r.grade] != null) && !gpaRecords.some(g => g.sem === r.semester && g.code === found.code && g.grade === r.grade)){
+        gpaRecords.push({ sem: r.semester, code: found.code, grade: r.grade });
         gradesAdded++;
       }
     }
@@ -2194,7 +1431,6 @@ async function importTranscriptFromPdf(file){
   });
   if (inferredDept && DATA.departments[inferredDept]){
     majorDept = inferredDept;
-    studyMajorKey = MAJOR_BY_DEPT[inferredDept] || studyMajorKey;
   }
 
   const totalUnits =
@@ -2245,26 +1481,17 @@ function importTranscript(ev){
         const code = String(r[0]||'').trim().toUpperCase();
         if (!code || !/[A-Z]{2,4}\s*\d{3,4}/.test(code)) return;
         const normCode = code.replace(/\s+/g,' ').replace(/^([A-Z]+)(\d)/, '$1 $2');
-        const grade = String(r[2]||r[1]||'').trim().toUpperCase();
-        let found = DATA.courses.find(c => c.code === normCode);
-        if (!found && isPortfolioCreditGrade(grade)){
-          found = ensureTranscriptCourse({
-            code: normCode,
-            title: String(r[1] || normCode).trim(),
-            grade,
-            credit: Number(r[4] || 0)
-          });
-        }
-        if (found && isPortfolioCreditGrade(grade) && !selectedCodes.has(found.code)){
+        const found = DATA.courses.find(c => c.code === normCode);
+        if (found && !selectedCodes.has(found.code)){
           selectedCodes.add(found.code);
           added++;
-        } else if (found && !isPortfolioCreditGrade(grade) && selectedCodes.has(found.code)){
-          selectedCodes.delete(found.code);
-        }
-        if (found && isGpaGrade(grade)){
-          const sem = String(r[3]||'F24').trim() || 'F24';
-          gpaRecords.push({sem, code:found.code, grade, credit:courseUnits(found.code), source:'upload'});
-          gradesAdded++;
+          // grade column
+          const grade = String(r[2]||r[1]||'').trim();
+          if (/^(A\+?|A-|B\+?|B-?|C\+?|C-?|D\+?|D|F)$/i.test(grade)){
+            const sem = String(r[3]||'F24').trim() || 'F24';
+            gpaRecords.push({sem, code:found.code, grade:grade.toUpperCase()});
+            gradesAdded++;
+          }
         }
       });
       alert(`Imported ${added} courses` + (gradesAdded?`, ${gradesAdded} grades`:'') + '. (Format: Code | Title | Grade | Semester)');
@@ -2277,27 +1504,30 @@ function importTranscript(ev){
 function exportPortfolio(){
   if (selectedCodes.size === 0){ alert('Add courses to your portfolio first.'); return; }
   const sel = DATA.courses.filter(c => selectedCodes.has(c.code));
-  // Sheet 1: SIS course information
+  const majorDims = normDims(majorDept);
+  const genDims = normGenDims();
+  const myMajor = aggregateScores(majorDims, 'major_scores');
+  const myGen = aggregateScores(genDims, 'gen_scores');
+  // Sheet 1: courses + scores
   const courseRows = sel.map(c => {
-    return {
-      Code:c.code,
-      RawCode:c.raw_code || '',
-      Title:c.title,
-      Subject:c.dept,
-      Units:c.units || c.credit || '',
-      Offered:(c.offered && c.offered.length ? c.offered.join('/') : (c.offered_terms || '')),
-      Level:c.level || '',
-      School:c.school || '',
-      AcademicOrg:academicOrg(c),
-      HasOutline:c.has_outline ? 'Yes' : 'No'
-    };
+    const row = {Code:c.code, Title:c.title, Dept:c.dept, Credit:c.credit||3, Offered:(c.offered||[]).join('/'), Level:c.level||'-'};
+    Object.entries(c.major_scores||{}).forEach(([k,v]) => row['M_'+k] = v);
+    Object.entries(c.gen_scores||{}).forEach(([k,v]) => row['G_'+k] = v);
+    return row;
   });
-  // Sheet 2: GPA records
+  // Sheet 2: aggregate skill profile
+  const profileRows = [
+    ['Skill Type','Skill ID','Skill Name','My Score','Maturity'],
+    ...majorDims.map(d => ['Major', d.id, dimLabel(d), myMajor[d.id]||0, maturity(myMajor[d.id]||0).label]),
+    ...genDims.map(d => ['General', d.id, dimLabel(d), myGen[d.id]||0, maturity(myGen[d.id]||0).label]),
+  ];
+  // Sheet 3: GPA records
   const gpaRows = [['Semester','Code','Grade','GPA Points']].concat(
     gpaRecords.map(g => [g.sem, g.code, g.grade, gradeToGPA(g.grade)])
   );
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(courseRows), 'Courses');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(profileRows), 'Skill Profile');
   XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(gpaRows), 'Grades');
   XLSX.writeFile(wb, `portfolio_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
@@ -2347,21 +1577,6 @@ function semSortValue(sem, fallback){
   return 100000 + (fallback || 0);
 }
 // Display label: F24 → FAL 24, S25 → SPR 25, SUM24 → SUM 24
-function semSortValue(sem, fallback){
-  const s = String(sem || '').trim().toUpperCase();
-  let m = s.match(/^F\s*(\d{2})$/);
-  if (m) return parseInt(m[1], 10) * 3;
-  m = s.match(/^S\s*(\d{2})$/);
-  if (m) return (parseInt(m[1], 10) - 1) * 3 + 1;
-  m = s.match(/^SUM\s*(\d{2})$/);
-  if (m) return (parseInt(m[1], 10) - 1) * 3 + 2;
-  m = s.match(/^(\d{4})-(\d{2})\s*TERM\s*([12])$/i);
-  if (m){
-    const y = parseInt(m[1], 10) % 100;
-    return String(m[3]) === '1' ? y * 3 : y * 3 + 1;
-  }
-  return 100000 + (fallback || 0);
-}
 function semDisplayLabel(sem){
   const s = String(sem || '').trim().toUpperCase();
   let m = s.match(/^F(\d{2})$/); if (m) return `FAL ${m[1]}`;
@@ -2377,24 +1592,14 @@ function addGrade(){
   code = code.replace(/^([A-Z]+)\s*(\d)/, '$1 $2').replace(/\s+/g, ' ');
   const grade = document.getElementById('g-grade').value;
   if (!code){ alert('Please type or pick a course code first (e.g. "MAT 1001"). The dropdown shows all available courses.'); return; }
-  const manualUnits = Number(document.getElementById('g-units').value || courseUnits(code) || 3);
-  gpaRecords.push({sem, code, grade, credit:manualUnits, source:'manual'});
+  gpaRecords.push({sem, code, grade});
   document.getElementById('g-code').value = '';
   // Auto-add the course to portfolio if found
   const c = DATA.courses.find(x => x.code === code);
   if (c) selectedCodes.add(c.code);
   renderAll(); saveState();
 }
-function removeGrade(i){
-  const removed = gpaRecords[i];
-  gpaRecords.splice(i,1);
-  if (removed && removed.source === 'manual'){
-    const norm = normalizeCourseCode(removed.code);
-    const stillRecorded = gpaRecords.some(g => normalizeCourseCode(g.code) === norm);
-    if (!stillRecorded) selectedCodes.delete(norm);
-  }
-  renderAll(); saveState();
-}
+function removeGrade(i){ gpaRecords.splice(i,1); renderAll(); saveState(); }
 function clearGrades(){ if(confirm('Clear all grade records?')){ gpaRecords = []; renderAll(); saveState(); } }
 function loadDemoGrades(){
   gpaRecords = [
@@ -2417,10 +1622,9 @@ function loadDemoGrades(){
 }
 function renderGPAList(){
   const el = document.getElementById('gpa-list');
-  const displayRows = gpaEligibleRecords();
-  if (!displayRows.length){ el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:14px;font-size:12px">No grades yet. Type a course code above, pick a grade, and click + Add Grade.</div>'; return; }
+  if (!gpaRecords.length){ el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:14px;font-size:12px">No grades yet. Type a course code above, pick a grade, and click + Add Grade.</div>'; return; }
   // Sort by semester (chronological), then by code — keep original index for removal
-  const indexed = gpaRecords.map((g, i) => ({...g, _i: i})).filter(g => isGpaGrade(g.grade));
+  const indexed = gpaRecords.map((g, i) => ({...g, _i: i}));
   indexed.sort((a,b) => {
     const d = semSortValue(a.sem, a._i) - semSortValue(b.sem, b._i);
     return d || String(a.code).localeCompare(String(b.code));
@@ -2520,93 +1724,17 @@ function renderGPAChart(){
 }
 
 // ── Render all (lightweight — matrix renders lazily on filter / view change) ──
-function renderGPAChart(){
-  if (gpaChart){ gpaChart.destroy(); gpaChart = null; }
-  const ctx = document.getElementById('gpa-chart').getContext('2d');
-  const summaryCgpa = transcriptSummary.cgpa;
-  const summaryMgpa = transcriptSummary.mgpa;
-  const rows = gpaEligibleRecords().map((g, i) => ({
-    ...g,
-    sem: String(g.sem || '').trim().toUpperCase(),
-    credit: Number(g.credit || courseUnits(g.code) || 0) || 1,
-    __i: i
-  }));
-  if (!rows.length){
-    ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-    document.getElementById('gpa-stats').innerHTML =
-      `<b>CGPA</b>: <b style="color:var(--accent)">${summaryCgpa == null ? '—' : summaryCgpa.toFixed(3)}</b>` +
-      ` &nbsp;·&nbsp; <b>MGPA</b>: <b style="color:var(--accent)">${summaryMgpa == null ? '—' : summaryMgpa.toFixed(3)}</b>`;
-    return;
-  }
-  rows.sort((a,b) => semSortValue(a.sem, a.__i) - semSortValue(b.sem, b.__i) || a.__i - b.__i);
-  const sems = [...new Set(rows.map(g => g.sem))].sort((a,b) => semSortValue(a, 0) - semSortValue(b, 0));
-  const semIdx = {};
-  sems.forEach((s,i) => { semIdx[s] = i; });
-  const semGroups = {};
-  rows.forEach(g => { (semGroups[g.sem] = semGroups[g.sem] || []).push(g); });
-  const semGPA = sems.map((s,i) => {
-    const arr = semGroups[s] || [];
-    const points = arr.reduce((sum,g)=>sum + gradeToGPA(g.grade) * g.credit, 0);
-    const units = arr.reduce((sum,g)=>sum + g.credit, 0);
-    const termGpa = units ? points / units : null;
-    return {x:i, y:termGpa, gpa:termGpa == null ? '—' : termGpa.toFixed(3), units};
-  }).filter(x => x.y != null);
-  const cgpaLine = sems.map((s,i) => {
-    const cgpa = transcriptCgpaForSem(s);
-    return Number.isFinite(cgpa) ? {x:i, y:cgpa, gpa:cgpa.toFixed(3)} : null;
-  }).filter(Boolean);
-  const coursePoints = rows.map(g => ({x:semIdx[g.sem], y:gradeToGPA(g.grade), label:`${g.code}: ${g.grade} (${gradeToGPA(g.grade).toFixed(1)})`}));
-  const goal = Math.min(4.0, parseFloat(document.getElementById('goal-gpa').value) || 3.5);
-  const values = [...coursePoints.map(p => p.y), ...semGPA.map(p => p.y), ...cgpaLine.map(p => p.y), goal].filter(Number.isFinite);
-  const minY = Math.max(0, Math.floor((Math.min(...values) - 0.15) * 10) / 10);
-  const maxY = Math.min(4.05, Math.max(3.0, Math.ceil((Math.max(...values) + 0.15) * 10) / 10));
-  const latest = sems[sems.length - 1];
-  document.getElementById('gpa-stats').innerHTML =
-    `<b>CGPA</b>: <b style="color:var(--accent)">${summaryCgpa == null ? '—' : summaryCgpa.toFixed(3)}</b>` +
-    ` &nbsp;·&nbsp; <b>MGPA</b>: <b style="color:var(--accent)">${summaryMgpa == null ? '—' : summaryMgpa.toFixed(3)}</b>` +
-    ` &nbsp;·&nbsp; <b>Latest sem</b>: <b style="color:var(--accent)">${semDisplayLabel(latest)}</b>`;
-  gpaChart = new Chart(ctx, {
-    type:'line',
-    data:{labels:sems,datasets:[
-      {label:'Course grades', type:'scatter', data:coursePoints, backgroundColor:'#5eead4', borderColor:'#0f766e', pointRadius:5, pointHoverRadius:7, showLine:false, clip:false},
-      {label:'Term GPA', type:'line', data:semGPA, backgroundColor:'#f59e0b', borderColor:'#f59e0b', borderWidth:3, pointRadius:5, pointBackgroundColor:'#f59e0b', tension:.25, fill:false, clip:false},
-      {label:'CGPA', type:'line', data:cgpaLine, backgroundColor:'#7c3aed', borderColor:'#7c3aed', borderWidth:2.5, pointRadius:4, pointBackgroundColor:'#7c3aed', tension:.2, clip:false},
-      {label:`Goal CGPA (${goal.toFixed(2)})`, type:'line', data:sems.map((s,i)=>({x:i,y:goal})), backgroundColor:'#ef4444', borderColor:'#ef4444', borderWidth:2.5, pointRadius:0, borderDash:[8,4], clip:false}
-    ]},
-    options:{responsive:true, maintainAspectRatio:false,
-      layout:{padding:{top:18,right:12,bottom:4,left:8}},
-      scales:{
-        x:{type:'linear', min:-0.3, max:sems.length-0.7, grid:{color:'rgba(33,113,181,.10)', drawBorder:false}, ticks:{callback:(v)=>semDisplayLabel(sems[Math.round(v)]||''), stepSize:1, font:{size:12, weight:'500'}, color:'#1a1d2e'}, title:{display:true,text:'Semester',font:{size:12,weight:'500'},color:'#5a6076',padding:{top:10}}},
-        y:{min:minY, max:maxY, grid:{color:'rgba(33,113,181,.10)', drawBorder:false}, ticks:{callback:(v)=>Number(v) > 4 ? '' : Number(v).toFixed(1), padding:8, font:{size:12, weight:'500'}, color:'#1a1d2e'}, title:{display:true,text:'GPA',font:{size:12,weight:'500'},color:'#5a6076'}}
-      },
-      plugins:{legend:{position:'bottom', align:'center', labels:{font:{size:12, weight:'500'}, color:'#1a1d2e', padding:16, boxWidth:30, boxHeight:2, usePointStyle:true, pointStyle:'line', pointStyleWidth:34}},
-        tooltip:{callbacks:{title:(items)=>items.length ? semDisplayLabel(sems[Math.round(items[0].parsed.x)] || '') : '', label:(ctx)=>{ if (ctx.dataset.label === 'Course grades') return ctx.raw.label; if (ctx.dataset.label === 'Term GPA') return `Term GPA: ${ctx.raw.gpa} · Units: ${ctx.raw.units}`; if (ctx.dataset.label === 'CGPA') return `CGPA (transcript): ${ctx.raw.gpa}`; return ctx.dataset.label; }}}}
-    }
-  });
-}
-
-function clearGrades(){
-  if(confirm('Clear all grade records?')){
-    gpaRecords = [];
-    transcriptSummary = { cgpa:null, mgpa:null, totalUnits:null, termSummaries:{} };
-    renderAll(); saveState();
-  }
-}
-
 function renderAll(){
   renderCourseList();
   renderBasket();
-  renderStudyHeadway();
   renderCharts();
-  if (COMPETENCY_ENABLED){
-    updateAdvisor();
-    updateGenAdvisor();
-  }
+  updateAdvisor();
+  updateGenAdvisor();
   renderGPAList();
   renderGPAChart();
   refreshGPACourseSelect();
   // matrix is heavy (308 × ~99 cells) — defer it; only triggered by filter changes
-  if (COMPETENCY_ENABLED && !renderMatrixScheduled){
+  if (!renderMatrixScheduled){
     renderMatrixScheduled = true;
     requestAnimationFrame(() => { renderMatrix(); renderMatrixScheduled = false; });
   }
@@ -2616,7 +1744,7 @@ function renderAll(){
 function refreshGPACourseSelect(){
   const dl = document.getElementById('g-code-list'); if(!dl) return;
   // All course codes — datalist filters as user types
-  dl.innerHTML = DATA.courses.map(c => `<option value="${c.code}">${courseTitle(c).slice(0,50)}</option>`).join('');
+  dl.innerHTML = DATA.courses.map(c => `<option value="${c.code}">${c.title.slice(0,50)}</option>`).join('');
 }
 
 // ── Global error overlay (so JS errors are visible, not silent) ──
@@ -2678,16 +1806,16 @@ const I18N = {
   'en': {
     'nav.title':'Study Dashboard','nav.home':'Home','nav.guide':'Guide','nav.signout':'Sign out',
     'filter.schools':'🗂️ Course Category','filter.all':'All','filter.term':'Term:','filter.level':'Level:',
-    'filter.any':'Any','filter.fall':'Fall','filter.spring':'Spring','filter.summer':'Summer',
+    'filter.any':'Any','filter.fall':'Fall','filter.spring':'Spring',
     'card.portfolio':'🎒 Student Portfolio',
     'card.skill':'📊 Skill Ability Profile',
     'card.gpa':'📈 Grade Trajectory',
     'card.advisor':'🎯 Skill Driven Recommendation',
     'card.matrix':'🔍 Skill Matrix',
     'card.matrix.sub':'All courses by all skills — click any column header to sort',
-    'ps.courses':'📚 Courses','ps.credits':'⭐ Credits','ps.avg':'🎓 CGPA / MGPA','ps.top':'🏆 Top 3 Strengths',
+    'ps.courses':'📚 Courses','ps.credits':'⭐ Credits','ps.avg':'🎓 Avg GPA','ps.top':'🏆 Top 3 Strengths',
     'gpa.clear':'Clear','gpa.sub':'Track your letter grades, semester GPA, current CGPA, and goal GPA over time',
-    'gpa.add':'Add a grade','gpa.manualNote':'If a waived or approved course does not appear on the transcript, enter it manually with its semester and grade; it will be included in term GPA only.','gpa.recorded':'Recorded grades (Fall / Spring / Summer order)','gpa.addbtn':'＋ Add Grade',
+    'gpa.add':'Add a grade','gpa.recorded':'Recorded grades (chronological)','gpa.addbtn':'＋ Add Grade',
     'gpa.target':'🎯 Target CGPA','gpa.cgpa':'CGPA','gpa.lastsem':'Latest sem',
     'skill.major':'Major Skills','skill.gen':'General Skills','skill.major.dept':'Major dept:',
     'skill.major.sub':'9 specialized dimensions for the selected category · gray dot = your score · red mark = category average',
@@ -2697,16 +1825,16 @@ const I18N = {
   'zh-CN': {
     'nav.title':'学习仪表盘','nav.home':'首页','nav.guide':'指南','nav.signout':'登出',
     'filter.schools':'🗂️ 课程类别','filter.all':'全部','filter.term':'学期:','filter.level':'年级:',
-    'filter.any':'任意','filter.fall':'秋季','filter.spring':'春季','filter.summer':'夏季',
+    'filter.any':'任意','filter.fall':'秋季','filter.spring':'春季',
     'card.portfolio':'🎒 学生档案',
     'card.skill':'📊 技能能力剖面',
     'card.gpa':'📈 成绩轨迹',
     'card.advisor':'🎯 技能驱动推荐',
     'card.matrix':'🔍 技能矩阵',
     'card.matrix.sub':'所有课程 × 所有技能 — 点击任意列标题排序',
-    'ps.courses':'📚 课程数','ps.credits':'⭐ 学分','ps.avg':'🎓 CGPA / MGPA','ps.top':'🏆 三大优势',
+    'ps.courses':'📚 课程数','ps.credits':'⭐ 学分','ps.avg':'🎓 平均 GPA','ps.top':'🏆 三大优势',
     'gpa.clear':'清空','gpa.sub':'追踪字母成绩、学期 GPA、当前 CGPA 和目标 GPA',
-    'gpa.add':'添加成绩','gpa.manualNote':'如果有成绩单未显示但已获豁免或认可的课程，请手动输入课程、学期和成绩；系统只会计入学期 GPA。','gpa.recorded':'已记录成绩（秋 / 春 / 夏顺序）','gpa.addbtn':'＋ 添加',
+    'gpa.add':'添加成绩','gpa.recorded':'已记录成绩（按时间）','gpa.addbtn':'＋ 添加',
     'gpa.target':'🎯 目标 CGPA','gpa.cgpa':'CGPA','gpa.lastsem':'最近学期',
     'skill.major':'专业技能','skill.gen':'通用技能','skill.major.dept':'专业方向:',
     'skill.major.sub':'9 个选定类别的专业维度 · 灰点 = 你的得分 · 红线 = 类别均值',
@@ -2716,16 +1844,16 @@ const I18N = {
   'zh-TW': {
     'nav.title':'學習儀表板','nav.home':'首頁','nav.guide':'指南','nav.signout':'登出',
     'filter.schools':'🗂️ 課程類別','filter.all':'全部','filter.term':'學期:','filter.level':'年級:',
-    'filter.any':'任意','filter.fall':'秋季','filter.spring':'春季','filter.summer':'夏季',
+    'filter.any':'任意','filter.fall':'秋季','filter.spring':'春季',
     'card.portfolio':'🎒 學生檔案',
     'card.skill':'📊 技能能力剖面',
     'card.gpa':'📈 成績軌跡',
     'card.advisor':'🎯 技能驅動推薦',
     'card.matrix':'🔍 技能矩陣',
     'card.matrix.sub':'所有課程 × 所有技能 — 點擊任意列標題排序',
-    'ps.courses':'📚 課程數','ps.credits':'⭐ 學分','ps.avg':'🎓 CGPA / MGPA','ps.top':'🏆 三大優勢',
+    'ps.courses':'📚 課程數','ps.credits':'⭐ 學分','ps.avg':'🎓 平均 GPA','ps.top':'🏆 三大優勢',
     'gpa.clear':'清空','gpa.sub':'追蹤字母成績、學期 GPA、當前 CGPA 和目標 GPA',
-    'gpa.add':'新增成績','gpa.manualNote':'如果有成績單未顯示但已獲豁免或認可的課程，請手動輸入課程、學期和成績；系統只會計入學期 GPA。','gpa.recorded':'已記錄成績（秋 / 春 / 夏順序）','gpa.addbtn':'＋ 新增',
+    'gpa.add':'新增成績','gpa.recorded':'已記錄成績（按時間）','gpa.addbtn':'＋ 新增',
     'gpa.target':'🎯 目標 CGPA','gpa.cgpa':'CGPA','gpa.lastsem':'最近學期',
     'skill.major':'專業技能','skill.gen':'通用技能','skill.major.dept':'專業方向:',
     'skill.major.sub':'9 個所選類別的專業維度 · 灰點 = 你的得分 · 紅線 = 類別均值',
@@ -2741,7 +1869,6 @@ function applyI18n(lang){
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
   try { localStorage.setItem('cuhksz_lang', lang); } catch(e){}
   document.documentElement.lang = lang;
-  if (DATA.courses && DATA.courses.length) renderCourseList();
 }
 function initI18n(){
   let lang = 'en';
@@ -2754,35 +1881,18 @@ function initI18n(){
 }
 
 // ── Init ──
-async function bootstrap(){
-  try {
-    await loadCoursesFromApi();
-    ALL_DEPTS = Object.keys(DATA.departments).sort();
-    majorDept = ALL_DEPTS.find(d => d !== 'GE' && d !== 'PED') || ALL_DEPTS[0] || 'OTHER';
-    disableCompetencyViews();
-    loadState();
-    loadUser();
-    renderInitialChips();
-    renderSchoolChips();
-    fillStudyMajorSelect();
-    fillMajorDeptSelect();
-    if (COMPETENCY_ENABLED){
-      fillAdvisorSelects();
-      fillMatrixViewSelect();
-    }
-    bindBasketDrop();
-    applyChartDefaults();
-    wireButtons();
-    renderAll();
-    initI18n();
-    console.log('[dashboard api] Init OK — courses:', DATA.courses.length, '· depts:', ALL_DEPTS.length, '· selected:', selectedCodes.size);
-  } catch(err){
-    console.error(err);
-    const listEl = document.getElementById('course-list');
-    if (listEl) listEl.innerHTML = '<div style="text-align:center;color:#991b1b;background:#fee2e2;border-radius:8px;padding:14px;font-size:12px">Could not load courses from the API. Start FastAPI and import the SIS courses first.</div>';
-  }
-}
-bootstrap();
+loadState();
+loadUser();
+renderSchoolChips();
+fillMajorDeptSelect();
+fillAdvisorSelects();
+fillMatrixViewSelect();
+bindBasketDrop();
+applyChartDefaults();
+wireButtons();
+renderAll();
+initI18n();
+console.log('[dashboard v8] Init OK — courses:', DATA.courses.length, '· depts:', ALL_DEPTS.join(','), '· selected:', selectedCodes.size);
 </script>
 </body>
 </html>

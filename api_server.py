@@ -14,13 +14,7 @@ import json
 import os
 from datetime import date
 import re
-import zipfile
-import xml.etree.ElementTree as ET
 from urllib.parse import urlparse
-try:
-    from openpyxl import load_workbook
-except ImportError:  # Keep the API usable even before workbook support is installed.
-    load_workbook = None
 
 # ── Config ──────────────────────────────────────────────────────────
 def _build_db_config():
@@ -66,8 +60,6 @@ SHEET_TO_DEPT = {
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIST_DIR = os.path.join(BASE_DIR, "frontend", "dist")
-TITLE_WORKBOOK = os.path.join(BASE_DIR, "course_list_database", "Course_List_byInitial.xlsx")
-_TITLE_LOOKUP = None
 
 # ── App ─────────────────────────────────────────────────────────────
 app = FastAPI(title="CUHKSZ Course App")
@@ -112,33 +104,6 @@ def _to_year_label(year_enrolled):
     return f"Year {year}"
 
 _SEM_RE = re.compile(r"^(\d{4})-(\d{2})\s+(Term\s+\d+|Summer)$")
-ORG_ABBREVIATIONS = {
-    "\u7ecf\u7ba1\u5b66\u9662": "SME",
-    "\u7406\u5de5\u5b66\u9662": "SSE",
-    "\u97f3\u4e50\u5b66\u9662": "MUS",
-    "\u6570\u636e\u79d1\u5b66\u5b66\u9662": "SDS",
-    "\u533b\u5b66\u9662": "MED",
-    "\u4eba\u6587\u793e\u79d1\u5b66\u9662": "HSS",
-    "\u516c\u5171\u653f\u7b56\u5b66\u9662": "HSS",
-    "\u4eba\u5de5\u667a\u80fd\u5b66\u9662": "SAI",
-}
-ORG_BY_SUBJECT = {
-    "AIE": "SAI",
-    "AIR": "SDS", "CSC": "SDS", "DDA": "SDS", "MDS": "SDS", "MFE": "SDS", "RMS": "SDS", "STA": "SDS",
-    "ACT": "SME", "DMS": "SME", "ECO": "SME", "FEMBA": "SME", "FEX": "SME", "FIN": "SME",
-    "IBA": "SME", "IDE": "SME", "MBM": "SME", "MGT": "SME", "MIS": "SME", "MKT": "SME",
-    "BIM": "MED", "BIO": "MED", "BME": "MED", "MED": "MED", "PHM": "MED",
-    "MUS": "MUS",
-    "CHM": "SSE", "CIE": "SSE", "ECE": "SSE", "EIE": "SSE", "ENE": "SSE", "ERG": "SSE",
-    "FMA": "SSE", "FTE": "SSE", "ICS": "SSE", "MAT": "SSE", "MCE": "SSE", "MFM": "SSE",
-    "MSE": "SSE", "PHY": "SSE", "SSE": "SSE",
-    "CEC": "HSS", "CHI": "HSS", "CLC": "HSS", "CSS": "HSS", "DAI": "HSS", "ENB": "HSS",
-    "ENG": "HSS", "ENL": "HSS", "FRN": "HSS", "GEA": "HSS", "GEB": "HSS", "GEC": "HSS",
-    "GED": "HSS", "GEW": "HSS", "GFH": "HSS", "GFN": "HSS", "GGE": "HSS", "GLB": "HSS",
-    "HSS": "HSS", "ITE": "HSS", "JPN": "HSS", "KOR": "HSS", "LIT": "HSS", "PED": "HSS",
-    "PSY": "HSS", "PUB": "HSS", "SPN": "HSS", "SUD": "HSS", "TRA": "HSS", "URB": "HSS",
-    "URM": "HSS",
-}
 
 def _semester_sort_key(sem):
     text = (sem or "").strip()
@@ -164,228 +129,6 @@ def _first_present(row, keys):
             return row.get(k)
     return None
 
-def _display_course_code(value):
-    text = re.sub(r"\s+", "", str(value or "").strip().upper())
-    if not text:
-        return ""
-    return re.sub(r"^([A-Z]+)(\d)", r"\1 \2", text)
-
-def _code_key(value):
-    return re.sub(r"\s+", "", str(value or "").strip().upper())
-
-def _subject_code_from_course(course_code):
-    match = re.match(r"^([A-Z]+)", str(course_code or "").replace(" ", ""))
-    return match.group(1) if match else "OTHER"
-
-def _course_level(course_code, course_number=None):
-    number = str(course_number or "").strip()
-    if not number:
-        match = re.search(r"(\d{4})", str(course_code or ""))
-        number = match.group(1) if match else ""
-    if not number:
-        return None
-    try:
-        return int(number[:1]) * 1000 if len(number) >= 4 else None
-    except ValueError:
-        return None
-
-def _academic_org_abbrev(value, subject_code):
-    text = (value or "").strip()
-    subject = (subject_code or "").strip()
-    if text in {"SDS", "SME", "SSE", "MED", "MUS", "HSS", "SAI"}:
-        return text
-    if text in ORG_ABBREVIATIONS:
-        return ORG_ABBREVIATIONS[text]
-    if subject in ORG_BY_SUBJECT:
-        return ORG_BY_SUBJECT[subject]
-    return text
-
-def _xlsx_text(cell, shared_strings):
-    cell_type = cell.attrib.get("t")
-    if cell_type == "inlineStr":
-        inline = cell.find(".//{*}t")
-        return inline.text if inline is not None and inline.text is not None else ""
-    value = cell.find("{*}v")
-    if value is None or value.text is None:
-        return ""
-    if cell_type == "s":
-        try:
-            return shared_strings[int(value.text)]
-        except (ValueError, IndexError):
-            return ""
-    return value.text
-
-def _worksheet_rows_from_zip(zf, sheet_name, shared_strings):
-    root = ET.fromstring(zf.read(sheet_name))
-    for row in root.findall(".//{*}sheetData/{*}row"):
-        values = []
-        for cell in row.findall("{*}c"):
-            ref = cell.attrib.get("r", "")
-            match = re.match(r"([A-Z]+)", ref)
-            if match:
-                col = 0
-                for ch in match.group(1):
-                    col = col * 26 + ord(ch) - 64
-                while len(values) < col - 1:
-                    values.append("")
-            values.append(_xlsx_text(cell, shared_strings))
-        yield values
-
-def _build_title_lookup_from_xlsx_zip(path):
-    lookup = {}
-    with zipfile.ZipFile(path) as zf:
-        shared_strings = []
-        if "xl/sharedStrings.xml" in zf.namelist():
-            root = ET.fromstring(zf.read("xl/sharedStrings.xml"))
-            for item in root.findall("{*}si"):
-                shared_strings.append("".join(t.text or "" for t in item.findall(".//{*}t")))
-        sheet_names = sorted(
-            name for name in zf.namelist()
-            if re.match(r"xl/worksheets/sheet\d+\.xml$", name)
-        )
-        for sheet_name in sheet_names:
-            rows = _worksheet_rows_from_zip(zf, sheet_name, shared_strings)
-            try:
-                headers = [str(v or "").strip().lower() for v in next(rows)]
-            except StopIteration:
-                continue
-            if len(headers) < 4 or headers[:4] != ["subject", "course_number", "course_title", "course_title"]:
-                continue
-            for row in rows:
-                if len(row) < 4 or not row[0] or not row[1]:
-                    continue
-                subject_code = str(row[0]).split(" - ", 1)[0].strip()
-                key = _code_key(f"{subject_code}{row[1]}")
-                if not key:
-                    continue
-                lookup[key] = {"zh": str(row[2]).strip(), "en": str(row[3]).strip()}
-    return lookup
-
-def _build_title_lookup():
-    if not os.path.exists(TITLE_WORKBOOK):
-        return {}
-    if load_workbook is None:
-        return _build_title_lookup_from_xlsx_zip(TITLE_WORKBOOK)
-    lookup = {}
-    try:
-        wb = load_workbook(TITLE_WORKBOOK, read_only=True, data_only=True)
-        for ws in wb.worksheets:
-            rows = ws.iter_rows(values_only=True)
-            try:
-                headers = [str(v or "").strip().lower() for v in next(rows)]
-            except StopIteration:
-                continue
-            if len(headers) < 4:
-                continue
-            for row in rows:
-                if len(row) < 4 or not row[0] or not row[1]:
-                    continue
-                subject_code = str(row[0]).split(" - ", 1)[0].strip()
-                key = _code_key(f"{subject_code}{row[1]}")
-                if not key:
-                    continue
-                lookup[key] = {
-                    "zh": str(row[2]).strip() if row[2] else "",
-                    "en": str(row[3]).strip() if row[3] else "",
-                }
-        return lookup
-    except Exception:
-        return _build_title_lookup_from_xlsx_zip(TITLE_WORKBOOK)
-
-def _course_titles_from_lookup(raw_code, display_code):
-    global _TITLE_LOOKUP
-    if _TITLE_LOOKUP is None:
-        _TITLE_LOOKUP = _build_title_lookup()
-    return _TITLE_LOOKUP.get(_code_key(raw_code)) or _TITLE_LOOKUP.get(_code_key(display_code)) or {}
-
-def _parse_offered_terms(value):
-    text = str(value or "")
-    terms = []
-    if re.search(r"\bfall\b|term\s*1|semester\s*1", text, re.I):
-        terms.append("Fall")
-    if re.search(r"\bspring\b|term\s*2|semester\s*2", text, re.I):
-        terms.append("Spring")
-    if re.search(r"\bsummer\b", text, re.I):
-        terms.append("Summer")
-    return terms
-
-def _as_float(value):
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
-
-def _course_payload(row):
-    raw_code = row.get("course_code_raw") or row.get("course_code")
-    code = _display_course_code(row.get("course_code") or raw_code)
-    subject_code = row.get("subject_code") or _subject_code_from_course(code)
-    units = _as_float(row.get("units"))
-    title_lookup = _course_titles_from_lookup(raw_code, code)
-    title_zh_cn = (row.get("title_zh_cn") or title_lookup.get("zh") or row.get("title") or "").strip()
-    title_zh_tw = (row.get("title_zh_tw") or title_zh_cn).strip()
-    title_en = (row.get("title_en") or title_lookup.get("en") or "").strip()
-    return {
-        "code": code,
-        "raw_code": (raw_code or "").strip(),
-        "title": title_en or title_zh_cn,
-        "title_en": title_en,
-        "title_zh_cn": title_zh_cn,
-        "title_zh_tw": title_zh_tw,
-        "dept": subject_code,
-        "subject_code": subject_code,
-        "subject_name": (row.get("subject_name") or "").strip(),
-        "course_number": (row.get("course_number") or "").strip(),
-        "level": _course_level(code, row.get("course_number")),
-        "credit": units,
-        "units": units,
-        "status": (row.get("status") or "").strip(),
-        "has_outline": bool(row.get("has_outline")),
-        "grading_basis": (row.get("grading_basis") or "").strip(),
-        "component": (row.get("component") or "").strip(),
-        "campus": (row.get("campus") or "").strip(),
-        "school": (row.get("school") or "").strip(),
-        "academic_org": _academic_org_abbrev(row.get("academic_org"), subject_code),
-        "detail_description": (row.get("detail_description") or "").strip(),
-        "description": (row.get("description_english") or row.get("detail_description") or "").strip(),
-        "description_english": (row.get("description_english") or "").strip(),
-        "description_chinese": (row.get("description_chinese") or "").strip(),
-        "prerequisites": (row.get("prerequisites") or "").strip(),
-        "co_requisites": (row.get("co_requisites") or "").strip(),
-        "learning_outcomes": (row.get("learning_outcomes") or "").strip(),
-        "outcome": (row.get("learning_outcomes") or "").strip(),
-        "course_syllabus": (row.get("course_syllabus") or "").strip(),
-        "syllabus": (row.get("course_syllabus") or "").strip(),
-        "assessment_scheme": (row.get("assessment_scheme") or "").strip(),
-        "assessment": (row.get("assessment_scheme") or "").strip(),
-        "grade_type": (row.get("grade_type") or "").strip(),
-        "course_components": (row.get("course_components") or "").strip(),
-        "terms_status": (row.get("terms_status") or "").strip(),
-        "offered_terms": (row.get("offered_terms") or "").strip(),
-        "offered": _parse_offered_terms(row.get("offered_terms")),
-        "source_folder": (row.get("source_folder") or "").strip(),
-        "source_sheet": (row.get("source_sheet") or "").strip(),
-    }
-
-def _departments_from_courses(courses):
-    departments = {}
-    palette = [
-        "#2563eb", "#0891b2", "#16a34a", "#dc2626", "#9333ea",
-        "#ea580c", "#1e40af", "#475569", "#be185d", "#0f766e",
-    ]
-    for course in courses:
-        code = course["dept"] or "OTHER"
-        if code in departments:
-            continue
-        departments[code] = {
-            "name": course.get("subject_name") or code,
-            "name_en": course.get("subject_name") or code,
-            "color": palette[len(departments) % len(palette)],
-            "dimensions": [],
-        }
-    return departments
-
 # ── API routes (must be defined BEFORE static mount) ────────────────
 @app.get("/api/courses")
 def get_courses():
@@ -393,9 +136,11 @@ def get_courses():
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("""
-            SELECT *
+            SELECT sheet_name, course_code, title, lang,
+                   description, outcome, syllabus, assessment,
+                   reading_material, prerequisites, co_requisites
             FROM courses
-            ORDER BY subject_code, course_number, course_code
+            ORDER BY sheet_name, course_code
         """)
         rows = cursor.fetchall()
         cursor.close()
@@ -403,30 +148,34 @@ def get_courses():
     except mysql.connector.Error as e:
         raise HTTPException(status_code=500, detail=f"DB error: {e}")
 
-    courses = [_course_payload(r) for r in rows]
-    visible_courses = [c for c in courses if c.get("has_outline")]
-    return {
-        "courses": courses,
-        "departments": _departments_from_courses(visible_courses),
-        "general_dimensions": [],
-        "total": len(courses),
-        "visible_total": len(visible_courses),
-    }
+    courses = []
+    for r in rows:
+        sheet = (r["sheet_name"] or "").strip().upper()
+        dept  = SHEET_TO_DEPT.get(sheet, sheet or "OTHER")
+        courses.append({
+            "code":             (r["course_code"] or "").strip(),
+            "title":            (r["title"] or "").strip(),
+            "dept":             dept,
+            "sheet_name":       sheet,
+            "lang":             (r["lang"] or "").strip(),
+            "description":      (r["description"] or "").strip(),
+            "outcomes":         safe_json(r["outcome"]),
+            "syllabus":         (r["syllabus"] or "").strip(),
+            "assessment":       (r["assessment"] or "").strip(),
+            "reading_material": (r["reading_material"] or "").strip(),
+            "prerequisites":    (r["prerequisites"] or "").strip(),
+            "co_requisites":    (r["co_requisites"] or "").strip(),
+        })
+
+    return {"courses": courses, "total": len(courses)}
 
 
 @app.get("/api/courses/{course_code:path}")
 def get_course(course_code: str):
-    display_code = _display_course_code(course_code)
-    raw_code = display_code.replace(" ", "")
     try:
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("""
-            SELECT *
-            FROM courses
-            WHERE has_outline = 1 AND (course_code = %s OR course_code_raw = %s)
-            LIMIT 1
-        """, (display_code, raw_code))
+        cursor.execute("SELECT * FROM courses WHERE course_code = %s LIMIT 1", (course_code,))
         row = cursor.fetchone()
         cursor.close()
         conn.close()
@@ -436,7 +185,12 @@ def get_course(course_code: str):
     if not row:
         raise HTTPException(status_code=404, detail="Course not found")
 
-    return _course_payload(row)
+    sheet = (row["sheet_name"] or "").strip().upper()
+    return {
+        **{k: (v or "") for k, v in row.items()},
+        "dept":     SHEET_TO_DEPT.get(sheet, sheet),
+        "outcomes": safe_json(row["outcome"]),
+    }
 
 @app.get("/api/advising/dashboard")
 def get_advising_dashboard():
