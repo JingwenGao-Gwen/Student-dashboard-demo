@@ -52,9 +52,13 @@ The updated prototype includes nickname input, automatic avatar generation, dire
 
 These functions are prototypes rather than a production identity or social system. Official SSO integration, persistent account management, moderation, authorization, and security hardening remain outside the current midterm scope.
 
-### 5. GPA trajectory and skill-matrix presentation
+### 5. GPA trajectory and Study Headway prototype
 
 The GPA trajectory's vertical axis was changed from 0-4.0 to 2.0-4.0, reducing unnecessary blank space and making performance changes easier to interpret. The skill matrix was reorganized according to each course's major category and simplified to reduce irrelevant columns and visual clutter.
+
+The dashboard also includes an initial Study Headway panel. It reads the student's transcript and manually added exemption or approved courses, updates progress when the selected course list changes, and presents credit, UCore, and major progress in the student dashboard.
+
+Detailed major-progress analysis is currently implemented only for SDS programmes. The SDS prototype compares completed courses with saved study-scheme rules by admission year and major, including required courses, selective groups, elective areas, and completed/to-take marking. Other schools are intentionally deferred because they still need validated reference cases; keeping them out of the detailed rule engine controls validation effort and token/development cost for this stage.
 
 ## System Architecture
 
@@ -80,6 +84,9 @@ SIS course pages ---------> Course catalogue and outline crawler
                                |
                                v
                     Course-competency relevance results
+
+SDS study schemes --------> Graduation-rule notes
+UCore curriculum docs ----> Study Headway progress checks
 ```
 
 The deployed frontend is configured through `netlify.toml`. API requests are redirected to the separately hosted FastAPI service. The local FastAPI application also serves the built frontend and static dashboard pages.
@@ -109,6 +116,10 @@ Student-dashboard-demo/
 |   |-- login.html
 |   |-- guide.html
 |   |-- student_dashboard_index.html
+|   |-- course_detail.html
+|   |-- ge_area_b.html
+|   |-- ge_area_c.html
+|   |-- ge_area_d.html
 |   `-- data.js (legacy static catalogue, not used by the API-backed student interface)
 |-- assets/
 |-- dataset/
@@ -116,7 +127,13 @@ Student-dashboard-demo/
 |   |-- All_Course_Lists.xlsx
 |   |-- Course_List_byInitial.xlsx
 |   `-- sis_course_outlines_export.xlsx
+|-- graduation_rules/
+|   |-- SDS_major_rules_summary.md
+|   `-- SDS_major_rules_index.json
 |-- tools/
+|   |-- import_sis_courses.py
+|   |-- download_registry_study_schemes.py
+|   |-- extract_graduation_rules.py
 |   `-- sis-crawler/
 |       |-- sis_outline_crawler.mjs
 |       |-- export_sis_outlines_to_excel.py
@@ -269,6 +286,10 @@ SIS access must only be used by authorized users and in accordance with universi
 
 [`competency-analysis/a_to_z_course_competency_relevance.xlsx`](competency-analysis/a_to_z_course_competency_relevance.xlsx) contains detailed course-competency relevance records, course summaries, competency pools, excluded courses, and method notes.
 
+### SDS graduation-rule notes
+
+[`graduation_rules/SDS_major_rules_summary.md`](graduation_rules/SDS_major_rules_summary.md) and [`graduation_rules/SDS_major_rules_index.json`](graduation_rules/SDS_major_rules_index.json) store the current SDS-only major-progress rules extracted from the collected study-scheme materials. These files are used as the reference layer for the Study Headway prototype.
+
 ## Success Criteria and Current Evidence
 
 | Criterion | Midterm evidence |
@@ -279,6 +300,7 @@ SIS access must only be used by authorized users and in accordance with universi
 | Produce reusable course-competency results | 1,591 scored courses and 13,907 relevance records |
 | Improve course-planning interpretability | Course-detail navigation and competency sub-attribute display |
 | Improve visualization clarity | Revised 2.0-4.0 GPA scale and major-specific skill-matrix presentation |
+| Add initial graduation-progress support | Study Headway prototype with credit, UCore, and SDS major-progress checks |
 | Provide verifiable implementation evidence | Source code, datasets, workbooks, screenshots, and video demonstration |
 
 ## Demonstration Evidence
@@ -295,6 +317,7 @@ The package includes:
 - The current login interface is a prototype and is not official CUHK-Shenzhen SSO.
 - The expanded SIS course dataset is integrated through MySQL and FastAPI. The latest competency-analysis dataset is not yet displayed in the student-facing UI; the inherited skill matrix is disabled until a revised presentation is designed.
 - The revised GPA trajectory still uses a unified 2.0-4.0 scale. A future version should adjust the scale according to each student's GPA variance and distribution while retaining suitable visual margins.
+- Study Headway currently provides detailed major-progress analysis for SDS only. Non-SDS schools remain outside the detailed rule engine until additional programme-specific reference cases are collected and checked.
 - Competency relevance is an AI-assisted analytical result and requires argue access while user discover any mistake during usage.
 - SIS page changes may require maintenance of crawler selectors and navigation logic.
 
@@ -302,13 +325,13 @@ The package includes:
 
 The next development stage will:
 
-- integrate the expanded SIS course database and AI-generated competency results into the dashboard's built-in data source;
-- develop graduation-progress calculations and progress bars for overall, UCore, and major-specific requirements;
+- continue refining the API-backed SIS course database and connect the finalized competency-analysis results to the student-facing UI;
+- extend the SDS Study Headway prototype to additional schools after collecting validated reference cases for their study schemes;
 - build an initial career-oriented module that connects major-related employment skills with university courses and open online learning resources;
 - add AI-assisted summaries of course comments if development time permits; and
 - design a reusable AI skill that adapts the course-crawling workflow to other universities and data formats.
 
-Database integration and graduation-progress calculation are the first priorities. The team will then aim to complete an initial career-oriented recommendation function, while comment summarization will depend on the remaining development time.
+Database integration and the SDS Study Headway prototype are the first implemented priorities. The team will then aim to broaden graduation-progress coverage and complete an initial career-oriented recommendation function, while comment summarization will depend on the remaining development time.
 
 ## Team Contributions
 
