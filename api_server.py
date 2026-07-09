@@ -43,10 +43,9 @@ def _build_db_config():
             "password": os.getenv("DB_PASSWORD", ""),
         }
 
-    # For managed cloud MySQL, SSL is typically required.
-    ssl_disabled = os.getenv("DB_SSL_DISABLED", "false").lower() == "true"
-    if not ssl_disabled:
-        cfg["ssl_disabled"] = False
+    # Railway's public MySQL proxy may require SSL to be disabled, while other
+    # managed MySQL providers often require SSL. Keep this explicit.
+    cfg["ssl_disabled"] = os.getenv("DB_SSL_DISABLED", "false").lower() == "true"
     return cfg
 
 DB_CONFIG = _build_db_config()

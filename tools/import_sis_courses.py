@@ -211,8 +211,7 @@ def db_config() -> dict:
             "password": os.getenv("DB_PASSWORD", ""),
         }
 
-    if os.getenv("DB_SSL_DISABLED", "false").lower() != "true":
-        cfg["ssl_disabled"] = False
+    cfg["ssl_disabled"] = os.getenv("DB_SSL_DISABLED", "false").lower() == "true"
     return cfg
 
 
