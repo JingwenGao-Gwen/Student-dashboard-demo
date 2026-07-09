@@ -469,6 +469,8 @@
 
         <!-- Top filters -->
         <div class="filters" style="margin-bottom:20px;">
+          <button class="btn" onclick="document.getElementById('transcript-file-input').click()" style="margin-right:8px;">📥 Import Transcript</button>
+          <input type="file" id="transcript-file-input" style="display:none" accept=".pdf" multiple onchange="importTranscriptPDF(event)"/>
           <select id="sm-filter-risk" onchange="filterStudentList()">
             <option value="all">Risk Level: All</option>
             <option value="High">High</option>
@@ -511,6 +513,7 @@
               <table id="smTable" style="margin-bottom:0;">
                 <thead>
                   <tr style="background:#f8faff; border-bottom:1px solid #e5e7eb;">
+                    <th style="padding:9px 4px; font-size:12px; width:28px;"></th>
                     <th style="padding:9px 12px; font-size:12px;">Name</th>
                     <th style="padding:9px 8px;">
                       <select id="col-gpa" onchange="filterStudentList()" style="font-size:11px; padding:2px 5px; border-radius:6px; width:100%; border:1px solid #e5e7eb; background:white;">
@@ -594,7 +597,7 @@
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start;">
                 <div>
                   <h3 style="margin-bottom:8px;">GPA Trend</h3>
-                  <div style="border:1px solid #e5e7eb; border-radius:10px; background:#f9fafb; padding:10px; margin-bottom:16px;">
+                  <div id="smGpaTrendContainer" style="border:1px solid #e5e7eb; border-radius:10px; background:#f9fafb; padding:10px; margin-bottom:16px;">
                     <svg viewBox="0 0 400 110" width="100%" height="110">
                       <line x1="32" y1="10" x2="32" y2="88" stroke="#d1d5db" stroke-width="1.5"/>
                       <line x1="32" y1="88" x2="390" y2="88" stroke="#d1d5db" stroke-width="1.5"/>
@@ -875,14 +878,49 @@
       document.getElementById('weightWarning').style.display = 'none';
     }
 
+    function deleteStudentRow(name, tr) {
+      if (!confirm('Remove "' + name + '" from the advisee list? This cannot be undone.')) return;
+      if (tr) { tr.remove(); }
+      else {
+        var row = document.querySelector('#smTableBody tr[data-name="' + name + '"]');
+        if (row) row.remove();
+      }
+      delete importedStudents[name];
+      filterStudentList();
+    }
+
     function clearSmFilters() {
+      var imported = document.querySelectorAll('#smTableBody tr[data-source="imported"]');
+      var msg = 'Reset all filters?';
+      if (imported.length) msg += ' This will also remove ' + imported.length + ' imported student(s).';
+      if (!confirm(msg)) return;
+
       ['sm-filter-risk','sm-filter-year','sm-filter-major','col-gpa','col-credits','col-contact'].forEach(function(id) {
         var el = document.getElementById(id);
         if (el) el.value = 'all';
       });
       var s = document.getElementById('sm-search');
       if (s) s.value = '';
+      imported.forEach(function(r) {
+        var nm = r.getAttribute('data-name') || '';
+        delete importedStudents[nm];
+        r.remove();
+      });
       filterStudentList();
+    }
+
+    /* Attach delete buttons to all existing Advisee List rows on page load */
+    function attachDeleteButtons() {
+      var rows = document.querySelectorAll('#smTableBody tr');
+      rows.forEach(function(tr) {
+        if (tr.querySelector('.del-btn')) return; // already has delete button
+        var name = tr.getAttribute('data-name') || '';
+        var delTd = document.createElement('td');
+        delTd.style.cssText = 'padding:4px;width:28px;text-align:center;cursor:default;';
+        delTd.className = 'del-btn';
+        delTd.innerHTML = '<span onclick="event.stopPropagation();var tr=this.closest(\'tr\');deleteStudentRow(\'' + name.replace(/'/g, "\\'") + '\',tr)" title="Remove" style="cursor:pointer;color:#9ca3af;font-size:14px;">✕</span>';
+        tr.insertBefore(delTd, tr.firstChild);
+      });
     }
 
     function filterStudentList() {
@@ -946,6 +984,12 @@
       rows.forEach(function(r) {
         if ((r.getAttribute('data-name') || '') === name) r.style.background = '#eff6ff';
       });
+
+      /* Restore original static GPA Trend SVG */
+      var gpaContainer = document.getElementById('smGpaTrendContainer');
+      if (gpaContainer && window._originalGpaTrendSVG) {
+        gpaContainer.innerHTML = window._originalGpaTrendSVG;
+      }
 
       /* Fill profile */
       document.getElementById('smProfileTitle').textContent = 'Student Profile — ' + name;
@@ -1035,9 +1079,302 @@
       document.getElementById('contact-threshold-eg').textContent =
         'Currently: no contact in ' + days + '+ days';
     }
+
+    /* ── Transcript Import ── */
+    var importedStudents = {};
+
+    async function importTranscriptPDF(ev) {
+      var files = ev.target.files;
+      if (!files || !files.length) return;
+      if (!window.pdfjsLib) { alert('PDF engine is still loading. Please try again.'); ev.target.value = ''; return; }
+
+      var imported = 0, failed = 0;
+      for (var f = 0; f < files.length; f++) {
+        var file = files[f];
+        if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) continue;
+        try {
+          var buf = await file.arrayBuffer();
+          var pdf = await window.pdfjsLib.getDocument({ data: buf }).promise;
+          var fullText = '';
+          for (var p = 1; p <= Math.min(pdf.numPages, 20); p++) {
+            var page = await pdf.getPage(p);
+            var textContent = await page.getTextContent();
+            var rows = {};
+            textContent.items.forEach(function(it) {
+              var y = Math.round((it.transform && it.transform[5]) || 0);
+              if (!rows[y]) rows[y] = [];
+              rows[y].push({ x: (it.transform && it.transform[4]) || 0, str: String(it.str || ''), eol: !!it.hasEOL });
+            });
+            Object.keys(rows).map(Number).sort(function(a,b){ return b - a; }).forEach(function(y) {
+              var line = rows[y].sort(function(a,b){ return a.x - b.x; }).map(function(c){ return c.str + (c.eol ? '\n' : ' '); }).join('').replace(/[ \t]+/g,' ').trim();
+              if (line) fullText += line + '\n';
+            });
+          }
+
+          var parsed = parseTranscriptText(fullText);
+          if (!parsed.studentName) { failed++; continue; }
+
+          var name = parsed.studentName;
+          var gpa = parsed.summary.cumulativeGPA;
+          var credits = parsed.summary.totalUnitsPassed
+            ? Math.round(parsed.summary.totalUnitsPassed / 120 * 100)
+            : 0;
+
+          // Build ordered term array for GPA trend chart
+          var termEntries = [];
+          var termKeys = Object.keys(parsed.termSummaries).sort();
+          termKeys.forEach(function(tk) {
+            var ts = parsed.termSummaries[tk];
+            if (ts.termGPA != null) {
+              termEntries.push({ label: transcriptTermLabel(tk), gpa: ts.termGPA });
+            }
+          });
+
+          importedStudents[name] = {
+            name: name,
+            gpa: gpa != null ? gpa.toFixed(2) : '—',
+            credits: credits,
+            creditVal: (parsed.summary.totalUnitsPassed || 0) + '/120',
+            days: '—',
+            risk: '—',
+            year: parsed.admittedIn ? 'Admitted ' + parsed.admittedIn : '—',
+            major: parsed.major || '—',
+            termEntries: termEntries
+          };
+
+          addStudentRow(importedStudents[name]);
+          imported++;
+        } catch(err) {
+          failed++;
+        }
+      }
+      alert('Import complete: ' + imported + ' student(s) added' + (failed ? ', ' + failed + ' file(s) skipped.' : '.'));
+      ev.target.value = '';
+    }
+
+    function parseTranscriptText(text) {
+      var out = { studentName: null, studentId: null, major: null, admittedIn: null, termSummaries: {}, summary: { totalUnitsPassed: null, cumulativeGPA: null } };
+      if (!text) return out;
+
+      var cleaned = String(text).replace(/[   ]/g, ' ').replace(/\r/g, '');
+      var lines = cleaned.replace(/[ \t]{2,}/g, '\n').split('\n').map(function(l){ return l.replace(/[ \t]+/g,' ').trim(); }).filter(Boolean);
+      var flat = lines.join('\n');
+
+      function pluck(label) {
+        var m = flat.match(new RegExp('(?:^|\\n)\\s*' + label + '\\s*[:\\-]\\s*([^\\n]+)', 'i'));
+        return m ? m[1].trim() : null;
+      }
+
+      var nm = flat.match(/(?:^|\n)Name\s*:\s*([^\n]+?)(?:\n|Chinese Name|Student ID|$)/i);
+      if (nm) out.studentName = nm[1].trim().replace(/\s+/g, ' ');
+      out.major = pluck('Major\\s*\\/\\s*Programme') || pluck('Major');
+      out.admittedIn = pluck('Admitted in');
+
+      var termHeader = /^(\d{4})\s*[\-–—−]\s*(\d{2,4})\s+Term\s*([12])\s*$/i;
+      var currentTerm = '';
+      for (var i = 0; i < lines.length; i++) {
+        var th = lines[i].match(termHeader);
+        if (th) { currentTerm = th[1] + '-' + th[2].slice(-2) + ' Term ' + th[3]; continue; }
+        if (!currentTerm) continue;
+        var slot = out.termSummaries[currentTerm] || (out.termSummaries[currentTerm] = {});
+        var m = lines[i].match(/Units?\s*Passed\s*[:=\-]?\s*(\d+(?:\.\d+)?)/i);
+        if (m && slot.unitsPassed == null) slot.unitsPassed = Number(m[1]);
+        m = lines[i].match(/Cumulative\s*Units?\s*Passed\s*[:=\-]?\s*(\d+(?:\.\d+)?)/i);
+        if (m && slot.cumulativeUnits == null) slot.cumulativeUnits = Number(m[1]);
+        m = lines[i].match(/Term\s*G\.?\s*P\.?\s*A\.?\s*[:=\-]?\s*(\d+(?:\.\d+)?)/i);
+        if (m && slot.termGPA == null) slot.termGPA = Number(m[1]);
+        m = lines[i].match(/Cumulative\s*G\.?\s*P\.?\s*A\.?\s*[:=\-]?\s*(\d+(?:\.\d+)?)/i);
+        if (m && slot.cumulativeGPA == null) slot.cumulativeGPA = Number(m[1]);
+      }
+
+      // Extract from Summary section — the authoritative final Cumulative GPA and Total Units Passed
+      // The Summary block is typically at the end of the transcript in table format:
+      //   Total Units Passed  Cumulative GPA  Major GPA
+      //   CUHK(SZ)  30.0  3.775/4.000  3.786/4.000
+      var summaryIdx = flat.lastIndexOf('Summary');
+      var summaryBlock = summaryIdx > -1 ? flat.slice(summaryIdx) : flat.slice(-2000);
+
+      // Try CUHK(SZ) table row format first (most reliable)
+      var cuhkMatch = summaryBlock.match(/CUHK\s*\(\s*SZ\s*\)\s+([\d.]+)\s+([\d.]+)\s*\/?\s*4/i);
+      if (cuhkMatch) {
+        out.summary.totalUnitsPassed = Number(cuhkMatch[1]);
+        out.summary.cumulativeGPA = Number(cuhkMatch[2]);
+      }
+
+      // Fallback: key=value format
+      if (out.summary.totalUnitsPassed == null) {
+        var sm = summaryBlock.match(/Total\s*Units?\s*Passed\s*[:\-=]?\s*(\d+(?:\.\d+)?)/i);
+        if (sm) out.summary.totalUnitsPassed = Number(sm[1]);
+      }
+      if (out.summary.cumulativeGPA == null) {
+        var sm = summaryBlock.match(/Cumulative\s*G\.?\s*P\.?\s*A\.?\s*[:\-=]?\s*(\d+(?:\.\d+)?)/i);
+        if (sm) out.summary.cumulativeGPA = Number(sm[1]);
+      }
+
+      // Last resort: search entire text for table row
+      if (out.summary.totalUnitsPassed == null || out.summary.cumulativeGPA == null) {
+        var cuhkFull = flat.match(/CUHK\s*\(\s*SZ\s*\)\s+([\d.]+)\s+([\d.]+)\s*\/?\s*4/i);
+        if (cuhkFull) {
+          if (out.summary.totalUnitsPassed == null) out.summary.totalUnitsPassed = Number(cuhkFull[1]);
+          if (out.summary.cumulativeGPA == null) out.summary.cumulativeGPA = Number(cuhkFull[2]);
+        }
+      }
+
+      // Absolute last fallback: per-term cumulative values
+      if (out.summary.totalUnitsPassed == null || out.summary.cumulativeGPA == null) {
+        var terms = Object.keys(out.termSummaries).sort();
+        if (terms.length) {
+          if (out.summary.totalUnitsPassed == null) {
+            var last = out.termSummaries[terms[terms.length-1]];
+            if (last.cumulativeUnits != null) out.summary.totalUnitsPassed = last.cumulativeUnits;
+          }
+          if (out.summary.cumulativeGPA == null) {
+            for (var t = terms.length-1; t >= 0; t--) {
+              if (out.termSummaries[terms[t]].cumulativeGPA != null) {
+                out.summary.cumulativeGPA = out.termSummaries[terms[t]].cumulativeGPA;
+                break;
+              }
+            }
+          }
+        }
+      }
+      return out;
+    }
+
+    function addStudentRow(d) {
+      // Avoid duplicates
+      var existing = document.querySelector('#smTableBody tr[data-name="' + d.name + '"]');
+      if (existing) existing.remove();
+
+      var riskBg = '#dcfce7', riskColor = '#166534';
+      var credits = d.credits || 0;
+      var tbody = document.getElementById('smTableBody');
+      var tr = document.createElement('tr');
+      tr.setAttribute('data-name', d.name);
+      tr.setAttribute('data-risk', d.risk || '—');
+      tr.setAttribute('data-gpa', d.gpa || '0');
+      tr.setAttribute('data-credits', String(credits));
+      tr.setAttribute('data-days', '999');
+      tr.setAttribute('data-year', d.year || '—');
+      tr.setAttribute('data-major', d.major || '—');
+      tr.setAttribute('data-source', 'imported');
+      tr.className = 'sm-row';
+      tr.style.cursor = 'pointer';
+      tr.onclick = function() { openStudentProfileImported(d); };
+
+      tr.innerHTML =
+        '<td style="padding:4px;width:28px;text-align:center;cursor:default;" class="del-btn"><span onclick="event.stopPropagation();var tr=this.closest(\'tr\');deleteStudentRow(\'' + d.name.replace(/'/g, "\\'") + '\',tr)" title="Remove" style="cursor:pointer;color:#9ca3af;font-size:14px;">✕</span></td>' +
+        '<td style="font-weight:600; background:' + riskBg + '; color:' + riskColor + '; padding:10px 12px;">' + d.name + ' <span style="font-size:10px;color:#6b7280;">(imported)</span></td>' +
+        '<td style="font-size:13px;">' + (d.gpa || '—') + '</td>' +
+        '<td style="padding:8px 6px;">' +
+          '<div style="display:flex;align-items:center;gap:5px;">' +
+            '<div style="flex:1;height:6px;background:#e5e7eb;border-radius:4px;overflow:hidden;">' +
+              '<div style="width:' + Math.min(100, credits) + '%;height:100%;background:#1d4ed8;border-radius:4px;"></div>' +
+            '</div>' +
+            '<span style="font-size:11px;color:#374151;white-space:nowrap;">' + credits + '%</span>' +
+          '</div>' +
+        '</td>' +
+        '<td style="font-size:13px;">—</td>';
+
+      tbody.appendChild(tr);
+    }
+
+    /* Convert transcript term key (e.g. "2022-23 Term 1") to short label ("Sp22") */
+    function transcriptTermLabel(termKey) {
+      var m = termKey.match(/^(\d{4})-(\d{2})\s+Term\s+([12])/i);
+      if (!m) return termKey;
+      var year = String(parseInt(m[1], 10) % 100); // e.g. "2022" → "22"
+      var term = m[3] === '1' ? 'Sp' : 'Fa';
+      return term + year;
+    }
+
+    /* Build dynamic GPA trend SVG from term entries */
+    function buildGPATrendSVG(termEntries) {
+      var W = 400, H = 110, padL = 38, padR = 14, padT = 12, padB = 26;
+      var plotW = W - padL - padR, plotH = H - padT - padB;
+      var yMin = 2.0, yMax = 4.0;
+
+      // Determine y range from data
+      if (termEntries.length) {
+        var gpas = termEntries.map(function(e){ return e.gpa; });
+        var dataMin = Math.min.apply(null, gpas);
+        var dataMax = Math.max.apply(null, gpas);
+        yMin = Math.max(0, Math.floor((dataMin - 0.3) * 2) / 2);
+        yMax = Math.min(4.0, Math.ceil((dataMax + 0.3) * 2) / 2);
+        if (yMax - yMin < 0.6) { var mid = (yMin + yMax) / 2; yMin = mid - 0.5; yMax = mid + 0.5; }
+      }
+
+      function yPos(gpa) { return padT + plotH - ((gpa - yMin) / (yMax - yMin)) * plotH; }
+
+      var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="' + H + '">';
+
+      // Y axis + gridlines
+      for (var t = 0; t <= 4; t++) {
+        var val = yMin + (yMax - yMin) * t / 4;
+        var y = yPos(val);
+        svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - padR) + '" y2="' + y + '" stroke="#f3f4f6" stroke-width="1"/>';
+        svg += '<text x="' + (padL - 4) + '" y="' + (y + 3) + '" text-anchor="end" font-size="9" fill="#9ca3af">' + val.toFixed(1) + '</text>';
+      }
+      // Axes
+      svg += '<line x1="' + padL + '" y1="' + padT + '" x2="' + padL + '" y2="' + (padT + plotH) + '" stroke="#d1d5db" stroke-width="1.5"/>';
+      svg += '<line x1="' + padL + '" y1="' + (padT + plotH) + '" x2="' + (W - padR) + '" y2="' + (padT + plotH) + '" stroke="#d1d5db" stroke-width="1.5"/>';
+
+      if (termEntries.length) {
+        // Polyline points
+        var points = '';
+        var circles = '';
+        var labels = '';
+        var stepX = termEntries.length > 1 ? plotW / (termEntries.length - 1) : plotW / 2;
+        termEntries.forEach(function(e, i) {
+          var x = padL + (termEntries.length === 1 ? plotW / 2 : i * stepX);
+          var y = yPos(e.gpa);
+          points += (i ? ' ' : '') + x + ',' + y;
+          circles += '<circle cx="' + x + '" cy="' + y + '" r="5" fill="#3b82f6" style="cursor:pointer"><title>' + e.label + ': ' + e.gpa.toFixed(3) + '</title></circle>';
+          labels += '<text x="' + x + '" y="' + (H - padB + 12) + '" text-anchor="middle" font-size="9" fill="#9ca3af">' + e.label + '</text>';
+        });
+        svg += '<polyline points="' + points + '" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+        svg += circles + labels;
+      }
+
+      svg += '</svg>';
+      return svg;
+    }
+
+    function openStudentProfileImported(d) {
+      document.getElementById('smProfileTitle').textContent = 'Student Profile — ' + d.name + ' (Imported)';
+      document.getElementById('smProfileBadges').innerHTML =
+        '<span class="badge blue">' + (d.year || '—') + '</span>' +
+        '<span class="badge" style="background:#dbeafe;color:#1e40af;margin-left:6px;">' + (d.major || '—') + '</span>';
+
+      document.getElementById('smCreditPct').textContent = d.credits + '% (' + (d.creditVal || '') + ')';
+      document.getElementById('smCreditBar').style.width = Math.min(100, d.credits) + '%';
+
+      // Replace with dynamic GPA Trend chart
+      var gpaContainer = document.getElementById('smGpaTrendContainer');
+      if (gpaContainer) {
+        if (d.termEntries && d.termEntries.length) {
+          gpaContainer.innerHTML = buildGPATrendSVG(d.termEntries);
+        } else {
+          gpaContainer.innerHTML = '<div style="text-align:center;color:#9ca3af;padding:30px 0;font-size:13px;">No term GPA data available</div>';
+        }
+      }
+
+      document.getElementById('smMissingCourses').innerHTML = '<span style="font-size:13px;color:#6b7280;">Transcript imported — course details not available.</span>';
+      document.getElementById('smCommHistory').innerHTML = '<div style="font-size:13px;color:var(--text2);">Imported from PDF transcript. GPA: ' + (d.gpa || '—') + ' | Credits: ' + d.credits + '%</div>';
+      document.getElementById('smNotes').value = '';
+      document.getElementById('smEmailBtn').onclick = function() { openModal(d.name, 'transcript review'); };
+
+      document.getElementById('smProfileEmpty').style.display = 'none';
+      document.getElementById('smProfileContent').style.display = 'block';
+    }
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script type="module">
+    import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+    window.pdfjsLib = pdfjsLib;
+  </script>
   <script>
     function applyOverviewFilter() { /* Placeholder */ }
 
@@ -1159,7 +1496,12 @@
       });
     }
 
-    window.addEventListener('load', function() { drawBubble('major'); applyHighRiskThreshold(); });
+    window.addEventListener('load', function() {
+      drawBubble('major'); applyHighRiskThreshold(); attachDeleteButtons();
+      // Save original GPA Trend SVG for static student profiles
+      var gpaContainer = document.getElementById('smGpaTrendContainer');
+      if (gpaContainer) window._originalGpaTrendSVG = gpaContainer.innerHTML;
+    });
     window.addEventListener('resize', function() {
       var m = document.getElementById('bubbleByMajor');
       if (m) drawBubble(m.className.indexOf('secondary') === -1 ? 'major' : 'year');
