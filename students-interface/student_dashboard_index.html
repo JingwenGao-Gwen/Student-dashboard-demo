@@ -532,7 +532,9 @@ table.matrix tr:hover td{background:#f8f9ff}
 
 <script>
 // ── API-backed SIS course catalogue ──
-const API_BASE = window.location.protocol === 'file:' ? 'http://localhost:8080' : '';
+const API_BASE = window.location.protocol === 'file:'
+  ? 'http://localhost:8080'
+  : (window.location.hostname.endsWith('netlify.app') ? 'https://student-dashboard-demo.onrender.com' : '');
 const COMPETENCY_ENABLED = false;
 window.DATA = {departments:{}, general_dimensions:[], courses:[]};
 

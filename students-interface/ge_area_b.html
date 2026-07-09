@@ -59,7 +59,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <div class="grid" id="course-grid"></div>
 </main>
 <script>
-const API_BASE = window.location.protocol === 'file:' ? 'http://localhost:8080' : '';
+const API_BASE = window.location.protocol === 'file:'
+  ? 'http://localhost:8080'
+  : (window.location.hostname.endsWith('netlify.app') ? 'https://student-dashboard-demo.onrender.com' : '');
 const AREA = document.body.dataset.area;
 const AREA_META = {
   GEB:{en:['GE Area B Courses','Nature, Science and Technology. Choose any eligible course in this area to satisfy the GE Area B requirement.'], 'zh-CN':['GE B 范畴课程','自然、科学与科技。修读该范畴任意符合要求课程即可满足 GE Area B 要求。'], 'zh-TW':['GE B 範疇課程','自然、科學與科技。修讀該範疇任意符合要求課程即可滿足 GE Area B 要求。']},
