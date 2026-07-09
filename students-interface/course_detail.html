@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Course Detail</title>
-<script src="data.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -27,7 +26,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .user-pill{display:flex;align-items:center;gap:8px;color:#fff;font-size:12px;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:20px}
 .user-pill .ub{cursor:pointer;background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700}
 .user-pill .ub:hover{background:rgba(255,255,255,.35)}
-.container{max-width:900px;margin:32px auto;padding:0 24px}
+.container{max-width:1180px;margin:32px auto;padding:0 24px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 /* Header */
 .course-header{margin-bottom:24px}
@@ -42,6 +41,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .section{margin-top:28px}
 .section h2{font-size:15px;font-weight:800;margin-bottom:12px;color:var(--text);
   padding-bottom:8px;border-bottom:2px solid var(--accent);display:inline-block}
+.text-block{white-space:pre-wrap;color:#374151;font-size:14px;line-height:1.75}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.detail-grid div{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;min-width:0}
+.detail-grid span{display:block;color:var(--text3);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.detail-grid strong{display:block;color:var(--text);font-size:13px;font-weight:700;word-break:break-word}
+.data-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}
+.data-table th,.data-table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top}
+.data-table th{background:var(--bg);color:var(--text2);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.data-table tr:last-child td{border-bottom:none}
+.data-table td:last-child{font-weight:800;color:var(--accent);white-space:nowrap}
+.term-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:18px;align-items:start}
+.term-timeline{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:#fff;padding:14px}
+.term-track{display:grid;grid-auto-flow:column;grid-auto-columns:92px;gap:8px;min-height:112px;align-items:stretch}
+.term-node{border:1px solid var(--border);border-radius:10px;background:var(--bg);padding:8px 6px;text-align:center;color:var(--text3);font-size:11px;font-weight:800;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.term-node .year{font-size:10px;color:var(--text3)}
+.term-node .term{font-size:12px;color:var(--text2)}
+.term-node.on{background:#e8f1fb;border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 2px rgba(33,113,181,.12) inset}
+.term-node.on .term,.term-node.on .year{color:var(--accent)}
+.term-list{border:1px solid var(--border);border-radius:12px;background:#fff;max-height:220px;overflow-y:auto;padding:10px}
+.term-list-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:8px}
+.term-list-item{padding:7px 9px;border-radius:8px;background:var(--bg);font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px}
+.muted-note{color:var(--text3);font-size:12px;margin-top:8px}
 /* Outcome */
 .outcome-list{padding-left:20px;line-height:1.9;color:#374151}
 .outcome-list li{margin-bottom:4px;font-size:14px}
@@ -84,6 +105,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   .container{padding:0 12px;margin:16px auto}
   .card{padding:20px}
   .course-code{font-size:24px}
+  .detail-grid{grid-template-columns:1fr}
+  .term-layout{grid-template-columns:1fr}
   .score-lbl{width:140px;font-size:11px}
 }
 </style>
@@ -112,160 +135,140 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 </div>
 
 <script>
-// ── Helpers ──
-function isChinese(s){ return /[一-鿿]/.test(String(s||'')); }
-function dimName(d){ return d.name_en || (d.name && !isChinese(d.name) ? d.name : d.id); }
-function normDims(deptKey){
-  if (!DATA || !DATA.departments) return [];
-  const d = DATA.departments[deptKey]; if(!d) return [];
-  const dims = d.dimensions;
-  if (Array.isArray(dims)) return dims;
-  return Object.keys(dims).map(k => ({id:k, ...dims[k]}));
-}
-function normGenDims(){
-  if (!DATA || !DATA.general_dimensions) return [];
-  const g = DATA.general_dimensions;
-  if (Array.isArray(g)) return g;
-  return Object.keys(g).map(k => ({id:k, ...g[k]}));
-}
-
-function maturity(score){
-  if (score >= 75) return {label:'Mastery', bg:'var(--mt4-bg)', fg:'var(--mt4-fg)'};
-  if (score >= 50) return {label:'Proficiency', bg:'var(--mt3-bg)', fg:'var(--mt3-fg)'};
-  if (score >= 25) return {label:'Foundation', bg:'var(--mt2-bg)', fg:'var(--mt2-fg)'};
-  return {label:'Exposure', bg:'var(--mt1-bg)', fg:'var(--mt1-fg)'};
-}
-
-function scoreBarWidth(s){ return Math.max(0, Math.min(100, s || 0)) + '%'; }
-function scoreBarColor(s){
-  if (s >= 75) return 'var(--b4)';
-  if (s >= 50) return 'var(--b3)';
-  if (s >= 25) return 'var(--b2)';
-  return 'var(--b1)';
-}
-
-// ── Parse URL ──
+const API_BASE = window.location.protocol === 'file:' ? 'http://localhost:8080' : '';
 const params = new URLSearchParams(window.location.search);
 const code = params.get('code') || '';
-
-// ── Lookup ──
-let course = null;
-if (code && window.DATA && DATA.courses){
-  course = DATA.courses.find(c => c.code === code);
-}
-
 const contentEl = document.getElementById('content');
-document.title = (course ? course.code + ' — ' + course.title : 'Course Not Found') + ' · Detail';
+const codeKey = value => String(value || '').replace(/\s+/g, '').toUpperCase();
+const I18N = {
+  en: {pageTitle:'Course Detail', back:'Back to Course Browser', loading:'Loading course...', notFound:'Course Not Found', missing:'No course matched this code.', loadError:'Could not load this course from the API.', subject:'Subject', units:'Units', level:'Level', outline:'Outline', outlineOk:'SIS outline available', info:'Course Information', academicOrg:'Academic Org', gradeType:'Grade Type', description:'Description', prerequisites:'Prerequisites', coReq:'Co-requisites', outcomes:'Learning Outcomes', syllabus:'Course Syllabus', assessment:'Assessment Scheme', components:'Course Components', terms:'Offered Terms', item:'Item', value:'Value', component:'Component', hours:'Hours', timeline:'Timeline', offeredList:'All Offered Terms', note:'Highlighted nodes show terms when this course was offered.', term1:'Term 1', term2:'Term 2', summer:'Summer'},
+  'zh-CN': {pageTitle:'课程详细信息', back:'返回 浏览课程目录', loading:'正在载入课程...', notFound:'未找到课程', missing:'没有匹配该代码的课程。', loadError:'无法从 API 载入课程。', subject:'科目', units:'学分', level:'级别', outline:'大纲', outlineOk:'已有 SIS 课程大纲', info:'课程信息', academicOrg:'Academic Org', gradeType:'成绩类型', description:'课程描述', prerequisites:'先修要求', coReq:'并修要求', outcomes:'学习成果', syllabus:'课程大纲', assessment:'考核方案', components:'课程组件', terms:'开课学期', item:'项目', value:'数值', component:'组件', hours:'学时', timeline:'时间轴', offeredList:'全部开课记录', note:'高亮节点表示该课程曾在对应学期开设。', term1:'Term 1', term2:'Term 2', summer:'Summer'},
+  'zh-TW': {pageTitle:'課程詳細資訊', back:'返回 瀏覽課程目錄', loading:'正在載入課程...', notFound:'未找到課程', missing:'沒有匹配該代碼的課程。', loadError:'無法從 API 載入課程。', subject:'科目', units:'學分', level:'級別', outline:'大綱', outlineOk:'已有 SIS 課程大綱', info:'課程資訊', academicOrg:'Academic Org', gradeType:'成績類型', description:'課程描述', prerequisites:'先修要求', coReq:'並修要求', outcomes:'學習成果', syllabus:'課程大綱', assessment:'考核方案', components:'課程組件', terms:'開課學期', item:'項目', value:'數值', component:'組件', hours:'學時', timeline:'時間軸', offeredList:'全部開課記錄', note:'高亮節點表示該課程曾在對應學期開設。', term1:'Term 1', term2:'Term 2', summer:'Summer'}
+};
+let LANG = 'en';
+try { LANG = localStorage.getItem('cuhksz_lang') || 'en'; } catch(e){}
+if (!I18N[LANG]) LANG = 'en';
+document.documentElement.lang = LANG;
 
-if (!course){
-  contentEl.innerHTML = `
-    <div class="not-found">
-      <div class="icon">📭</div>
-      <h2>Course Not Found</h2>
-      <p style="margin-top:8px;color:var(--text2)">No course matched code "<strong>${code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</strong>".</p>
-      <a class="back-link" href="student_dashboard_index.html">← Back to Dashboard</a>
-    </div>`;
-} else {
-  // ── Build page ──
-  const deptInfo = (DATA.departments && DATA.departments[course.dept]) || {};
-  const deptName = deptInfo.name_en || deptInfo.name || course.dept;
-  const deptColor = deptInfo.color || '#2171b5';
-  const offered = (course.offered && course.offered.length) ? course.offered.join(' / ') : 'Any term';
-  const level = course.level || (parseInt((course.code.match(/\d+/)||[0])[0]/1000)*1000) || '—';
-
-  // Learning outcomes
-  let outcomeHtml = '';
-  if (course.outcome){
-    const lines = course.outcome.split('\n').filter(l => l.replace(/[•\-\s\t]/g,'').length > 10);
-    outcomeHtml = `
-      <div class="section">
-        <h2>📋 Learning Outcomes</h2>
-        <ul class="outcome-list">
-          ${lines.map(l => '<li>' + l.replace(/^[•\-\s]+/,'').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</li>').join('')}
-        </ul>
-      </div>`;
-  }
-
-  // Major scores
-  const majorDims = normDims(course.dept);
-  let majorScoresHtml = '';
-  if (majorDims.length && course.major_scores){
-    const items = majorDims.map(d => {
-      const s = (course.major_scores && course.major_scores[d.id]) || 0;
-      const m = maturity(s);
-      return {d, s, m};
-    }).sort((a,b) => b.s - a.s);
-    majorScoresHtml = `
-      <div class="section">
-        <h2>🎯 Major Skills <span style="font-size:12px;color:var(--text3);font-weight:500">(${course.dept} — ${deptName})</span></h2>
-        ${items.map(x => `
-          <div class="score-row">
-            <span class="score-lbl"><span class="score-id">${x.d.id}</span> ${dimName(x.d)}</span>
-            <div class="score-bar-bg">
-              <div class="score-bar-fill" style="width:${scoreBarWidth(x.s)};background:${scoreBarColor(x.s)}"></div>
-            </div>
-            <span class="score-val">${x.s}</span>
-            <span class="maturity-tag" style="background:${x.m.bg};color:${x.m.fg}">${x.m.label}</span>
-          </div>
-        `).join('')}
-      </div>`;
-  }
-
-  // General scores
-  const genDims = normGenDims();
-  let genScoresHtml = '';
-  if (genDims.length && course.gen_scores){
-    const items = genDims.map(d => {
-      const s = (course.gen_scores && course.gen_scores[d.id]) || 0;
-      const m = maturity(s);
-      return {d, s, m};
-    }).sort((a,b) => b.s - a.s);
-    genScoresHtml = `
-      <div class="section">
-        <h2>🌐 General Skills</h2>
-        ${items.map(x => `
-          <div class="score-row">
-            <span class="score-lbl"><span class="score-id">${x.d.id}</span> ${dimName(x.d)}</span>
-            <div class="score-bar-bg">
-              <div class="score-bar-fill" style="width:${scoreBarWidth(x.s)};background:${scoreBarColor(x.s)}"></div>
-            </div>
-            <span class="score-val">${x.s}</span>
-            <span class="maturity-tag" style="background:${x.m.bg};color:${x.m.fg}">${x.m.label}</span>
-          </div>
-        `).join('')}
-      </div>`;
-  }
-
-  contentEl.innerHTML = `
-    <div class="course-header">
-      <div class="course-code">${course.code}</div>
-      <div class="course-title">${course.title}</div>
-      <div class="meta-row">
-        <span class="meta-tag"><span class="dot" style="background:${deptColor}"></span> ${course.dept} — ${deptName}</span>
-        <span class="meta-tag">⭐ ${course.credit || 3} Credits</span>
-        <span class="meta-tag">📊 Level ${level}</span>
-        <span class="meta-tag">📅 ${offered}</span>
-      </div>
-    </div>
-    ${outcomeHtml}
-    ${majorScoresHtml}
-    ${genScoresHtml}
-    <div style="margin-top:32px;text-align:center">
-      <a class="back-link" href="student_dashboard_index.html">← Back to Dashboard</a>
-    </div>
-  `;
-
-  // Animate score bars
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.querySelectorAll('.score-bar-fill').forEach(el => {
-        el.style.width = el.style.width; // trigger repaint
-      });
-    });
+function esc(s){
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function t(key){ return I18N[LANG][key] || I18N.en[key] || key; }
+function valueOrDash(v){ return v == null || String(v).trim() === '' ? '-' : esc(v); }
+function meta(label, value){
+  if (value == null || String(value).trim() === '') return '';
+  return `<span class="meta-tag"><strong>${esc(label)}</strong> ${esc(value)}</span>`;
+}
+function localText(enValue, zhValue){ return LANG === 'en' ? (enValue || zhValue || '') : (zhValue || enValue || ''); }
+function courseTitle(course){
+  if (LANG === 'zh-CN') return course.title_zh_cn || course.title_zh_tw || course.title_en || course.title || course.code;
+  if (LANG === 'zh-TW') return course.title_zh_tw || course.title_zh_cn || course.title_en || course.title || course.code;
+  return course.title_en || course.code;
+}
+const ORG_BY_SUBJECT = {
+  AIE:'SAI',
+  AIR:'SDS', CSC:'SDS', DDA:'SDS', MDS:'SDS', MFE:'SDS', RMS:'SDS', STA:'SDS',
+  ACT:'SME', DMS:'SME', ECO:'SME', FEMBA:'SME', FEX:'SME', FIN:'SME', IBA:'SME', IDE:'SME', MBM:'SME', MGT:'SME', MIS:'SME', MKT:'SME',
+  BIM:'MED', BIO:'MED', BME:'MED', MED:'MED', PHM:'MED',
+  MUS:'MUS',
+  CHM:'SSE', CIE:'SSE', ECE:'SSE', EIE:'SSE', ENE:'SSE', ERG:'SSE', FMA:'SSE', FTE:'SSE', ICS:'SSE', MAT:'SSE', MCE:'SSE', MFM:'SSE', MSE:'SSE', PHY:'SSE', SSE:'SSE',
+  CEC:'HSS', CHI:'HSS', CLC:'HSS', CSS:'HSS', DAI:'HSS', ENB:'HSS', ENG:'HSS', ENL:'HSS', FRN:'HSS', GEA:'HSS', GEB:'HSS', GEC:'HSS', GED:'HSS', GEW:'HSS', GFH:'HSS', GFN:'HSS', GGE:'HSS', GLB:'HSS', HSS:'HSS', ITE:'HSS', JPN:'HSS', KOR:'HSS', LIT:'HSS', PED:'HSS', PSY:'HSS', PUB:'HSS', SPN:'HSS', SUD:'HSS', TRA:'HSS', URB:'HSS', URM:'HSS'
+};
+function academicOrg(course){
+  const text = String(course.academic_org || '').trim();
+  if (/^(SDS|SME|SSE|MED|MUS|HSS|SAI)$/.test(text)) return text;
+  return ORG_BY_SUBJECT[course.subject_code || course.dept] || '';
+}
+async function hydrateCourseTitle(course){
+  if (course.title_en && course.title_en !== course.code && codeKey(course.title_en) !== codeKey(course.code)) return course;
+  try {
+    const res = await fetch(API_BASE + '/api/courses', {cache:'no-store'});
+    if (!res.ok) return course;
+    const payload = await res.json();
+    const found = (payload.courses || []).find(c => codeKey(c.code) === codeKey(course.code) || codeKey(c.raw_code) === codeKey(course.code));
+    if (found && found.title_en && codeKey(found.title_en) !== codeKey(found.code)){
+      course.title_en = found.title_en;
+      course.title_zh_cn = course.title_zh_cn || found.title_zh_cn;
+      course.title_zh_tw = course.title_zh_tw || found.title_zh_tw;
+    }
+  } catch(err){}
+  return course;
+}
+function textSection(title, value){
+  if (value == null || String(value).trim() === '') return '';
+  return `<div class="section"><h2>${esc(title)}</h2><div class="text-block">${esc(value)}</div></div>`;
+}
+function parseTableRows(value){
+  return String(value || '').split(/\r?\n/).map(line => line.trim()).filter(Boolean).map(line => {
+    const parts = line.includes('|') ? line.split('|') : line.split(/\t+/);
+    return parts.map(x => x.trim()).filter(Boolean);
+  }).filter(parts => parts.length);
+}
+function tableSection(title, value, firstHeader, secondHeader){
+  const rows = parseTableRows(value);
+  if (!rows.length) return '';
+  return `<div class="section"><h2>${esc(title)}</h2><table class="data-table"><thead><tr><th>${esc(firstHeader)}</th><th>${esc(secondHeader)}</th></tr></thead><tbody>${rows.map(parts => `<tr><td>${esc(parts[0] || '')}</td><td>${esc(parts.slice(1).join(' | ') || '-')}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function parseOfferedTerms(value){
+  return String(value || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean).map(text => {
+    const m = text.match(/(\d{4})-(\d{2})\s+(Term\s+1|Term\s+2|Summer)/i);
+    if (!m) return {text, key:text};
+    const year = `${m[1]}-${m[2]}`;
+    const term = m[3].replace(/\s+/g, ' ');
+    return {text, year, term, key:`${year} ${term}`};
   });
 }
-</script>
-<script>
+function buildTimelineTerms(offered){
+  const years = offered.map(x => x.year).filter(Boolean);
+  let lastStart = 2025;
+  years.forEach(y => { const n = Number(y.slice(0,4)); if (Number.isFinite(n) && n > lastStart) lastStart = n; });
+  const all = [];
+  for (let start = 2014; start <= lastStart; start++){
+    const year = `${start}-${String((start + 1) % 100).padStart(2,'0')}`;
+    ['Term 1','Term 2','Summer'].forEach(term => all.push({year, term, key:`${year} ${term}`}));
+  }
+  return all;
+}
+function termLabel(term){ return term === 'Term 1' ? t('term1') : (term === 'Term 2' ? t('term2') : t('summer')); }
+function termsSection(course){
+  const offered = parseOfferedTerms(course.offered_terms);
+  if (!offered.length) return '';
+  const offeredSet = new Set(offered.map(x => x.key));
+  const timeline = buildTimelineTerms(offered);
+  return `<div class="section"><h2>${esc(t('terms'))}</h2><div class="term-layout"><div><div class="term-timeline" aria-label="${esc(t('timeline'))}"><div class="term-track">${timeline.map(x => `<div class="term-node ${offeredSet.has(x.key) ? 'on' : ''}"><span class="year">${esc(x.year)}</span><span class="term">${esc(termLabel(x.term))}</span></div>`).join('')}</div></div><div class="muted-note">${esc(t('note'))}</div></div><div class="term-list"><div class="term-list-title">${esc(t('offeredList'))}</div>${offered.map(x => `<div class="term-list-item">${esc(x.text)}</div>`).join('')}</div></div></div>`;
+}
+function statusText(course){ return course.has_outline ? t('outlineOk') : ''; }
+function applyChromeText(){
+  document.querySelector('.logo').textContent = t('pageTitle');
+  document.querySelector('.topnav a').textContent = t('back');
+}
+function renderNotFound(message){
+  contentEl.innerHTML = `<div class="not-found"><div class="icon">!</div><h2>${esc(t('notFound'))}</h2><p style="margin-top:8px;color:var(--text2)">${esc(message || t('missing'))}</p><a class="back-link" href="student_dashboard_index.html">${esc(t('back'))}</a></div>`;
+}
+function renderCourse(course){
+  const units = course.units || course.credit || '-';
+  const title = courseTitle(course);
+  const description = localText(course.description_english || course.description || course.detail_description, course.description_chinese);
+  document.title = `${course.code} - ${title || t('pageTitle')}`;
+  applyChromeText();
+  contentEl.innerHTML = `<div class="course-header"><div class="course-code">${esc(course.code)}</div><div class="course-title">${esc(title || '')}</div><div class="meta-row">${meta(t('subject'), course.subject_code || course.dept)}${meta(t('units'), units)}${meta(t('level'), course.level)}${statusText(course) ? meta(t('outline'), statusText(course)) : ''}</div></div><div class="section"><h2>${esc(t('info'))}</h2><div class="detail-grid"><div><span>${esc(t('academicOrg'))}</span><strong>${valueOrDash(academicOrg(course))}</strong></div><div><span>${esc(t('gradeType'))}</span><strong>${valueOrDash(course.grade_type)}</strong></div></div></div>${textSection(t('description'), description)}${textSection(t('prerequisites'), course.prerequisites)}${textSection(t('coReq'), course.co_requisites)}${textSection(t('outcomes'), course.learning_outcomes || course.outcome)}${textSection(t('syllabus'), course.course_syllabus || course.syllabus)}${tableSection(t('assessment'), course.assessment_scheme || course.assessment, t('item'), t('value'))}${tableSection(t('components'), course.course_components, t('component'), t('hours'))}${termsSection(course)}<div style="margin-top:32px;text-align:center"><a class="back-link" href="student_dashboard_index.html">${esc(t('back'))}</a></div>`;
+}
+async function loadCourse(){
+  applyChromeText();
+  if (!code){ renderNotFound(); return; }
+  contentEl.innerHTML = `<div class="not-found"><div class="icon">...</div><h2>${esc(t('loading'))}</h2></div>`;
+  try {
+    const res = await fetch(API_BASE + '/api/courses/' + encodeURIComponent(code), {cache:'no-store'});
+    if (res.status === 404){ renderNotFound(); return; }
+    if (!res.ok) throw new Error('API error ' + res.status);
+    renderCourse(await hydrateCourseTitle(await res.json()));
+  } catch(err){
+    console.error(err);
+    renderNotFound(t('loadError'));
+  }
+}
+loadCourse();
+</script><script>
 // ── Comments ──
 var STORAGE_KEY = 'course_comments_' + code.replace(/\s+/g, '_');
 function getCurrentUser(){

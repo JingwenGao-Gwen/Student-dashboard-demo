@@ -40,11 +40,11 @@ The skill, scripts, evidence files, study-scheme sources, and final workbooks ar
 
 ### 3. Course navigation and detail information
 
-The Available Course panel was improved so that course IDs link directly to their corresponding detail pages. These pages display course introductions together with major-skill and general-skill sub-attribute values.
+The Available Course panel loads course records from the FastAPI `/api/courses` endpoint. Course IDs link directly to detail pages that display SIS catalogue and outline fields, including descriptions, prerequisites, learning outcomes, syllabus, assessment information, school, academic organization, grading basis, offered terms, and outline availability.
 
-This design makes recommendations easier to interpret: students can review not only which course is suggested, but also what the course covers and why it may contribute to a competency area.
+This design keeps the student-facing course information aligned with the expanded SIS workbook instead of the inherited static `data.js` catalogue.
 
-The current detail pages still use the structured `data.js` database inherited from the predecessor dashboard. The newly collected SIS course outlines and competency-analysis results have not yet been integrated into the student-facing interface. Updating the data-loading interface and field mappings is therefore a priority for the next stage.
+The previous skill matrix and skill-driven recommendation UI are currently disabled because their inherited score model is not aligned with the latest competency-analysis workbook. The competency display will be redesigned after the new A-Z competency result format is finalized.
 
 ### 4. Dashboard interaction and user experience
 
@@ -109,7 +109,7 @@ Student-dashboard-demo/
 |   |-- login.html
 |   |-- guide.html
 |   |-- student_dashboard_index.html
-|   `-- data.js
+|   `-- data.js (legacy static catalogue, not used by the API-backed student interface)
 |-- assets/
 |-- dataset/
 |-- course_list_database/
@@ -167,15 +167,25 @@ npm install
 Install the backend dependencies:
 
 ```bash
-pip install fastapi "uvicorn[standard]" mysql-connector-python
+pip install fastapi "uvicorn[standard]" mysql-connector-python openpyxl
 ```
 
 Create the local database and import the provided schema and demonstration data:
 
 ```bash
 mysql -u root -p -e "CREATE DATABASE course_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql -u root -p course_db < course_db_api_tables.sql
+cmd /c "mysql -u root -p course_db < course_db_api_tables.sql"
 ```
+
+Import the expanded SIS course catalogue and outline workbook into the `courses` table. By default, this imports the `All Courses` sheet so transcript matching can recognize ghost/missing-outline courses, while the student-facing browser still hides courses without saved outlines:
+
+```bash
+python tools/import_sis_courses.py --workbook course_list_database/sis_course_outlines_export.xlsx
+```
+
+During import, `tools/import_sis_courses.py` also reads `course_list_database/Course_List_byInitial.xlsx` to fill `title_en`, `title_zh_cn`, and `title_zh_tw` for language-aware course display.
+
+The student-facing course browser reads courses from the FastAPI `/api/courses` endpoints. It no longer uses `students-interface/data.js` as a course source. Courses with `has_outline = 0` remain available for transcript matching but are not shown in the left course-search panel or detail pages.
 
 Configure the database connection through environment variables:
 
@@ -247,8 +257,8 @@ SIS access must only be used by authorized users and in accordance with universi
 
 [`course_list_database/sis_course_outlines_export.xlsx`](course_list_database/sis_course_outlines_export.xlsx) contains:
 
-- `All Courses`: all 3,358 collected records;
-- `With Outline`: 1,727 courses with available outline information; and
+- `All Courses`: all 3,358 collected records and the default import source;
+- `With Outline`: courses with available outline information, shown in the student-facing course catalogue; and
 - `Missing Outline`: 1,631 courses without complete outline information.
 
 ### Major competency workbook
@@ -283,7 +293,7 @@ The package includes:
 ## Known Limitations and Risks
 
 - The current login interface is a prototype and is not official CUHK-Shenzhen SSO.
-- The expanded SIS and competency-analysis datasets have not yet been integrated into the student-facing interface, which still relies on the inherited `data.js` database.
+- The expanded SIS course dataset is integrated through MySQL and FastAPI. The latest competency-analysis dataset is not yet displayed in the student-facing UI; the inherited skill matrix is disabled until a revised presentation is designed.
 - The revised GPA trajectory still uses a unified 2.0-4.0 scale. A future version should adjust the scale according to each student's GPA variance and distribution while retaining suitable visual margins.
 - Competency relevance is an AI-assisted analytical result and requires argue access while user discover any mistake during usage.
 - SIS page changes may require maintenance of crawler selectors and navigation logic.
