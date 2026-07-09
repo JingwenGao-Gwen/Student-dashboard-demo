@@ -32,7 +32,7 @@ status = 200
 
 [[redirects]]
   from = "/api/*"
-  to = "https://dashboard-ad9s.onrender.com/api/:splat"
+  to = "https://student-dashboard-demo.onrender.com/api/:splat"
   status = 200
   force = true
 
