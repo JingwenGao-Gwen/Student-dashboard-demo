@@ -6,6 +6,16 @@
   VITE_BASE_PATH = "/"
 
 [[redirects]]
+  from = "/"
+  to = "/students-interface/student_dashboard_index.html"
+  status = 302
+
+[[redirects]]
+  from = "/index.html"
+  to = "/students-interface/student_dashboard_index.html"
+  status = 302
+
+[[redirects]]
   from = "/aa_dashboard.html"
   to = "/aa_dashboard.html"
   status = 200
