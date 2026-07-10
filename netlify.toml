@@ -1,5 +1,5 @@
 [build]
-  command = "npm run frontend:build && if [ -f aa_dashboard.html ]; then cp aa_dashboard.html frontend/dist/aa_dashboard.html; fi && cp -R students-interface frontend/dist/students-interface && cp students-interface/student_dashboard_index.html frontend/dist/student_dashboard.html && if [ -f assets/favicon.svg ]; then mkdir -p frontend/dist/assets && cp assets/favicon.svg frontend/dist/assets/favicon.svg; fi"
+  command = "npm run frontend:build && node tools/prepare_netlify_publish.mjs"
   publish = "frontend/dist"
 
 [build.environment]
