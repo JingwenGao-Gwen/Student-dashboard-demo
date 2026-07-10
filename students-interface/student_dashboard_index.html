@@ -242,6 +242,30 @@ table.matrix tr:hover td{background:#f8f9ff}
 .heat{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;min-width:34px;text-align:center}
 .dept-badge{display:inline-block;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700;color:#fff;background:var(--accent)}
 
+/* Course competency pool */
+.competency-panel{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:24px;align-items:start}
+.competency-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.competency-tab{border:1px solid var(--border);background:var(--bg);color:var(--text2);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;cursor:pointer}
+.competency-tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.competency-cloud{min-height:320px;border:1px solid var(--border);border-radius:14px;padding:18px;background:linear-gradient(180deg,#fff,#f8fbff);display:flex;align-content:flex-start;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.competency-chip{border:1px solid rgba(33,113,181,.28);background:#fff;color:#12385f;border-radius:999px;padding:8px 13px;font-weight:800;line-height:1.2;cursor:pointer;box-shadow:0 3px 12px rgba(33,113,181,.08);transition:transform .15s,border-color .15s,box-shadow .15s,background .15s}
+.competency-chip:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 8px 18px rgba(33,113,181,.16)}
+.competency-chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.competency-detail{border:1px solid var(--border);border-radius:14px;background:#fff;overflow:hidden}
+.competency-detail-head{padding:18px;border-bottom:1px solid var(--border);background:var(--bg)}
+.competency-detail-head h3{font-size:16px;line-height:1.3;margin-bottom:8px;color:var(--text)}
+.competency-detail-head p{font-size:12.5px;color:var(--text2);line-height:1.55}
+.competency-course-list{max-height:430px;overflow-y:auto;padding:12px}
+.competency-course{display:grid;grid-template-columns:1fr 74px;gap:12px;align-items:center;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fff;text-decoration:none;color:var(--text)}
+.competency-course:hover{border-color:var(--accent);background:#f8fbff}
+.competency-course-title{font-size:12px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.competency-course-code{font-size:13px;font-weight:900;color:var(--accent);display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.taken-badge{display:inline-flex;align-items:center;border:1px solid #65a30d;background:#ecfccb;color:#3f6212;border-radius:999px;padding:1px 7px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.competency-score{font-size:13px;font-weight:900;color:var(--accent);text-align:right}
+.competency-score-track{grid-column:1/-1;height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.competency-score-fill{height:100%;background:linear-gradient(90deg,#6baed6,#2171b5);border-radius:99px}
+@media(max-width:950px){.competency-panel{grid-template-columns:1fr}.competency-course-list{max-height:none}}
+
 /* GPA chart */
 .gpa-grid{display:grid;grid-template-columns:1fr 320px;gap:24px}
 @media(max-width:900px){.gpa-grid{grid-template-columns:1fr}}
@@ -446,6 +470,21 @@ table.matrix tr:hover td{background:#f8f9ff}
       </div>
     </div>
 
+    <div class="card" id="section-competency-pool">
+      <div class="card-head">
+        <div>
+          <h2>School Competency Pool</h2>
+          <div class="sub">Click a competency to see highly related courses ranked by relevance score.</div>
+        </div>
+        <button class="btn" onclick="jumpTo('section-basket')">Portfolio</button>
+      </div>
+      <div class="competency-toolbar" id="competency-tabs"></div>
+      <div class="competency-panel">
+        <div class="competency-cloud" id="competency-cloud"></div>
+        <div class="competency-detail" id="competency-detail"></div>
+      </div>
+    </div>
+
     <!-- Skill profile (moved AFTER GPA) -->
     <div class="card" id="section-skill">
       <div class="card-head">
@@ -530,6 +569,7 @@ table.matrix tr:hover td{background:#f8f9ff}
   </div>
 </div>
 
+<script src="competency_data.js"></script>
 <script>
 // ── API-backed SIS course catalogue ──
 const API_BASE = window.location.protocol === 'file:'
@@ -700,6 +740,8 @@ let transcriptSummary = { cgpa:null, mgpa:null, totalUnits:null, termSummaries:{
 let majorScatter = null, genScatter = null, gpaChart = null;
 let renderMatrixScheduled = false;
 let dragCode = null; // course being dragged
+let activeCompetencySchool = 'ALL';
+let activeCompetencyItem = '';
 
 function jumpTo(id){ const el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
 
@@ -748,6 +790,13 @@ function loadState(){
     if(s.studyMajorKey) studyMajorKey = String(s.studyMajorKey);
     if(s.gpa) gpaRecords = s.gpa;
     if(s.transcriptSummary) transcriptSummary = {...transcriptSummary, ...s.transcriptSummary};
+  } catch(e){}
+  try {
+    const params = new URLSearchParams(location.search);
+    const item = params.get('competency');
+    const school = params.get('competencySchool');
+    if (item) activeCompetencyItem = item;
+    if (school) activeCompetencySchool = school;
   } catch(e){}
 }
 
@@ -1566,6 +1615,120 @@ function renderStudyHeadway(){
     progressBlock('Credit Progress', Math.min(120, creditDone), 120, '<div class="headway-muted">All passed transcript units plus manually added exemption/approved units.</div>') +
     progressBlock('Major Progress', major.done, major.total, majorBody) +
     progressBlock('U-core Progress', ucore.done, ucore.total, ucoreBody);
+}
+
+function competencyData(){
+  return window.COMPETENCY_DATA || {pools:[], byItem:{}, courses:{}};
+}
+function competencySchools(){
+  const seen = new Set();
+  return competencyData().pools
+    .map(p => p.abbr || p.school)
+    .filter(Boolean)
+    .filter(x => (seen.has(x) ? false : (seen.add(x), true)))
+    .sort();
+}
+function competencyPoolItems(){
+  const data = competencyData();
+  const currentSchool = (selectedMajorRule && selectedMajorRule().school) || '';
+  return (data.pools || [])
+    .filter(p => activeCompetencySchool === 'ALL' || p.abbr === activeCompetencySchool || p.school === activeCompetencySchool)
+    .sort((a,b) => {
+      const ac = a.abbr === currentSchool ? 0 : 1;
+      const bc = b.abbr === currentSchool ? 0 : 1;
+      return ac - bc || (a.abbr || '').localeCompare(b.abbr || '') || a.item.localeCompare(b.item);
+    });
+}
+function findCourseForCompetencyCode(code){
+  const norm = normalizeCourseCode(code);
+  return DATA.courses.find(c => normalizeCourseCode(c.code) === norm || compactCode(c.code) === compactCode(norm));
+}
+function competencyCourseTitle(code){
+  const c = findCourseForCompetencyCode(code);
+  return c ? courseTitle(c) : normalizeCourseCode(code);
+}
+function competencyHref(code){
+  return 'course_detail.html?code=' + encodeURIComponent(normalizeCourseCode(code));
+}
+function competencyMaxScore(item){
+  const rows = competencyData().byItem[item] || [];
+  return rows.length ? Number(rows[0].score || 0) : 0;
+}
+function selectCompetencySchool(school){
+  activeCompetencySchool = school || 'ALL';
+  activeCompetencyItem = '';
+  renderCompetencyPanel();
+}
+function selectCompetencyItemByIndex(index){
+  const item = competencyPoolItems()[Number(index)];
+  if (!item) return;
+  activeCompetencyItem = item.item;
+  renderCompetencyPanel();
+}
+function renderCompetencyTabs(){
+  const tabs = ['ALL', ...competencySchools()];
+  const el = document.getElementById('competency-tabs');
+  if (!el) return;
+  el.innerHTML = tabs.map(s => `<button class="competency-tab ${activeCompetencySchool===s?'on':''}" onclick="selectCompetencySchool('${esc(s)}')">${esc(s === 'ALL' ? 'All' : s)}</button>`).join('');
+}
+function renderCompetencyCloud(items){
+  const el = document.getElementById('competency-cloud');
+  if (!el) return;
+  if (!items.length){
+    el.innerHTML = '<div style="color:var(--text3);font-weight:700">No competency pool data found.</div>';
+    return;
+  }
+  if (!activeCompetencyItem || !items.some(x => x.item === activeCompetencyItem)){
+    activeCompetencyItem = items[0].item;
+  }
+  el.innerHTML = items.map((p, i) => {
+    const max = competencyMaxScore(p.item);
+    const size = Math.max(12, Math.min(23, 12 + max * 1.15));
+    const weight = max >= 8 ? 900 : (max >= 6 ? 800 : 700);
+    return `<button class="competency-chip ${p.item===activeCompetencyItem?'on':''}" onclick="selectCompetencyItemByIndex(${i})" style="font-size:${size}px;font-weight:${weight}" title="${esc(p.definition || p.item)}">${esc(p.item)}</button>`;
+  }).join('');
+}
+function renderCompetencyDetail(items){
+  const data = competencyData();
+  const item = items.find(x => x.item === activeCompetencyItem) || items[0];
+  const el = document.getElementById('competency-detail');
+  if (!el || !item) return;
+  const taken = completedCourseMap();
+  const rows = (data.byItem[item.item] || []).slice(0, 24);
+  const list = rows.length ? rows.map(row => {
+    const norm = normalizeCourseCode(row.code);
+    const isTaken = taken.has(norm);
+    const title = competencyCourseTitle(norm);
+    const width = Math.max(2, Math.min(100, Number(row.score || 0) * 10));
+    return `<a class="competency-course" href="${competencyHref(norm)}" title="${esc(row.rationale || '')}">
+      <div>
+        <div class="competency-course-code">${esc(norm.replace(/\s+/g,''))}${isTaken ? '<span class="taken-badge">taken</span>' : ''}</div>
+        <div class="competency-course-title">${esc(title)}</div>
+      </div>
+      <div class="competency-score">${Number(row.score || 0).toFixed(1)}/10</div>
+      <div class="competency-score-track"><div class="competency-score-fill" style="width:${width}%"></div></div>
+    </a>`;
+  }).join('') : '<div style="padding:18px;color:var(--text3);font-weight:700">No high-relevance course rows for this competency yet.</div>';
+  el.innerHTML = `<div class="competency-detail-head">
+      <h3>${esc(item.item)}</h3>
+      <p>${esc(item.definition || 'Courses are ranked by competency relevance score from the analysis workbook.')}</p>
+      <p style="margin-top:8px;font-weight:800;color:var(--accent)">${esc(item.abbr || item.school || '')}</p>
+    </div>
+    <div class="competency-course-list">${list}</div>`;
+}
+function renderCompetencyPanel(){
+  const card = document.getElementById('section-competency-pool');
+  if (!card) return;
+  const data = competencyData();
+  if (!data.pools || !data.pools.length){
+    card.style.display = 'none';
+    return;
+  }
+  card.style.display = '';
+  renderCompetencyTabs();
+  const items = competencyPoolItems();
+  renderCompetencyCloud(items);
+  renderCompetencyDetail(items);
 }
 
 function renderProfileSummary(majorDims, majorScores, genDims, genScores){
@@ -2599,6 +2762,7 @@ function renderAll(){
   renderCourseList();
   renderBasket();
   renderStudyHeadway();
+  renderCompetencyPanel();
   renderCharts();
   if (COMPETENCY_ENABLED){
     updateAdvisor();
