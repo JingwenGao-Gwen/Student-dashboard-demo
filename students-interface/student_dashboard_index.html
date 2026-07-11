@@ -310,8 +310,9 @@ table.matrix tr:hover td{background:#f8f9ff}
 @media(max-width:1120px){.intern-board{grid-template-columns:1fr}.intern-hover-skills{grid-template-columns:1fr}.intern-detail{min-height:0}.intern-keyword-panel{min-height:0}}
 
 /* GPA chart */
-.gpa-grid{display:grid;grid-template-columns:minmax(0,1fr) 460px;gap:24px;align-items:start}
-.gpa-chart-pane{min-width:0;max-width:760px}
+.gpa-grid{display:grid;grid-template-columns:430px minmax(0,1fr);gap:24px;align-items:start}
+.gpa-chart-pane{min-width:0;max-width:none;order:2}
+.gpa-control-pane{min-width:0;order:1}
 @media(max-width:900px){.gpa-grid{grid-template-columns:1fr}}
 .gpa-input{display:flex;gap:8px;margin-bottom:14px;align-items:center}
 .gpa-input select, .gpa-input input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;background:var(--surface);outline:none}
@@ -492,7 +493,7 @@ table.matrix tr:hover td{background:#f8f9ff}
         <div class="gpa-chart-pane">
           <div class="canvas-wrap"><canvas id="gpa-chart"></canvas></div>
         </div>
-        <div>
+        <div class="gpa-control-pane">
           <div style="font-size:13px;color:var(--text2);margin-bottom:8px;font-weight:700" data-i18n="gpa.add">Add a grade</div>
           <div style="font-size:12px;color:var(--text3);line-height:1.45;margin:-2px 0 10px" data-i18n="gpa.manualNote">Enter a course manually with its semester, units, and grade. Letter grades update the GPA graph; P records a passed course in the portfolio only.</div>
           <div class="gpa-input">
@@ -758,6 +759,173 @@ function localizeCompetencyText(text){
 function localizeRationale(text){
   return localizeCompetencyText(String(text || '').replace(/\s*\(\+\d+(?:\.\d+)?\)/g, ''));
 }
+const COMPETENCY_ZH_EXACT = {
+  'AI ethics, governance and regulation':'AI伦理、治理与监管',
+  'AI programming and software implementation':'AI编程与软件实现',
+  'AI systems, algorithms and data-driven problem solving':'AI系统、算法与数据驱动问题解决',
+  'Embodied, robotic and domain AI applications':'具身智能、机器人与领域AI应用',
+  'Machine learning, deep learning and large language models':'机器学习、深度学习与大语言模型',
+  'Mathematical and statistical foundations for AI':'AI的数学与统计基础',
+  'Project-based AI exploration, practice and capstone execution':'项目式AI探索、实践与毕业项目执行',
+  'Big data analytics and data-driven modelling':'大数据分析与数据驱动建模',
+  'Data structures, databases and computing infrastructure':'数据结构、数据库与计算基础设施',
+  'Domain applications in business, finance, life science and engineering':'商业、金融、生命科学与工程领域应用',
+  'Machine learning, AI and data mining':'机器学习、AI与数据挖掘',
+  'Programming, algorithms, software and computing systems':'编程、算法、软件与计算系统',
+  'Quantitative modelling and mathematical foundations':'定量建模与数学基础',
+  'Research, capstone and project execution':'研究、毕业项目与项目执行',
+  'Robotics, control and embodied intelligent systems':'机器人、控制与具身智能系统',
+  'Statistical reasoning, probability and inference':'统计推理、概率与推断',
+  'Chinese language, linguistics and second-language pedagogy':'中文语言、语言学与第二语言教学',
+  'Civic, ethical, political and social awareness':'公民、伦理、政治与社会意识',
+  'Intercultural, translation and cultural mediation readiness':'跨文化、翻译与文化沟通能力',
+  'Language proficiency, writing and textual communication':'语言能力、写作与文本沟通',
+  'Literary, cultural and historical analysis':'文学、文化与历史分析',
+  'Research, critical inquiry and academic writing':'研究、批判性探究与学术写作',
+  'Social science methodology and computational social science':'社会科学方法与计算社会科学',
+  'Accounting and financial reporting':'会计与财务报告',
+  'Auditing, assurance, tax, law, ethics and governance':'审计、鉴证、税务、法律、伦理与治理',
+  'Business data analytics, MIS, AI/data applications and visualization':'商业数据分析、管理信息系统、AI/数据应用与可视化',
+  'Business management, strategy, operations and supply chain':'商业管理、战略、运营与供应链',
+  'Corporate finance, investment, valuation and risk':'公司金融、投资、估值与风险',
+  'Economics, markets and econometrics':'经济学、市场与计量经济学',
+  'Management accounting, cost control and managerial decision-making':'管理会计、成本控制与管理决策',
+  'Marketing, consumer insight and communication':'市场营销、消费者洞察与传播',
+  'Quantitative and statistical business reasoning':'商业定量与统计推理',
+  'Research, project execution and workplace readiness':'研究、项目执行与职场准备',
+  'Biomaterials, tissue engineering and regenerative medicine':'生物材料、组织工程与再生医学',
+  'Biomedical and life science foundation':'生物医学与生命科学基础',
+  'Biomedical data analytics, statistics and machine learning':'生物医学数据分析、统计与机器学习',
+  'Biomedical engineering systems and instrumentation':'生物医学工程系统与仪器',
+  'Biomedical systems, biomechanics and physiology':'生物医学系统、生物力学与生理学',
+  'Capstone, project execution and innovation':'毕业项目、项目执行与创新',
+  'Clinical, medical, ethical and translational readiness':'临床、医学、伦理与转化准备',
+  'Computational biology and bioinformatics':'计算生物学与生物信息学',
+  'Laboratory, experimental and research methods':'实验室、实验与研究方法',
+  'Molecular biology, genetics, genomics and proteomics':'分子生物学、遗传学、基因组学与蛋白质组学',
+  'Composition, arrangement and creative production':'作曲、编配与创意制作',
+  'Music analysis, history and contextual understanding':'音乐分析、历史与语境理解',
+  'Music technology, recording and digital production':'音乐技术、录音与数字制作',
+  'Music theory, musicianship and aural skills':'音乐理论、音乐素养与听觉技能',
+  'Performance, ensemble and studio practice':'表演、合奏与工作室实践',
+  'Repertoire interpretation and critical listening':'曲目诠释与批判性聆听',
+  'Research, writing and professional artistic practice':'研究、写作与专业艺术实践',
+  'AI, machine learning, computer vision and data analytics':'AI、机器学习、计算机视觉与数据分析',
+  'Chemistry laboratory, instrumentation and experimental practice':'化学实验室、仪器与实验实践',
+  'Computing, programming, algorithms and data systems for engineering':'工程中的计算、编程、算法与数据系统',
+  'Control, robotics, intelligent systems and automation':'控制、机器人、智能系统与自动化',
+  'Electronics, circuits, communications and information systems':'电子、电路、通信与信息系统',
+  'Energy systems, photonics and advanced engineering applications':'能源系统、光子学与先进工程应用',
+  'General, analytical, inorganic, organic and physical chemistry':'普通、分析、无机、有机与物理化学',
+  'Materials science, polymers, functional materials and nanotechnology':'材料科学、高分子、功能材料与纳米技术',
+  'Mathematical, physical and quantitative science foundation':'数学、物理与定量科学基础',
+  'Research, capstone and scientific project execution':'研究、毕业项目与科学项目执行'
+};
+Object.assign(COMPETENCY_ZH_EXACT, {
+  'Ability to reason about ethics, governance, regulation, safety and social impact of AI.':'能够理解并判断AI伦理、治理、监管、安全与社会影响问题。',
+  'Ability to implement AI solutions through programming, software tools, algorithms and data structures.':'能够通过编程、软件工具、算法和数据结构实现AI解决方案。',
+  'Ability to design AI systems, use algorithms and data to solve applied problems.':'能够设计AI系统，并使用算法和数据解决应用问题。',
+  'Ability to apply AI to robotics, embodied systems, science, business or other domains.':'能够将AI应用于机器人、具身系统、科学、商业或其他领域。',
+  'Ability to understand and apply machine learning, deep learning, neural models and large language models.':'能够理解并应用机器学习、深度学习、神经模型和大语言模型。',
+  'Ability to use mathematics, statistics, probability, optimization and modelling for AI.':'能够使用数学、统计、概率、优化和建模方法支撑AI应用。',
+  'Ability to carry out staged AI projects, capstone work, team practice and applied exploration.':'能够开展阶段性AI项目、毕业项目、团队实践和应用探索。',
+  'Ability to analyze large-scale data and build data-driven models for decisions.':'能够分析大规模数据，并构建支持决策的数据驱动模型。',
+  'Ability to organize, store, retrieve and manage data through data structures, databases and infrastructure.':'能够通过数据结构、数据库和基础设施组织、存储、检索和管理数据。',
+  'Ability to apply data science and AI to business, finance, life science, engineering or other domains.':'能够将数据科学和AI应用于商业、金融、生命科学、工程或其他领域。',
+  'Ability to use machine learning, AI, data mining and predictive modelling.':'能够使用机器学习、AI、数据挖掘和预测建模方法。',
+  'Ability to program, reason about algorithms, build software and understand computing systems.':'能够编程、理解算法逻辑、构建软件并理解计算系统。',
+  'Ability to use mathematics, optimization, numerical methods and quantitative models.':'能够使用数学、优化、数值方法和定量模型。',
+  'Ability to complete research, capstone, project, design and applied team work.':'能够完成研究、毕业项目、课程项目、设计和应用型团队工作。',
+  'Ability to understand robotics, control, sensors, embodied intelligence and intelligent systems.':'能够理解机器人、控制、传感器、具身智能和智能系统。',
+  'Ability to use probability, statistics, inference and uncertainty reasoning.':'能够使用概率、统计、推断和不确定性推理方法。',
+  'Ability to understand Chinese linguistics, dialects, phonology, syntax and Chinese language teaching.':'能够理解中文语言学、方言、音系、句法和中文教学。',
+  'Ability to understand civic education, ethics, political theory, society, institutions and contemporary China.':'能够理解公民教育、伦理、政治理论、社会、制度与当代中国。',
+  'Ability to work across cultures, languages and social contexts, including translation or cultural mediation.':'能够在跨文化、跨语言和社会语境中工作，包括翻译与文化沟通。',
+  'Ability to use language effectively for reading, writing, speaking, analysis and professional communication.':'能够有效使用语言进行阅读、写作、表达、分析和专业沟通。',
+  'Ability to analyze literature, culture, history, classics, arts and cultural texts.':'能够分析文学、文化、历史、经典、艺术与文化文本。',
+  'Ability to conduct humanities/social-science research, develop critical arguments and write academically.':'能够开展人文社科研究、形成批判性论证并进行学术写作。',
+  'Ability to use social science methods, computational tools, statistics and data for social analysis.':'能够使用社会科学方法、计算工具、统计和数据进行社会分析。',
+  'Ability to understand accounting information, financial statements, reporting rules, and accounting theory.':'能够理解会计信息、财务报表、报告规则和会计理论。',
+  'Ability to reason about assurance, taxation, law, compliance, fraud, business ethics, corporate governance and social responsibility.':'能够理解鉴证、税务、法律、合规、舞弊、商业伦理、公司治理和社会责任。',
+  'Ability to apply data analytics, databases, information systems, AI tools and visualization in business contexts.':'能够在商业情境中应用数据分析、数据库、信息系统、AI工具和可视化。',
+  'Ability to understand organizations, management, business strategy, operations, logistics and supply chains.':'能够理解组织、管理、商业战略、运营、物流与供应链。',
+  'Ability to analyze corporate finance, capital markets, investment, valuation, restructuring, credit and financial risk.':'能够分析公司金融、资本市场、投资、估值、重组、信用和金融风险。',
+  'Ability to use economic theory, market reasoning, policy logic and econometric/statistical evidence.':'能够使用经济理论、市场推理、政策逻辑和计量/统计证据。',
+  'Ability to use cost, budget, performance and internal accounting information for management decisions.':'能够使用成本、预算、绩效和内部会计信息支持管理决策。',
+  'Ability to analyze markets, consumers, brands, marketing strategy and communication.':'能够分析市场、消费者、品牌、营销战略和传播。',
+  'Ability to use mathematics, statistics, quantitative methods and modelling for business decisions.':'能够使用数学、统计、定量方法和建模支持商业决策。',
+  'Ability to conduct research, complete projects, communicate professionally, and connect classroom knowledge to workplace practice.':'能够开展研究、完成项目、进行专业沟通，并把课堂知识连接到职场实践。',
+  'Ability to understand biomaterials, tissue engineering, biofabrication, nanobiotechnology and regenerative medicine.':'能够理解生物材料、组织工程、生物制造、纳米生物技术和再生医学。',
+  'Ability to understand core biology, chemistry, life science, human structure/function and biomedical foundations.':'能够理解生物学、化学、生命科学、人体结构/功能和生物医学基础。',
+  'Ability to apply statistics, visualization, machine learning and data analysis to biomedical or biological problems.':'能够将统计、可视化、机器学习和数据分析应用于生物医学或生物学问题。',
+  'Ability to understand biomedical engineering systems, instrumentation, biosensors, signals, imaging and medical devices.':'能够理解生物医学工程系统、仪器、生物传感器、信号、成像和医疗器械。',
+  'Ability to analyze biological systems, biomechanics, physiology, neural systems and systems-level biomedical phenomena.':'能够分析生物系统、生物力学、生理学、神经系统和系统层面的生物医学现象。',
+  'Ability to complete capstone projects, internships, research projects and innovation-oriented biomedical work.':'能够完成毕业项目、实习、研究项目和创新导向的生物医学工作。',
+  'Ability to connect biomedical knowledge with clinical practice, medical translation, ethics, internship and professional readiness.':'能够将生物医学知识与临床实践、医学转化、伦理、实习和职业准备连接起来。',
+  'Ability to use computational, algorithmic and database methods for biological and health-science data.':'能够使用计算、算法和数据库方法处理生物与健康科学数据。',
+  'Ability to perform biological, biomedical, laboratory and research work, including experimental design and interpretation.':'能够开展生物、生物医学、实验室和研究工作，包括实验设计与解释。',
+  'Ability to reason about genes, genomes, proteins, molecular mechanisms and omics technologies.':'能够理解基因、基因组、蛋白质、分子机制和组学技术。',
+  'Ability to compose, arrange, orchestrate and develop original creative musical work.':'能够作曲、编配、配器并发展原创音乐作品。',
+  'Ability to analyze musical works and understand music history, styles, genres, cultural context and repertoire.':'能够分析音乐作品，并理解音乐史、风格、体裁、文化语境和曲目。',
+  'Ability to use music technology, recording, audio, digital tools and production methods in music work.':'能够在音乐工作中使用音乐技术、录音、音频、数字工具和制作方法。',
+  'Ability to understand music theory, harmony, counterpoint, form, notation, sight-singing, ear training and core musicianship.':'能够理解音乐理论、和声、对位、曲式、记谱、视唱练耳和核心音乐素养。',
+  'Ability to perform vocally or instrumentally, rehearse, participate in ensemble/studio work and develop practical performance technique.':'能够进行声乐或器乐表演、排练、参与合奏/工作室实践并发展表演技术。',
+  'Ability to interpret repertoire, listen critically, evaluate musical expression and connect performance with stylistic understanding.':'能够诠释曲目、批判性聆听、评估音乐表达，并将表演与风格理解连接起来。',
+  'Ability to conduct music research, write about music, present artistic work and prepare for professional practice in music fields.':'能够开展音乐研究、撰写音乐相关内容、展示艺术作品，并为音乐领域专业实践做准备。',
+  'Ability to use AI, machine learning, deep learning, computer vision and analytics in engineering contexts.':'能够在工程情境中使用AI、机器学习、深度学习、计算机视觉和分析方法。',
+  'Ability to perform laboratory work, instrumental analysis, experiments and scientific measurement.':'能够开展实验室工作、仪器分析、实验和科学测量。',
+  'Ability to use programming, algorithms, computing systems and data tools in science and engineering.':'能够在科学与工程中使用编程、算法、计算系统和数据工具。',
+  'Ability to understand control theory, robotics, intelligent systems and automation.':'能够理解控制理论、机器人、智能系统和自动化。',
+  'Ability to understand circuits, electronics, communications, RF, IC design and information systems.':'能够理解电路、电子、通信、射频、集成电路设计和信息系统。',
+  'Ability to apply science and engineering to energy systems, photonics, devices and advanced technologies.':'能够将科学与工程应用于能源系统、光子学、器件和先进技术。',
+  'Ability to understand core chemistry fields, including analytical, inorganic, organic and physical chemistry.':'能够理解核心化学领域，包括分析、无机、有机和物理化学。',
+  'Ability to understand materials structure, functional materials, polymers, nanotechnology and material applications.':'能够理解材料结构、功能材料、高分子、纳米技术和材料应用。',
+  'Ability to use mathematics, physics, modelling and quantitative reasoning for science and engineering.':'能够将数学、物理、建模和定量推理用于科学与工程。',
+  'Ability to conduct research, projects, thesis work, enterprise practice and scientific reporting.':'能够开展研究、项目、论文工作、企业实践和科学报告。'
+});
+const COMPETENCY_ZH_TERMS = [
+  ['course outline matches','课程大纲匹配'], ['prefix aligns with this competency area','课程前缀与该能力领域相关'],
+  ['Ability to','能够'], ['understand and apply','理解并应用'], ['reason about','进行推理'], ['organize, store, retrieve and manage','组织、存储、检索和管理'],
+  ['large-scale data','大规模数据'], ['data-driven models','数据驱动模型'], ['data-driven','数据驱动'], ['large language models','大语言模型'], ['language models','语言模型'],
+  ['machine learning','机器学习'], ['deep learning','深度学习'], ['computer vision','计算机视觉'], ['data mining','数据挖掘'], ['artificial intelligence','人工智能'],
+  ['bioinformatics','生物信息学'], ['biomedical','生物医学'], ['life science','生命科学'], ['tissue engineering','组织工程'], ['regenerative medicine','再生医学'],
+  ['financial reporting','财务报告'], ['financial statements','财务报表'], ['management accounting','管理会计'], ['corporate finance','公司金融'], ['capital markets','资本市场'],
+  ['business ethics','商业伦理'], ['corporate governance','公司治理'], ['social responsibility','社会责任'], ['supply chain','供应链'],
+  ['consumer insight','消费者洞察'], ['market research','市场研究'], ['digital marketing','数字营销'], ['econometrics','计量经济学'],
+  ['social science','社会科学'], ['computational social science','计算社会科学'], ['academic writing','学术写作'], ['critical inquiry','批判性探究'],
+  ['intercultural','跨文化'], ['translation','翻译'], ['cultural mediation','文化沟通'], ['linguistics','语言学'], ['second-language pedagogy','第二语言教学'],
+  ['music technology','音乐技术'], ['digital production','数字制作'], ['music theory','音乐理论'], ['aural skills','听觉技能'], ['critical listening','批判性聆听'],
+  ['control theory','控制理论'], ['intelligent systems','智能系统'], ['information systems','信息系统'], ['functional materials','功能材料'],
+  ['nanotechnology','纳米技术'], ['advanced engineering','先进工程'], ['laboratory','实验室'], ['instrumentation','仪器'], ['experimental practice','实验实践'],
+  ['programming','编程'], ['software','软件'], ['algorithms','算法'], ['algorithm','算法'], ['data structures','数据结构'], ['databases','数据库'], ['database','数据库'],
+  ['computing','计算'], ['systems','系统'], ['system','系统'], ['infrastructure','基础设施'], ['mathematics','数学'], ['statistics','统计'], ['statistical','统计'],
+  ['probability','概率'], ['inference','推断'], ['optimization','优化'], ['optimisation','优化'], ['modelling','建模'], ['modeling','建模'], ['model','模型'],
+  ['visualization','可视化'], ['analytics','分析'], ['analysis','分析'], ['data','数据'], ['research','研究'], ['project','项目'], ['capstone','毕业项目'],
+  ['team','团队'], ['practice','实践'], ['presentation','展示'], ['business','商业'], ['finance','金融'], ['engineering','工程'], ['robotics','机器人'],
+  ['robot','机器人'], ['control','控制'], ['sensors','传感器'], ['sensor','传感器'], ['ethics','伦理'], ['governance','治理'], ['regulation','监管'],
+  ['safety','安全'], ['social impact','社会影响'], ['clinical','临床'], ['medical','医学'], ['molecular','分子'], ['genetics','遗传学'], ['genomics','基因组学'],
+  ['proteomics','蛋白质组学'], ['chemistry','化学'], ['physics','物理'], ['quantitative','定量'], ['reasoning','推理'], ['communication','沟通'],
+  ['professional','专业'], ['workplace','职场'], ['innovation','创新'], ['perform','执行'], ['complete','完成'], ['conduct','开展'], ['apply','应用'],
+  ['analyze','分析'], ['understand','理解'], ['use','使用'], ['design','设计'], ['implement','实现'], ['connect','连接'], ['develop','发展']
+];
+function translateCompetencyFallback(text){
+  let out = String(text || '');
+  COMPETENCY_ZH_TERMS
+    .slice()
+    .sort((a,b) => b[0].length - a[0].length)
+    .forEach(([en, zh]) => {
+      out = out.replace(new RegExp(en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), zh);
+    });
+  return out.replace(/\s+/g, ' ').trim();
+}
+localizeCompetencyText = function(text){
+  const raw = String(text || '');
+  if (!isChineseLang()) return raw;
+  return COMPETENCY_ZH_EXACT[raw] || translateCompetencyFallback(raw);
+};
+localizeRationale = function(text){
+  return localizeCompetencyText(String(text || '').replace(/\s*\(\+\d+(?:\.\d+)?\)/g, ''));
+};
 const ORG_BY_SUBJECT = {
   AIE:'SAI',
   AIR:'SDS', CSC:'SDS', DDA:'SDS', MDS:'SDS', MFE:'SDS', RMS:'SDS', STA:'SDS',
@@ -1855,6 +2023,17 @@ function competencyCourseTitle(code){
 function competencyHref(code){
   return 'course_detail.html?code=' + encodeURIComponent(normalizeCourseCode(code));
 }
+competencyCourseTitle = function(code){
+  const c = findCourseForCompetencyCode(code);
+  const dataCourse = competencyData().courses && competencyData().courses[compactCode(code)];
+  if (!c && !dataCourse) return currentLang() === 'en' ? 'Course title unavailable' : '课程标题待补全';
+  const title = c ? courseTitle(c) : (currentLang() === 'en'
+    ? titleCandidate(dataCourse, ['title_en','courseNameEn','course_name_en','english_title','title','name'])
+    : titleCandidate(dataCourse, ['title_zh_cn','courseNameZh','course_name_zh','chinese_title','title_zh','title_zh_tw','title_en','courseNameEn','title','name']));
+  return compactCode(title) === compactCode(code)
+    ? (currentLang() === 'en' ? 'Course title unavailable' : '课程标题待补全')
+    : title;
+};
 function competencyMaxScore(item){
   const rows = competencyData().byItem[item] || [];
   return rows.length ? Number(rows[0].score || 0) : 0;
@@ -1967,6 +2146,66 @@ function internText(text){
   ].forEach(([zh,en]) => { out = out.split(zh).join(en); });
   return out.trim() || raw;
 }
+const INTERN_EN_EXTRA = {
+  '产品':'Product','运营':'Operations','技术管理':'Technical Management','后端开发':'Backend Development','移动开发':'Mobile Development','前端开发':'Frontend Development','游戏':'Games','测试':'Testing','运维/技术支持':'DevOps / Technical Support','数据':'Data','人工智能':'Artificial Intelligence','电子/半导体':'Electronics / Semiconductors','硬件开发':'Hardware Development','通信':'Telecommunications','视觉/交互设计':'Visual and Interaction Design','影视传媒':'Film and Media','非视觉设计':'Non-visual Design','游戏设计':'Game Design','广告':'Advertising','采编/写作/出版':'Editing, Writing and Publishing','行政':'Administration','人力资源':'Human Resources','财会':'Accounting and Finance','金融中后台':'Financial Middle and Back Office','投融资':'Investment and Financing','证券/基金/期货':'Securities, Funds and Futures','互联网金融':'Fintech','保险':'Insurance','银行':'Banking','法务':'Legal Affairs','律师':'Legal Practice','公共媒介':'Public Relations','会务会展':'Conferences and Exhibitions','品牌推广':'Brand Promotion','市场/营销':'Marketing','销售':'Sales','采购':'Procurement','进出口贸易':'Import and Export Trade','供应链/物流':'Supply Chain and Logistics','教务行政':'Academic Administration','教师':'Teaching','教育产品研发':'Education Product Development','职业培训':'Vocational Training','特长培训':'Specialized Training','翻译':'Translation','咨询调研':'Consulting and Research','护士/护理':'Nursing','医生/医技':'Medical and Clinical Technology','健康整形':'Health and Aesthetic Medicine','生物制药':'Biopharma','药店':'Pharmacy','临床试验':'Clinical Trials','环境科学':'Environmental Science','能源/矿产/地质':'Energy, Mining and Geology','农牧渔林':'Agriculture, Animal Husbandry, Fisheries and Forestry','消费品管理':'Consumer Goods Management','物业管理':'Property Management','房地产规划开发':'Real Estate Planning and Development','房地产销售/招商':'Real Estate Sales and Leasing','设计装修与市政建设':'Interior, Construction and Municipal Design','园林/景观设计':'Landscape Design','土木/土建/结构工程':'Civil and Structural Engineering','公共事业':'Public Service','管培生':'Management Trainee','其他':'Other','客服':'Customer Service',
+  '业务专业技能':'Business Skills','产品与设计':'Product and Design','工程技术':'Engineering','数据与分析':'Data and Analytics','编程语言':'Programming Languages','领域知识':'Domain Knowledge',
+  '用户研究':'User Research','用户体验设计':'UX Design','需求分析':'Requirements Analysis','项目管理':'Project Management','原型设计':'Prototype Design','市场调研':'Market Research','PRD文档':'PRD Documentation','产品规划':'Product Planning','深度学习':'Deep Learning','文案写作':'Copywriting','英语':'English','内容运营':'Content Operations','活动策划':'Event Planning','社群运营':'Community Operations','新媒体运营':'New Media Operations','数据可视化':'Data Visualization','统计分析':'Statistical Analysis','数据清洗':'Data Cleaning','实验设计':'Experiment Design','软件测试':'Software Testing','机器学习':'Machine Learning','自然语言处理':'Natural Language Processing','嵌入式开发':'Embedded Development','计算机视觉':'Computer Vision','自动化测试':'Automated Testing','数据仓库':'Data Warehousing','日语':'Japanese','税务知识':'Tax Knowledge','课程设计':'Curriculum Design','会计准则':'Accounting Standards','审计':'Auditing','供应链管理':'Supply Chain Management','估值分析':'Valuation Analysis','财务建模':'Financial Modeling','文献检索':'Literature Search','临床研究':'Clinical Research','品牌策划':'Brand Strategy','细胞培养':'Cell Culture','教学设计':'Instructional Design','API接口':'API Integration','C语言':'C Programming','R语言':'R Programming','GCP规范':'GCP Standards','PCB设计':'PCB Design','分类模型':'Classification Modeling','回归分析':'Regression Analysis','聚类分析':'Cluster Analysis','时间序列':'Time Series Analysis'
+};
+const INTERN_EN_PHRASES = [
+  ['ERP技术开发','ERP Development'],['IT技术支持','IT Support'],['互联网金融分析师','Fintech Analyst'],['APP推广','App Promotion'],['SLAM算法','SLAM Algorithm'],['图像算法','Image Algorithms'],['语音算法','Speech Algorithms'],['大模型算法','Large Language Model Algorithms'],['自然语言处理算法','NLP Algorithms'],['C/C++','C/C++'],
+  ['代理商销售','Channel Sales'],['城市经理','City Manager'],['剪辑师','Video Editor'],['展览/展示设计','Exhibition Design'],['会展活动执行','Exhibition Event Execution'],['会议活动执行','Conference Event Execution'],['商品经理','Merchandising Manager'],['拓展培训','Outdoor Development Training'],['动力系统工程师','Powertrain Engineer'],['农业/林业','Agriculture / Forestry'],
+  ['SEO/SEM运营','SEO/SEM Operations'],['UI/UE设计师','UI/UX Designer'],['web前端','Web Frontend'],['CAD设计/制图','CAD Design and Drafting'],['产品项目管理','Product Project Management'],['产品助理','Product Assistant'],['产品经理','Product Manager'],['产品设计','Product Design'],['产品运营','Product Operations'],['用户运营','User Operations'],['数据运营','Data Operations'],['海外运营','Overseas Operations'],['电商运营','E-commerce Operations'],['网站运营','Website Operations'],['游戏运营','Game Operations'],['活动运营','Event Operations'],['品牌运营','Brand Operations'],['品类运营','Category Operations'],
+  ['数据分析师','Data Analyst'],['数据库工程师','Database Engineer'],['大数据开发工程师','Big Data Engineer'],['数据挖掘','Data Mining'],['数据标注/AI训练师','Data Annotation / AI Trainer'],['算法工程师','Algorithm Engineer'],['算法研究员','Algorithm Researcher'],['推荐算法','Recommendation Algorithms'],['搜索算法','Search Algorithms'],['视觉算法','Vision Algorithms'],['语音算法','Speech Algorithms'],['风控算法','Risk Control Algorithms'],['自然语言处理算法','NLP Algorithms'],['大模型算法','Large Language Model Algorithms'],
+  ['后端开发','Backend Development'],['前端开发','Frontend Development'],['移动开发','Mobile Development'],['硬件开发','Hardware Development'],['驱动开发','Driver Development'],['小程序开发工程师','Mini Program Developer'],['嵌入式开发工程师','Embedded Software Engineer'],['运维工程师','DevOps Engineer'],['软件测试','Software Testing'],['硬件测试','Hardware Testing'],['可靠性测试工程师','Reliability Test Engineer'],
+  ['市场推广','Marketing Promotion'],['市场策划','Marketing Planning'],['市场顾问','Marketing Consultant'],['海外市场','Overseas Markets'],['网络营销','Digital Marketing'],['广告客户执行','Account Executive'],['广告创意设计','Advertising Creative Design'],['广告文案','Advertising Copywriter'],['广告销售','Advertising Sales'],['广告审核','Ad Review'],['广告设计','Advertising Designer'],['广告制作','Advertising Production'],
+  ['品牌公关','Brand PR'],['品牌专员','Brand Specialist'],['品牌经理','Brand Manager'],['公关助理','PR Assistant'],['公关经理','PR Manager'],['媒介投放','Media Buying'],['媒介经理','Media Manager'],['商务渠道专员','Business Development Specialist'],['商务渠道','Business Development Channels'],['客户代表','Client Representative'],['客户经理','Account Manager'],['客服专员','Customer Service Specialist'],['客服经理','Customer Service Manager'],['售前客服','Pre-sales Support'],['网络客服','Online Customer Service'],['电话客服','Call Center Support'],
+  ['金融产品经理','Financial Product Manager'],['金融分析师','Financial Analyst'],['金融风控','Financial Risk Control'],['投资经理','Investment Manager'],['投后管理','Post-investment Management'],['基金经理','Fund Manager'],['证券交易员','Securities Trader'],['股票/期货操盘手','Stock / Futures Trader'],['量化研究','Quantitative Research'],['量化策略','Quantitative Strategy'],['资产管理','Asset Management'],['融资','Financing'],['并购','M&A'],['清算','Clearing'],['资信评估','Credit Assessment'],
+  ['财务顾问','Financial Consultant'],['注册会计师','Certified Public Accountant'],['总账会计','General Ledger Accountant'],['成本会计','Cost Accountant'],['结算会计','Settlement Accountant'],['税务','Tax'],['审计','Auditing'],['法务专员/助理','Legal Specialist / Assistant'],['知识产权/专利/商标代理人','IP / Patent / Trademark Agent'],['知识产权律师','IP Lawyer'],['律师助理','Legal Assistant'],['民事律师','Civil Lawyer'],['事务所律师','Law Firm Lawyer'],
+  ['课程研发','Curriculum Development'],['课程销售','Course Sales'],['教学管理','Teaching Management'],['教务管理','Academic Affairs Management'],['助教','Teaching Assistant'],['家教','Tutor'],['幼教','Early Childhood Teacher'],['早教老师','Early Education Teacher'],['外语教师','Foreign Language Teacher'],['英语教师','English Teacher'],['语文教师','Chinese Teacher'],['数学教师','Math Teacher'],['理科教师','Science Teacher'],['文科教师','Humanities Teacher'],['职业讲师','Vocational Instructor'],['培训师','Trainer'],
+  ['医药研发','Pharmaceutical R&D'],['医药项目经理','Pharmaceutical Project Manager'],['医药/器械销售','Pharmaceutical / Medical Device Sales'],['药品注册','Drug Registration'],['药品生产','Pharmaceutical Production'],['药店店长','Pharmacy Manager'],['心理医生','Psychologist'],['疾病控制','Disease Control'],['公共卫生','Public Health'],
+  ['建筑工程师','Construction Engineer'],['建筑设计师','Architectural Designer'],['建筑施工现场管理','Construction Site Management'],['土木/土建/结构工程师','Civil / Structural Engineer'],['城市规划设计','Urban Planning Design'],['工程造价','Cost Engineering'],['施工员','Construction Technician'],['施工安全员','Construction Safety Officer'],['资料员','Document Controller'],['材料员','Materials Coordinator'],['测绘/测量','Surveying'],['地质工程师','Geological Engineer'],['勘探工程师','Exploration Engineer'],['矿产项目管理','Mining Project Management'],
+  ['室内设计','Interior Design'],['家居设计','Home Furnishing Design'],['平面设计','Graphic Design'],['视觉设计师','Visual Designer'],['交互设计师','Interaction Designer'],['网页设计师','Web Designer'],['包装设计','Packaging Design'],['服装/纺织设计','Fashion / Textile Design'],['珠宝设计','Jewelry Design'],['工业设计','Industrial Design'],['动画设计','Animation Design'],['插画师','Illustrator'],['漫画师','Comic Artist'],['原画师','Concept Artist'],['美工','Graphic Artist'],['美术指导','Art Director'],['陈列设计','Visual Merchandising Design'],
+  ['游戏数值策划','Game Economy Designer'],['游戏系统策划','Game Systems Designer'],['游戏角色设计','Game Character Designer'],['游戏场景设计','Game Environment Designer'],['游戏界面设计','Game UI Designer'],['游戏动作设计','Game Animation Designer'],['游戏策划','Game Designer'],['游戏推广','Game Promotion'],['游戏设计师','Game Designer'],
+  ['通信技术工程师','Telecommunications Engineer'],['通信研发工程师','Telecommunications R&D Engineer'],['通信测试','Telecommunications Testing'],['通信设备工程师','Telecommunications Equipment Engineer'],['通信电源工程师','Telecom Power Engineer'],['移动通信工程师','Mobile Communications Engineer'],['光通信工程师','Optical Communications Engineer'],['光传输工程师','Optical Transmission Engineer'],['无线/射频通信工程师','Wireless / RF Communications Engineer'],['有线传输工程师','Wired Transmission Engineer'],['数据通信工程师','Data Communications Engineer'],['核心网工程师','Core Network Engineer'],['电信网络工程师','Telecom Network Engineer'],['电信交换工程师','Telecom Switching Engineer'],
+  ['电子工程师','Electronics Engineer'],['电气工程师','Electrical Engineer'],['电气设计工程师','Electrical Design Engineer'],['电机工程程师','Motor Engineer'],['电机工程师','Motor Engineer'],['电池工程师','Battery Engineer'],['电路设计','Circuit Design'],['集成电路IC设计','IC Design'],['IC验证工程师','IC Verification Engineer'],['单片机','Microcontroller'],['版图设计','Layout Design'],['射频工程师','RF Engineer'],['FPGA开发','FPGA Development'],['ARM开发','ARM Development'],['DSP开发','DSP Development'],
+  ['保险精算师','Insurance Actuary'],['保险理赔','Insurance Claims'],['保险顾问','Insurance Consultant'],['保险培训师','Insurance Trainer'],['信贷管理','Credit Management'],['大堂经理','Lobby Manager'],['供应链专员','Supply Chain Specialist'],['物流专员','Logistics Specialist'],['仓储经理','Warehouse Manager'],['货运代理专员','Freight Forwarding Specialist'],['运输经理','Transportation Manager'],['报关/报检员','Customs Declaration Specialist'],['贸易经理','Trade Manager'],['贸易跟单','Merchandiser'],['外贸销售','Export Sales'],
+  ['物业招商管理','Property Leasing Management'],['物业管理员','Property Management Officer'],['物业经理','Property Manager'],['物业安保','Property Security'],['物业维修','Property Maintenance'],['地产中介','Real Estate Agent'],['房产销售','Real Estate Sales'],['房产评估师','Real Estate Appraiser'],['地产项目管理','Real Estate Project Management'],['地产招投标','Real Estate Tendering'],['置业顾问','Property Consultant'],['选址开发','Site Development'],
+  ['人像修图师','Portrait Retoucher'],['后期制作','Post-production'],['视频编辑','Video Editor'],['摄影/摄像','Photography / Videography'],['导演/编导','Director / Screenwriter-Director'],['编剧','Screenwriter'],['主播','Host / Streamer'],['主持/DJ','Host / DJ'],['演员/配音/模特','Actor / Voice Actor / Model'],['艺人助理','Artist Assistant'],['经纪人','Talent Agent'],['艺术指导','Art Director'],['文案编辑','Copy Editor'],['作者/撰稿人','Writer / Contributor'],['记者/采编','Reporter / Editor'],['出版发行','Publishing and Distribution'],['校对录入','Proofreading and Data Entry'],['印刷排版','Printing and Typesetting'],
+  ['俄语翻译','Russian Translator'],['德语翻译','German Translator'],['法语翻译','French Translator'],['日语翻译','Japanese Translator'],['英语翻译','English Translator'],['西班牙语翻译','Spanish Translator'],['韩语/朝鲜语翻译','Korean Translator'],['其他语种翻译','Other-language Translator'],
+  ['合规稽查','Compliance Audit'],['健康管理师','Health Manager'],['咨询数据分析师','Consulting Data Analyst'],['咨询专员','Consulting Specialist'],['咨询经理','Consulting Manager'],['行业研究','Industry Research'],['政府关系','Government Relations'],['志愿者','Volunteer'],['社工','Social Worker'],['储备干部','Management Trainee'],['储备经理人','Management Trainee'],['经理助理','Assistant Manager'],['员工关系','Employee Relations'],['组织发展','Organizational Development'],['绩效考核','Performance Management'],['薪资福利','Compensation and Benefits'],['招聘','Recruitment'],['行政专员/助理','Administrative Specialist / Assistant'],['前台','Receptionist'],['后勤','Logistics Administration'],
+  ['高性能计算工程师','High-performance Computing Engineer'],['信息安全工程师','Information Security Engineer'],['系统集成','Systems Integration'],['架构师','Architect'],['自动驾驶系统工程师','Autonomous Driving Systems Engineer'],['自动化','Automation'],['热能工程师','Thermal Engineer'],['水处理工程师','Water Treatment Engineer'],['环保工程师','Environmental Engineer'],['环境监测工程师','Environmental Monitoring Engineer'],['环境评价工程师','Environmental Assessment Engineer'],['生态治理/规划','Ecological Restoration / Planning'],['能源工程师','Energy Engineer'],['石油工程师','Petroleum Engineer'],['核力/火力工程师','Nuclear / Thermal Power Engineer'],['消防工程师','Fire Protection Engineer'],
+  ['产品','Product'],['运营','Operations'],['数据','Data'],['测试','Testing'],['开发','Development'],['设计师','Designer'],['工程师','Engineer'],['经理','Manager'],['助理','Assistant'],['专员','Specialist'],['顾问','Consultant'],['分析师','Analyst'],['研究员','Researcher'],['管理','Management'],['策划','Planning'],['推广','Promotion'],['销售','Sales'],['客服','Customer Service'],['教师','Teacher'],['教练','Coach'],['翻译','Translator'],['律师','Lawyer'],['会计','Accountant'],['财务','Finance'],['算法','Algorithm'],['人工智能','AI'],['机器学习','Machine Learning'],['深度学习','Deep Learning'],['区块链','Blockchain'],['图像','Image'],['语音','Speech'],['自然语言处理','Natural Language Processing'],['大模型','Large Language Model'],['中后台','Middle and Back Office'],['项目','Project'],['品牌','Brand'],['市场','Marketing'],['内容','Content'],['用户','User'],['课程','Course'],['教务','Academic Affairs'],['教育','Education'],['培训','Training'],['医疗','Medical'],['医药','Pharmaceutical'],['硬件','Hardware'],['软件','Software'],['前端','Frontend'],['后端','Backend'],['移动','Mobile'],['通信','Telecommunications'],['视觉','Visual'],['交互','Interaction'],['游戏','Game'],['广告','Advertising'],['媒体','Media'],['金融','Financial'],['证券','Securities'],['基金','Fund'],['期货','Futures'],['银行','Banking'],['保险','Insurance'],['法律','Legal'],['行政','Administration'],['人力资源','Human Resources'],['供应链','Supply Chain'],['物流','Logistics'],['采购','Procurement'],['贸易','Trade'],['物业','Property'],['地产','Real Estate'],['建筑','Construction'],['环境','Environmental'],['能源','Energy'],['药品','Pharmaceutical'],['临床','Clinical'],['实验','Experiment'],['文档','Documentation'],['写作','Writing'],['编辑','Editor']
+];
+function cleanInternEnglish(text){
+  return String(text || '')
+    .replace(/\s*\/\s*/g, ' / ')
+    .replace(/\s*&\s*/g, ' & ')
+    .replace(/\s+/g, ' ')
+    .replace(/\s+([,.)])/g, '$1')
+    .replace(/([(/])\s+/g, '$1')
+    .replace(/\bSEO \/ SEM\b/g, 'SEO/SEM')
+    .replace(/\bSEO \/SEM\b/g, 'SEO/SEM')
+    .replace(/\bC \/ C\+\+\b/g, 'C/C++')
+    .replace(/\bC \/C\+\+\b/g, 'C/C++')
+    .replace(/\bPharmaceutical \/Medical\b/g, 'Pharmaceutical / Medical')
+    .replace(/\bAPPPromotion\b/g, 'App Promotion')
+    .replace(/\bSLAMAlgorithm\b/g, 'SLAM Algorithm')
+    .replace(/\bImageAlgorithm\b/g, 'Image Algorithm')
+    .replace(/\bInternetFinancial\b/g, 'Fintech')
+    .trim();
+}
+function translateInternPhrase(raw){
+  let out = String(raw || '');
+  INTERN_EN_PHRASES.slice().sort((a,b) => b[0].length - a[0].length).forEach(([zh,en]) => { out = out.split(zh).join(en); });
+  return cleanInternEnglish(out);
+}
+internText = function(text){
+  const raw = String(text || '');
+  if (!internIsEnglish()) return raw;
+  if (INTERN_EN_EXTRA[raw]) return INTERN_EN_EXTRA[raw];
+  if (INTERN_EN[raw]) return INTERN_EN[raw];
+  return translateInternPhrase(raw) || raw;
+};
 function internLabels(){
   return internIsEnglish()
     ? {all:'All categories', source:'data source: https://www.shixiseng.com, through 2026.7.1', skills:'Required skills', links:'JD evidence links', direct:'Direct training', support:'Foundational support', noCourses:'No campus course recommendation yet.', noLinks:'No JD evidence link recorded.', pick:'Hover a job keyword, then click a skill to view JD evidence and campus courses.'}
@@ -3265,6 +3504,7 @@ function applyI18n(lang){
   try { localStorage.setItem('cuhksz_lang', lang); } catch(e){}
   document.documentElement.lang = lang;
   if (DATA.courses && DATA.courses.length) renderCourseList();
+  if (typeof renderInternPrepPanel === 'function') renderInternPrepPanel();
 }
 function initI18n(){
   let lang = 'en';

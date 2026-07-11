@@ -243,6 +243,65 @@ npm run frontend:dev
 
 The Vite development server runs at `http://localhost:5173` and proxies API requests to `http://127.0.0.1:8080`.
 
+## Team Handoff Notes
+
+This section is for teammates who need to understand or continue the current dashboard work quickly.
+
+### Main student-facing files
+
+- `students-interface/student_dashboard_index.html`
+  - Main student dashboard page.
+  - Contains Study Headway, GPA trajectory, school competency pool, internship preparation panel, portfolio interactions, i18n text, and most browser-side rendering logic.
+- `students-interface/course_detail.html`
+  - Course detail page.
+  - Reads course data from the FastAPI course endpoints and displays SIS catalogue/outline fields.
+- `students-interface/competency_data.js`
+  - Generated school competency pool and course-competency relevance data.
+  - Source workbook: `competency-analysis/a_to_z_course_competency_relevance.xlsx`.
+- `students-interface/intern_prep_data.js`
+  - Generated internship keyword, job-skill, JD evidence, and campus-course recommendation data.
+  - Source workbooks: `job-hunting-module/releases/职位关键词-工作技能映射.xlsx` and `job-hunting-module/releases/职位技能-校内课程推荐_AI语义审核版.xlsx`.
+- `api_server.py`
+  - FastAPI backend for course search/detail endpoints and student-facing static files.
+- `tools/import_sis_courses.py`
+  - Imports SIS course records into MySQL and fills multilingual course titles.
+
+### Data and generation workflow
+
+Course data is stored in MySQL and served through FastAPI. The student dashboard expects `/api/courses` to be available; if the page says it cannot load courses, start `api_server.py` and confirm the SIS courses have been imported.
+
+Competency data is generated from the competency analysis workbook and exported to `students-interface/competency_data.js`. The browser UI keeps the original English competency text for the English page and uses front-end translations for the Chinese page. Course recommendation titles use the language-aware course title fields loaded from the course API, preferring Chinese titles on Chinese pages.
+
+Internship preparation data is generated from the job hunting module outputs and exported to `students-interface/intern_prep_data.js`. The Chinese page displays the original Chinese job keywords and skills from the workbook. The English page uses front-end translation mappings for job categories, role keywords, and skill names while preserving tool names such as Python, SQL, C/C++, Excel, Figma, and Tableau.
+
+### Local testing checklist
+
+1. Start MySQL and make sure `course_db` contains imported SIS course data.
+2. Start the backend:
+
+```bash
+python api_server.py
+```
+
+3. Open the local dashboard:
+
+```text
+http://localhost:8080/students-interface/student_dashboard_index.html
+```
+
+4. Check these panels after any UI or data change:
+
+- Available Courses: clicking a course should navigate to the course detail page, not add it to the portfolio.
+- Student Portfolio and Grade Trajectory: clear actions should remove all manual/transcript course records together.
+- GPA Trajectory: added grades should appear in chronological term order; `P` records a passed course without changing GPA.
+- Study Headway: major elective units should count valid portfolio courses that belong to the selected study-scheme elective scope.
+- School Competency Pool: Chinese pages should show translated competency names/definitions and Chinese course titles.
+- Prepare for your intern: hover/click job keywords, click skills, verify JD links and course links, then test both English and Chinese language modes.
+
+### Deployment notes
+
+The static frontend is configured through `netlify.toml`. API requests from the deployed frontend are redirected to the hosted FastAPI service. After local testing, commit and push the dashboard/static data changes, then deploy the frontend through the existing hosting workflow. Do not commit database passwords, private API keys, real student records, or local scratch outputs.
+
 ## SIS Crawler
 
 Install the crawler dependency from its own directory:
