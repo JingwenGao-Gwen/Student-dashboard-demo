@@ -1,4 +1,4 @@
-#!/Applications/miniconda3/bin/python3
+#!/usr/bin/env python3
 """
 CUHKSZ Course App — Single Server
 Run:   python3 api_server.py
