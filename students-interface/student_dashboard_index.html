@@ -68,8 +68,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .chip.on{background:linear-gradient(180deg, #2171b5 0%, #1a5fa0 100%);border-color:#1a5fa0;color:#fff;
   box-shadow:0 2px 8px rgba(33,113,181,.35), inset 0 1px 0 rgba(255,255,255,.25)}
 .chip.on:hover{color:#fff;background:linear-gradient(180deg, #2980c4 0%, #1e6cb0 100%)}
-.course-item{cursor:grab}
-.course-item:active{cursor:grabbing}
+.course-item{cursor:pointer}
+.course-item:active{cursor:pointer}
 .chip .dot{width:9px;height:9px;border-radius:50%;background:currentColor;opacity:.9;box-shadow:0 0 0 2px rgba(255,255,255,.3)}
 .chip-sec{margin-left:auto;display:flex;gap:14px;align-items:center;font-size:12.5px;color:var(--text2);font-weight:600}
 .chip-sec > span:not(:first-child){margin-left:8px}
@@ -247,8 +247,8 @@ table.matrix tr:hover td{background:#f8f9ff}
 .competency-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .competency-tab{border:1px solid var(--border);background:var(--bg);color:var(--text2);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;cursor:pointer}
 .competency-tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
-.competency-cloud{min-height:320px;border:1px solid var(--border);border-radius:14px;padding:18px;background:linear-gradient(180deg,#fff,#f8fbff);display:flex;align-content:flex-start;align-items:flex-start;justify-content:flex-start;gap:8px;flex-wrap:wrap}
-.competency-chip{border:1px solid rgba(33,113,181,.28);background:#fff;color:#12385f;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;line-height:1.25;cursor:pointer;box-shadow:0 3px 12px rgba(33,113,181,.08);transition:transform .15s,border-color .15s,box-shadow .15s,background .15s}
+.competency-cloud{min-height:320px;border:1px solid var(--border);border-radius:14px;padding:16px;background:linear-gradient(180deg,#fff,#f8fbff);display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:8px}
+.competency-chip{width:100%;border:1px solid rgba(33,113,181,.22);background:#fff;color:#12385f;border-radius:10px;padding:10px 12px;font-size:12.5px;font-weight:650;line-height:1.32;cursor:pointer;box-shadow:0 2px 8px rgba(33,113,181,.06);transition:transform .15s,border-color .15s,box-shadow .15s,background .15s;text-align:left;min-height:42px;display:flex;align-items:center;justify-content:flex-start}
 .competency-chip:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 8px 18px rgba(33,113,181,.16)}
 .competency-chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .competency-detail{border:1px solid var(--border);border-radius:14px;background:#fff;overflow:hidden}
@@ -256,55 +256,68 @@ table.matrix tr:hover td{background:#f8f9ff}
 .competency-detail-head h3{font-size:16px;line-height:1.3;margin-bottom:8px;color:var(--text)}
 .competency-detail-head p{font-size:12.5px;color:var(--text2);line-height:1.55}
 .competency-course-list{max-height:430px;overflow-y:auto;padding:12px}
-.competency-course{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fff;text-decoration:none;color:var(--text)}
+.competency-course{display:block;border:1px solid var(--border);border-radius:10px;padding:11px 13px;margin-bottom:8px;background:#fff;text-decoration:none;color:var(--text)}
 .competency-course:hover{border-color:var(--accent);background:#f8fbff}
-.competency-course-title{font-size:12px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.competency-course-code{font-size:13px;font-weight:900;color:var(--accent);display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.competency-course-title{display:block;margin-top:4px;font-size:12.5px;color:var(--text2);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.competency-course-code{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;font-weight:900;color:var(--accent);line-height:1.25}
 .taken-badge{display:inline-flex;align-items:center;border:1px solid #65a30d;background:#ecfccb;color:#3f6212;border-radius:999px;padding:1px 7px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
 .competency-score{font-size:13px;font-weight:900;color:var(--accent);text-align:right}
 .competency-score-track{grid-column:1/-1;height:6px;background:var(--border);border-radius:99px;overflow:hidden}
 .competency-score-fill{height:100%;background:linear-gradient(90deg,#6baed6,#2171b5);border-radius:99px}
-.competency-rank{color:var(--text3);font-size:11px;font-weight:900;margin-right:6px}
+.competency-rank{color:var(--text3);font-size:11px;font-weight:700;margin-right:6px}
 .competency-relevance{font-size:11px;font-weight:900;color:var(--accent);background:#e8f1fb;border:1px solid rgba(33,113,181,.22);border-radius:999px;padding:4px 9px;white-space:nowrap}
 @media(max-width:950px){.competency-panel{grid-template-columns:1fr}.competency-course-list{max-height:none}}
 
 /* Internship preparation */
-.intern-card{position:relative;overflow:hidden}
-.intern-wrap{display:grid;grid-template-columns:1fr 1.05fr 1.15fr;gap:26px;align-items:stretch;margin-top:22px}
-.intern-source{font-size:22px;font-weight:800;color:var(--text);line-height:1.35;margin-top:20px}
-.intern-source span{font-size:15px;color:var(--text2);font-weight:700}
-.intern-box{border:1.5px solid rgba(33,113,181,.55);border-radius:22px;background:linear-gradient(180deg,#fff,#f8fbff);padding:18px;min-height:330px;position:relative}
-.intern-box::before{content:'';position:absolute;left:-32px;top:54px;width:42px;border-top:1.5px solid rgba(33,113,181,.65)}
-.intern-box:first-child::before{display:none}
-.intern-box h3{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:14px}
-.intern-list{display:flex;flex-direction:column;gap:10px}
-.intern-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-weight:850;line-height:1.2}
-.intern-row small{font-size:12px;color:var(--text3);font-weight:800;white-space:nowrap}
-.heat-5{color:#0b4f3a;font-size:21px}.heat-4{color:#146c54;font-size:18px}.heat-3{color:#3c7d6b;font-size:16px}.heat-2{color:#6b8f85;font-size:14px}.heat-1{color:#95a5a1;font-size:13px}
-.intern-skills{display:grid;grid-template-columns:1fr;gap:8px}
-.intern-skill{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px solid rgba(226,229,237,.65);font-weight:800}
-.intern-skill small{color:var(--text3);font-size:11px;font-weight:900}
-.intern-outcome{border:1.5px solid rgba(33,113,181,.58);border-radius:28px;background:#fff;padding:34px 28px;display:flex;flex-direction:column;justify-content:center;text-align:center;min-height:330px}
-.intern-outcome h3{font-size:22px;line-height:1.25;margin:0 0 12px;color:var(--text)}
-.intern-course-links{display:flex;flex-direction:column;gap:7px;margin:8px auto 22px;width:max-content;max-width:100%}
-.intern-course-links a{font-size:17px;font-weight:850;color:var(--text);text-decoration:underline;text-underline-offset:4px}
-.intern-support{font-size:22px;font-weight:850;color:var(--text);margin-bottom:14px}
-.intern-support-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.intern-support-tags span{border:1px solid var(--border);background:var(--bg);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:850;color:var(--text2)}
-.intern-note{font-size:13px;color:var(--text3);font-weight:700;margin-top:16px;line-height:1.5;text-align:center}
-.intern-card .competency-toolbar{margin-top:14px}
-.intern-select{width:auto;min-width:190px;margin:0;padding:7px 12px;font-size:12px;font-weight:850}
-.intern-source-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.intern-source-links a{font-size:12px;font-weight:850;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
-@media(max-width:1000px){.intern-wrap{grid-template-columns:1fr}.intern-box::before{display:none}.intern-source{font-size:18px}.intern-outcome h3,.intern-support{font-size:19px}}
+.intern-card{position:relative;overflow:visible}
+.intern-source{font-size:13px;color:var(--text2);font-weight:700;margin-top:4px}
+.intern-board{display:grid;grid-template-columns:260px minmax(0,1fr) 390px;gap:18px;margin-top:22px;align-items:start}
+.intern-cats{border:1px solid var(--border);background:#fff;border-radius:8px;overflow:hidden}
+.intern-cats-title{padding:14px 16px;font-size:16px;color:var(--text2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.intern-cat-row{display:grid;grid-template-columns:92px 1fr 18px;gap:8px;padding:13px 14px;border-bottom:1px solid rgba(226,229,237,.75);cursor:pointer;align-items:center}
+.intern-cat-row:hover,.intern-cat-row.on{background:#f8fbff}
+.intern-cat-main{font-size:17px;font-weight:700;color:var(--text)}
+.intern-cat-subs{font-size:13px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.intern-cat-arrow{font-size:22px;color:#a3aab8;line-height:1}
+.intern-keyword-panel{border:1px solid var(--border);background:#fff;border-radius:8px;padding:22px 26px;min-height:430px;box-shadow:0 8px 22px rgba(15,23,42,.04)}
+.intern-keyword-line{display:flex;align-items:baseline;gap:18px;margin:0 0 19px;flex-wrap:wrap}
+.intern-keyword-head{font-size:20px;font-weight:750;color:var(--text);min-width:96px}
+.intern-keyword-pill{border:0;background:transparent;padding:0;color:#606776;font-size:16px;font-weight:520;cursor:pointer;line-height:1.6}
+.intern-keyword-pill:hover,.intern-keyword-pill.on{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.intern-hover-card{margin-top:20px;border-top:1px solid var(--border);padding-top:16px}
+.intern-hover-title{font-size:13px;color:var(--text3);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.intern-hover-skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px}
+.intern-skill-button{display:flex;justify-content:space-between;gap:10px;border:0;background:#f6f8fc;border-radius:7px;padding:9px 11px;text-align:left;color:var(--text);font-size:13px;font-weight:700;cursor:pointer}
+.intern-skill-button:hover,.intern-skill-button.on{background:#eaf3ff;color:var(--accent)}
+.intern-skill-button small{color:var(--text3);font-size:11px;font-weight:700}
+.intern-detail{border:1px solid var(--border);background:#fff;border-radius:8px;min-height:430px;padding:22px 24px;box-shadow:0 8px 22px rgba(15,23,42,.04)}
+.intern-detail h3{font-size:21px;margin:0 0 6px;color:var(--text);line-height:1.25}
+.intern-detail-meta{font-size:12px;color:var(--text3);font-weight:700;margin-bottom:16px}
+.intern-evidence{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.intern-evidence a{display:inline-flex;align-items:center;min-height:28px;padding:5px 9px;border-radius:6px;background:#f2f6fc;color:var(--accent);font-size:12px;font-weight:750;text-decoration:none}
+.intern-course-section{margin-top:18px}
+.intern-course-section h4{font-size:15px;color:var(--text);margin:0 0 10px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.intern-course-list{display:flex;flex-direction:column;gap:8px}
+.intern-course-link{display:grid;grid-template-columns:82px 1fr;gap:10px;align-items:start;text-decoration:none;border-radius:7px;padding:8px 9px;background:#fafbfe;color:var(--text)}
+.intern-course-link:hover{background:#edf5ff}
+.intern-course-code{font-size:12px;color:var(--accent);font-weight:850;white-space:nowrap}
+.intern-course-title{font-size:13px;line-height:1.35;color:var(--text2);font-weight:650}
+.intern-empty{font-size:13px;color:var(--text3);font-weight:700;padding:10px 0}
+@media(max-width:1120px){.intern-board{grid-template-columns:1fr}.intern-hover-skills{grid-template-columns:1fr}.intern-detail{min-height:0}.intern-keyword-panel{min-height:0}}
 
 /* GPA chart */
-.gpa-grid{display:grid;grid-template-columns:1fr 320px;gap:24px}
+.gpa-grid{display:grid;grid-template-columns:minmax(0,1fr) 460px;gap:24px;align-items:start}
+.gpa-chart-pane{min-width:0;max-width:760px}
 @media(max-width:900px){.gpa-grid{grid-template-columns:1fr}}
 .gpa-input{display:flex;gap:8px;margin-bottom:14px;align-items:center}
 .gpa-input select, .gpa-input input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;background:var(--surface);outline:none}
 .gpa-input select{min-width:0;flex-shrink:1}
-.gpa-input select#g-code, .gpa-input input#g-code{flex:1;min-width:0}
+.gpa-input #g-sem{width:120px;flex:0 0 120px}
+.gpa-input #g-grade{width:56px;flex:0 0 56px}
+.gpa-input select#g-code, .gpa-input input#g-code{flex:1 1 220px;min-width:190px}
+.gpa-input input[list]::-webkit-calendar-picker-indicator{display:none!important}
+.gpa-input input[list]{appearance:textfield;-webkit-appearance:none}
+.gpa-input input#g-units{width:52px!important;flex:0 0 52px!important;padding-left:8px;padding-right:8px;text-align:center}
 .gpa-input select:focus, .gpa-input input:focus{border-color:var(--accent)}
 .gpa-list{max-height:320px;overflow-y:auto;font-size:13px;border:1px solid var(--border);border-radius:10px;padding:8px;background:var(--surface)}
 .gpa-list .row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--bg);border-radius:8px;margin-bottom:4px;font-size:13px}
@@ -472,27 +485,27 @@ table.matrix tr:hover td{background:#f8f9ff}
       </div>
 
       <div class="gpa-grid">
-        <div>
+        <div class="gpa-chart-pane">
           <div class="canvas-wrap"><canvas id="gpa-chart"></canvas></div>
         </div>
         <div>
           <div style="font-size:13px;color:var(--text2);margin-bottom:8px;font-weight:700" data-i18n="gpa.add">Add a grade</div>
-          <div style="font-size:12px;color:var(--text3);line-height:1.45;margin:-2px 0 10px" data-i18n="gpa.manualNote">If a waived or approved course does not appear on the transcript, enter it manually with its semester and grade; it will be included in term GPA only.</div>
+          <div style="font-size:12px;color:var(--text3);line-height:1.45;margin:-2px 0 10px" data-i18n="gpa.manualNote">Enter a course manually with its semester, units, and grade. Letter grades update the GPA graph; P records a passed course in the portfolio only.</div>
           <div class="gpa-input">
             <select id="g-sem" title="Semester">
-              <option value="F23">FAL 23</option><option value="S24">SPR 24</option><option value="SUM24">SUM 24</option>
-              <option value="F24">FAL 24</option><option value="S25" selected>SPR 25</option><option value="SUM25">SUM 25</option>
-              <option value="F25">FAL 25</option><option value="S26">SPR 26</option><option value="SUM26">SUM 26</option>
-              <option value="F26">FAL 26</option><option value="S27">SPR 27</option>
+              <option value="F23">23-24 Term 1</option><option value="S24">23-24 Term 2</option><option value="SUM24">SUM 24</option>
+              <option value="F24">24-25 Term 1</option><option value="S25" selected>24-25 Term 2</option><option value="SUM25">SUM 25</option>
+              <option value="F25">25-26 Term 1</option><option value="S26">25-26 Term 2</option><option value="SUM26">SUM 26</option>
+              <option value="F26">26-27 Term 1</option><option value="S27">26-27 Term 2</option>
             </select>
-            <input id="g-code" list="g-code-list" placeholder="Course code (type or pick)" autocomplete="off" style="flex:1;min-width:0"/>
+            <input id="g-code" list="g-code-list" placeholder="Course code (type or pick)" autocomplete="off"/>
             <datalist id="g-code-list"></datalist>
-            <input id="g-units" type="number" min="0" max="9" step="0.5" value="3" title="Units" style="width:74px;flex:0 0 74px"/>
+            <input id="g-units" type="number" min="0" max="9" step="0.5" value="3" title="Units"/>
             <select id="g-grade" title="Letter grade">
               <option>A</option><option>A-</option>
               <option>B+</option><option>B</option><option>B-</option>
               <option>C+</option><option>C</option><option>C-</option>
-              <option>D+</option><option>D</option><option>F</option>
+              <option>D+</option><option>D</option><option>F</option><option>P</option>
             </select>
           </div>
           <button id="add-grade-btn" class="btn btn-primary" style="width:100%;margin-bottom:14px;justify-content:center" data-i18n="gpa.addbtn">＋ Add Grade</button>
@@ -505,8 +518,8 @@ table.matrix tr:hover td{background:#f8f9ff}
     <div class="card" id="section-competency-pool">
       <div class="card-head">
         <div>
-          <h2>School Competency Pool</h2>
-          <div class="sub">Click a competency to see highly related courses ranked by relevance score.</div>
+          <h2 data-i18n="competency.title">School Competency Pool</h2>
+          <div class="sub" data-i18n="competency.sub">Click a competency to see highly related courses ranked by relevance score.</div>
         </div>
         <button class="btn" onclick="jumpTo('section-basket')">Portfolio</button>
       </div>
@@ -520,29 +533,18 @@ table.matrix tr:hover td{background:#f8f9ff}
     <div class="card intern-card" id="section-intern-prep">
       <div class="card-head">
         <div>
-          <h2>Prepare for your intern:</h2>
-          <div class="sub">Translate internship job descriptions into target roles, high-frequency skills, and course preparation.</div>
+          <h2 id="intern-title">Prepare for your intern</h2>
+          <div class="sub" id="intern-source">data source: https://www.shixiseng.com, through 2026.7.1</div>
         </div>
       </div>
-      <div class="competency-toolbar" id="intern-category-tabs"></div>
-      <div class="intern-source" id="intern-source">Loading internship preparation data...</div>
-      <div class="intern-wrap">
-        <div class="intern-box">
-          <h3>JD role signals</h3>
-          <div class="intern-list" id="intern-role-list"></div>
+      <div class="intern-board">
+        <div class="intern-cats">
+          <div class="intern-cats-title"><span id="intern-all-cats">All categories</span><span>‹ ›</span></div>
+          <div id="intern-category-list"></div>
         </div>
-        <div class="intern-box">
-          <h3>High-frequency skills</h3>
-          <div class="intern-skills" id="intern-skill-list"></div>
-        </div>
-        <div class="intern-outcome">
-          <h3 id="intern-outcome-title">Source: JD links<br/>Direct training</h3>
-          <div class="intern-course-links" id="intern-course-links"></div>
-          <div class="intern-support" id="intern-support-title">Foundational support</div>
-          <div class="intern-support-tags" id="intern-support-tags"></div>
-        </div>
+        <div class="intern-keyword-panel" id="intern-keyword-panel"></div>
+        <div class="intern-detail" id="intern-skill-detail"></div>
       </div>
-      <div class="intern-note" id="intern-note"></div>
     </div>
     <!-- Skill profile (moved AFTER GPA) -->
     <div class="card" id="section-skill">
@@ -648,11 +650,109 @@ function esc(s){
 function currentLang(){
   try { return localStorage.getItem('cuhksz_lang') || 'en'; } catch(e){ return 'en'; }
 }
+function titleCandidate(c, keys){
+  if (!c) return '';
+  const code = c.code || c.raw_code || c.course_code || c.catalog_code || '';
+  for (const key of keys){
+    const value = String(c[key] == null ? '' : c[key]).trim();
+    if (value && compactCode(value) !== compactCode(code)) return value;
+  }
+  return '';
+}
 function courseTitle(c){
   const lang = currentLang();
-  if (lang === 'zh-CN') return c.title_zh_cn || c.title_zh_tw || c.title_en || c.title || c.code;
-  if (lang === 'zh-TW') return c.title_zh_tw || c.title_zh_cn || c.title_en || c.title || c.code;
-  return c.title_en || c.code;
+  if (lang === 'zh-CN') return titleCandidate(c, ['title_zh_cn','course_title_zh_cn','title_cn','course_title_cn','chinese_title','title_chinese','name_zh_cn','name_cn','title_zh','title_sc','title_zh_tw','title_en','name_en','title','name']) || c.code;
+  if (lang === 'zh-TW') return titleCandidate(c, ['title_zh_tw','course_title_zh_tw','title_tw','course_title_tw','chinese_title','title_chinese','name_zh_tw','name_tw','title_zh','title_tc','title_zh_cn','title_en','name_en','title','name']) || c.code;
+  return titleCandidate(c, ['title_en','course_title_en','english_title','title_english','name_en','title','name','title_zh_cn','title_zh_tw']) || c.code;
+}
+const COMPETENCY_ZH_PHRASES = [
+  ['AI ethics, governance and regulation','AI伦理、治理与监管'],
+  ['AI programming and software implementation','AI编程与软件实现'],
+  ['AI systems, algorithms and data-driven problem solving','AI系统、算法与数据驱动问题解决'],
+  ['Embodied, robotic and domain AI applications','具身智能、机器人与领域AI应用'],
+  ['Machine learning, deep learning and large language models','机器学习、深度学习与大语言模型'],
+  ['Mathematical and statistical foundations for AI','AI的数学与统计基础'],
+  ['Project-based AI exploration, practice and capstone execution','项目式AI探索、实践与毕业项目执行'],
+  ['Big data analytics and data-driven modelling','大数据分析与数据驱动建模'],
+  ['Data structures, databases and computing infrastructure','数据结构、数据库与计算基础设施'],
+  ['Domain applications in business, finance, life science and engineering','商业、金融、生命科学与工程领域应用'],
+  ['Machine learning, AI and data mining','机器学习、AI与数据挖掘'],
+  ['Programming, algorithms, software and computing systems','编程、算法、软件与计算系统'],
+  ['Quantitative modelling and mathematical foundations','定量建模与数学基础'],
+  ['Research, capstone and project execution','研究、毕业项目与项目执行'],
+  ['Robotics, control and embodied intelligent systems','机器人、控制与具身智能系统'],
+  ['Statistical reasoning, probability and inference','统计推理、概率与推断'],
+  ['course outline matches','课程大纲匹配'],
+  ['prefix aligns with this competency area','课程前缀与该能力领域相关'],
+  ['Ability to','能够'],
+  ['understand and apply','理解并应用'],
+  ['understand','理解'],
+  ['apply','应用'],
+  ['analyze','分析'],
+  ['reason about','推理'],
+  ['use','使用'],
+  ['complete','完成'],
+  ['carry out','开展'],
+  ['implement','实现'],
+  ['design','设计'],
+  ['organize, store, retrieve and manage','组织、存储、检索和管理'],
+  ['large-scale data','大规模数据'],
+  ['data-driven models','数据驱动模型'],
+  ['decisions','决策'],
+  ['programming','编程'],
+  ['software','软件'],
+  ['algorithms','算法'],
+  ['algorithm','算法'],
+  ['data structures','数据结构'],
+  ['databases','数据库'],
+  ['database','数据库'],
+  ['infrastructure','基础设施'],
+  ['mathematics','数学'],
+  ['statistics','统计'],
+  ['statistical','统计'],
+  ['probability','概率'],
+  ['inference','推断'],
+  ['optimization','优化'],
+  ['optimisation','优化'],
+  ['modelling','建模'],
+  ['modeling','建模'],
+  ['model','模型'],
+  ['data mining','数据挖掘'],
+  ['visualization','可视化'],
+  ['analysis','分析'],
+  ['data','数据'],
+  ['research','研究'],
+  ['project','项目'],
+  ['capstone','毕业项目'],
+  ['team','团队'],
+  ['practice','实践'],
+  ['presentation','展示'],
+  ['business','商业'],
+  ['finance','金融'],
+  ['life science','生命科学'],
+  ['engineering','工程'],
+  ['robotics','机器人'],
+  ['robot','机器人'],
+  ['control','控制'],
+  ['sensors','传感器'],
+  ['sensor','传感器'],
+  ['ethics','伦理'],
+  ['governance','治理'],
+  ['regulation','监管'],
+  ['safety','安全'],
+  ['social impact','社会影响'],
+];
+function isChineseLang(){ return currentLang() !== 'en'; }
+function localizeCompetencyText(text){
+  let out = String(text || '');
+  if (!isChineseLang()) return out;
+  COMPETENCY_ZH_PHRASES.forEach(([en, zh]) => {
+    out = out.replace(new RegExp(en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), zh);
+  });
+  return out;
+}
+function localizeRationale(text){
+  return localizeCompetencyText(String(text || '').replace(/\s*\(\+\d+(?:\.\d+)?\)/g, ''));
 }
 const ORG_BY_SUBJECT = {
   AIE:'SAI',
@@ -803,6 +903,8 @@ let dragCode = null; // course being dragged
 let activeCompetencySchool = '';
 let activeCompetencyItem = '';
 let activeInternCategory = '';
+let activeInternRole = '';
+let activeInternSkill = '';
 
 function jumpTo(id){ const el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
 
@@ -1028,7 +1130,10 @@ document.addEventListener('click', (e) => {
     }
   }
   const el = e.target.closest('.course-item[data-code]');
-  if (el){ toggleCourse(el.dataset.code); return; }
+  if (el){
+    location.href = 'course_detail.html?code=' + encodeURIComponent(el.dataset.code);
+    return;
+  }
   const tag = e.target.closest('.basket-tag[data-code]');
   if (tag){ toggleCourse(tag.dataset.code); return; }
   // Sort toggle (skill bars)
@@ -1083,7 +1188,14 @@ function toggleCourse(code){
   selectedCodes.has(code) ? selectedCodes.delete(code) : selectedCodes.add(code);
   renderAll(); saveState();
 }
-function clearBasket(){ selectedCodes.clear(); renderAll(); saveState(); }
+function clearAllCourseRecords(message){
+  if(!confirm(message || 'Clear all course and grade records?')) return;
+  selectedCodes.clear();
+  gpaRecords = [];
+  transcriptSummary = { cgpa:null, mgpa:null, totalUnits:null, termSummaries:{} };
+  renderAll(); saveState();
+}
+function clearBasket(){ clearAllCourseRecords('Clear all portfolio and grade records?'); }
 function renderBasket(){
   const basket = document.getElementById('basket');
   if (!basket) return;
@@ -1160,8 +1272,7 @@ function isGpaGrade(grade){ return GRADE_VAL[String(grade || '').toUpperCase()] 
 function isWithdrawnGrade(grade){ return String(grade || '').toUpperCase() === 'W'; }
 function isInProgressGrade(grade){ return String(grade || '').toUpperCase() === 'IP'; }
 function isPortfolioCreditGrade(grade){
-  const g = String(grade || '').toUpperCase();
-  return g !== 'W' && g !== 'IP';
+  return isPassingGrade(grade);
 }
 function courseUnits(code){
   const c = DATA.courses.find(x => x.code === code);
@@ -1325,9 +1436,12 @@ function codePrefix(code){
   return m ? m[1] : '';
 }
 function compactCode(code){ return normalizeCourseCode(code).replace(/\s+/g, ''); }
+function isNonGpaPassGrade(grade){
+  return ['P','PA','DI'].includes(String(grade || '').trim().toUpperCase());
+}
 function isPassingGrade(grade){
   const g = String(grade || '').trim().toUpperCase();
-  return g !== 'W' && g !== 'IP' && g !== 'F';
+  return (isGpaGrade(g) && g !== 'F') || isNonGpaPassGrade(g);
 }
 function courseLink(code){
   const norm = normalizeCourseCode(code);
@@ -1583,19 +1697,29 @@ function majorProgress(completed, rule){
   const categoryCodes = flattenRequirementCodes((rule.electiveCategories || []).flatMap(cat => cat.courses || []));
   const pool = new Set([...(rule.electivePool || []).map(normalizeCourseCode), ...required, ...categoryCodes]);
   const prefixSet = new Set(rule.prefixes || [rule.dept]);
-  let majorUnits = 0, electiveUnitsDone = 0;
+  let majorUnits = 0;
   completed.forEach((u, code) => {
     const inMajor = rule.exactMajorPool ? pool.has(code) : (pool.has(code) || prefixSet.has(codePrefix(code)));
     if (!inMajor) return;
     majorUnits += u;
-    if (!required.includes(code)) electiveUnitsDone += u;
   });
-  const electiveNeed = Number(rule.electiveUnits || 0);
-  const electiveShort = Math.max(0, electiveNeed - electiveUnitsDone);
   const categoryStats = (rule.electiveCategories || []).map(cat => {
     const completedCodes = completedCodesForCategory(completed, cat);
     return {...cat, completedCodes, completedCount:completedCodes.length, completedUnits:completedUnitsForCodes(completed, completedCodes)};
   });
+  const electiveCodeSet = new Set();
+  if (categoryStats.length){
+    categoryStats.forEach(cat => cat.completedCodes.forEach(code => {
+      if (!required.includes(code)) electiveCodeSet.add(code);
+    }));
+  } else {
+    (rule.electivePool || []).map(normalizeCourseCode).forEach(code => {
+      if (completed.has(code) && !required.includes(code)) electiveCodeSet.add(code);
+    });
+  }
+  const electiveUnitsDone = completedUnitsForCodes(completed, Array.from(electiveCodeSet));
+  const electiveNeed = Number(rule.electiveUnits || 0);
+  const electiveShort = Math.max(0, electiveNeed - electiveUnitsDone);
   const categoryById = new Map(categoryStats.map(cat => [cat.id, cat]));
   const ruleResults = [];
   const rules = rule.electiveRules || {};
@@ -1705,11 +1829,24 @@ function competencyPoolItems(){
 }
 function findCourseForCompetencyCode(code){
   const norm = normalizeCourseCode(code);
-  return DATA.courses.find(c => normalizeCourseCode(c.code) === norm || compactCode(c.code) === compactCode(norm));
+  return DATA.courses.find(c => {
+    const values = [
+      c.code, c.raw_code, c.course_code, c.catalog_code, c.subject_catalog,
+      c.sis_code, c.class_nbr, c.course_id
+    ];
+    const subject = c.subject_code || c.dept || c.subject || '';
+    const catalog = c.catalog_number || c.catalog_nbr || c.course_number || c.number || '';
+    if (subject && catalog) values.push(`${subject} ${catalog}`, `${subject}${catalog}`);
+    return values.some(v => normalizeCourseCode(v) === norm || compactCode(v) === compactCode(norm));
+  });
 }
 function competencyCourseTitle(code){
   const c = findCourseForCompetencyCode(code);
-  return c ? courseTitle(c) : normalizeCourseCode(code);
+  if (!c) return currentLang() === 'en' ? 'Course title unavailable' : '课程标题待补充';
+  const title = courseTitle(c);
+  return compactCode(title) === compactCode(code)
+    ? (currentLang() === 'en' ? 'Course title unavailable' : '课程标题待补充')
+    : title;
 }
 function competencyHref(code){
   return 'course_detail.html?code=' + encodeURIComponent(normalizeCourseCode(code));
@@ -1749,7 +1886,7 @@ function renderCompetencyCloud(items){
   if (!activeCompetencyItem || !items.some(x => x.item === activeCompetencyItem)){
     activeCompetencyItem = items[0].item;
   }
-  el.innerHTML = items.map((p, i) => `<button class="competency-chip ${p.item===activeCompetencyItem?'on':''}" onclick="selectCompetencyItemByIndex(${i})" title="${esc(p.definition || p.item)}"><span class="competency-rank">${String(i + 1).padStart(2,'0')}.</span>${esc(p.item)}</button>`).join('');
+  el.innerHTML = items.map((p, i) => `<button class="competency-chip ${p.item===activeCompetencyItem?'on':''}" onclick="selectCompetencyItemByIndex(${i})" title="${esc(localizeCompetencyText(p.definition || p.item))}"><span class="competency-rank">${String(i + 1).padStart(2,'0')}.</span>${esc(localizeCompetencyText(p.item))}</button>`).join('');
 }
 function renderCompetencyDetail(items){
   const data = competencyData();
@@ -1762,17 +1899,16 @@ function renderCompetencyDetail(items){
     const norm = normalizeCourseCode(row.code);
     const isTaken = taken.has(norm);
     const title = competencyCourseTitle(norm);
-    return `<a class="competency-course" href="${competencyHref(norm)}" title="${esc(row.rationale || '')}">
+    return `<a class="competency-course" href="${competencyHref(norm)}" title="${esc(localizeRationale(row.rationale || ''))}">
       <div>
         <div class="competency-course-code"><span class="competency-rank">${String(i + 1).padStart(2,'0')}.</span>${esc(norm.replace(/\s+/g,''))}${isTaken ? '<span class="taken-badge">taken</span>' : ''}</div>
         <div class="competency-course-title">${esc(title)}</div>
       </div>
-      <div class="competency-relevance">Relevance ${i + 1}</div>
     </a>`;
   }).join('') : '<div style="padding:18px;color:var(--text3);font-weight:700">No high-relevance course rows for this competency yet.</div>';
   el.innerHTML = `<div class="competency-detail-head">
-      <h3>${esc(item.item)}</h3>
-      <p>${esc(item.definition || 'Courses are ranked by competency relevance score from the analysis workbook.')}</p>
+      <h3>${esc(localizeCompetencyText(item.item))}</h3>
+      <p>${esc(localizeCompetencyText(item.definition || 'Courses are ranked by competency relevance score from the analysis workbook.'))}</p>
       <p style="margin-top:8px;font-weight:800;color:var(--accent)">${esc(item.abbr || item.school || '')}</p>
     </div>
     <div class="competency-course-list">${list}</div>`;
@@ -1796,106 +1932,154 @@ function internPrepData(){
   return window.INTERN_PREP_DATA || {categories:{}};
 }
 function internCategories(){
-  return Object.keys(internPrepData().categories || {}).sort((a,b) => a.localeCompare(b, 'zh-Hans-CN'));
+  const data = internPrepData();
+  const all = Object.keys(data.categories || {});
+  const preferred = ['产品','运营','技术管理','后端开发','移动开发','前端开发','游戏','测试','运维/技术支持','数据','人工智能','金融中后台','投融资','互联网金融','市场/营销','销售','教育产品研发','咨询调研','临床试验'];
+  return [...preferred.filter(c => all.includes(c)), ...all.filter(c => !preferred.includes(c))];
 }
 function selectInternCategory(category){
   if (!category) return;
   activeInternCategory = category;
+  activeInternRole = '';
+  activeInternSkill = '';
   renderInternPrepPanel();
-}
-function internHeat(value, values){
-  const nums = values.map(v => Number(v || 0)).filter(v => v > 0);
-  if (!nums.length) return 'heat-1';
-  const max = Math.max(...nums);
-  const ratio = max ? Number(value || 0) / max : 0;
-  if (ratio >= .82) return 'heat-5';
-  if (ratio >= .62) return 'heat-4';
-  if (ratio >= .42) return 'heat-3';
-  if (ratio >= .22) return 'heat-2';
-  return 'heat-1';
 }
 function internCount(n){
   const v = Number(n || 0);
   return v ? v.toLocaleString('en-US') : '-';
 }
-function renderInternTabs(){
-  const el = document.getElementById('intern-category-tabs');
-  if (!el) return;
-  const data = internPrepData();
-  const all = internCategories();
-  if (!all.length){ el.innerHTML = ''; return; }
-  if (!activeInternCategory || !data.categories[activeInternCategory]){
-    activeInternCategory = data.defaultCategory && data.categories[data.defaultCategory] ? data.defaultCategory : all[0];
-  }
-  const preferred = ['产品','数据','运营','市场','金融','技术','设计','销售','供应链','互联网金融','非视觉设计'];
-  const tabs = [...preferred.filter(c => data.categories[c]), ...all.filter(c => !preferred.includes(c)).slice(0, 5)];
-  const btns = tabs.map(c => `<button class="competency-tab ${activeInternCategory===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
-  const options = all.map(c => `<option value="${esc(c)}" ${activeInternCategory===c?'selected':''}>${esc(c)}</option>`).join('');
-  el.innerHTML = `${btns}<select id="intern-category-select" class="adv-select intern-select" aria-label="Intern category">${options}</select>`;
-  el.querySelectorAll('button[data-cat]').forEach(btn => btn.addEventListener('click', () => selectInternCategory(btn.dataset.cat)));
-  const sel = document.getElementById('intern-category-select');
-  if (sel) sel.addEventListener('change', () => selectInternCategory(sel.value));
+function internIsEnglish(){ return currentLang() === 'en'; }
+const INTERN_EN = {
+  '产品':'Product','运营':'Operations','技术管理':'Technical Management','后端开发':'Backend Development','移动开发':'Mobile Development','前端开发':'Frontend Development','游戏':'Game','测试':'Testing','运维/技术支持':'DevOps / Tech Support','数据':'Data','客服':'Customer Service','人工智能':'Artificial Intelligence','电子/半导体':'Electronics / Semiconductor','硬件开发':'Hardware Development','通信':'Telecommunications','视觉/交互设计':'Visual / Interaction Design','影视传媒':'Film & Media','非视觉设计':'Non-visual Design','游戏设计':'Game Design','广告':'Advertising','采编/写作/出版':'Editing / Writing / Publishing','行政':'Administration','人力资源':'Human Resources','财会':'Accounting & Finance','金融中后台':'Financial Middle / Back Office','投融资':'Investment & Financing','证券/基金/期货':'Securities / Funds / Futures','互联网金融':'Internet Finance','保险':'Insurance','银行':'Banking','法务':'Legal Affairs','律师':'Lawyer','公共媒介':'Public Relations','会务会展':'Conference & Exhibition','品牌推广':'Brand Promotion','市场/营销':'Marketing','销售':'Sales','采购':'Procurement','进出口贸易':'Import / Export Trade','供应链/物流':'Supply Chain / Logistics','教务行政':'Academic Administration','教师':'Teacher','教育产品研发':'Education Product R&D','职业培训':'Vocational Training','特长培训':'Specialty Training','翻译':'Translation','咨询调研':'Consulting & Research','护士/护理':'Nursing','医生/医技':'Doctor / Medical Technician','健康整形':'Health & Aesthetic Medicine','生物制药':'Biopharma','药店':'Pharmacy','临床试验':'Clinical Trial','环境科学':'Environmental Science','能源/矿产/地质':'Energy / Mining / Geology','农牧渔林':'Agriculture / Forestry','消费品管理':'Consumer Goods Management','物业管理':'Property Management','房地产规划开发':'Real Estate Planning','房地产销售/招商':'Real Estate Sales / Leasing','设计装修与市政建设':'Design, Decoration & Municipal Construction','园林/景观设计':'Landscape Design','土木/土建/结构工程':'Civil / Structural Engineering','公共事业':'Public Service','管培生':'Management Trainee','其他':'Other',
+  '用户研究':'User Research','用户体验设计':'User Experience Design','需求分析':'Requirements Analysis','项目管理':'Project Management','原型设计':'Prototype Design','市场调研':'Market Research','C语言':'C Language','PRD文档':'PRD Documentation','产品规划':'Product Planning','深度学习':'Deep Learning','文案写作':'Copywriting','英语':'English','内容运营':'Content Operations','活动策划':'Event Planning','社群运营':'Community Operations','新媒体运营':'New Media Operations','数据可视化':'Data Visualization','统计分析':'Statistical Analysis','数据清洗':'Data Cleaning','实验设计':'Experimental Design','软件测试':'Software Testing','机器学习':'Machine Learning','自然语言处理':'Natural Language Processing','嵌入式开发':'Embedded Development','计算机视觉':'Computer Vision','自动化测试':'Automated Testing','数据仓库':'Data Warehouse','日语':'Japanese','税务知识':'Tax Knowledge','课程设计':'Curriculum Design','会计准则':'Accounting Standards','审计':'Audit','供应链管理':'Supply Chain Management','估值分析':'Valuation Analysis','财务建模':'Financial Modeling','文献检索':'Literature Search','临床研究':'Clinical Research','品牌策划':'Brand Strategy','细胞培养':'Cell Culture','教学设计':'Instructional Design','直接培养':'Direct training','基础支撑':'Foundational support'
+};
+function internText(text){
+  const raw = String(text || '');
+  if (!internIsEnglish()) return raw;
+  if (INTERN_EN[raw]) return INTERN_EN[raw];
+  let out = raw;
+  [
+    ['产品','Product '],['运营','Operations '],['数据','Data '],['游戏','Game '],['测试','Testing '],['算法','Algorithm '],['视觉','Visual '],['交互','Interaction '],['设计','Design '],['开发','Development '],['工程师','Engineer'],['经理','Manager'],['助理','Assistant'],['专员','Specialist'],['研究员','Researcher'],['分析师','Analyst'],['教师','Teacher'],['医生','Doctor'],['护士','Nurse'],['客服','Customer Service'],['行政','Administration'],['会计','Accounting'],['财务','Finance'],['市场','Marketing'],['销售','Sales'],['招聘','Recruitment'],['培训','Training'],['法务','Legal'],['编辑','Editor'],['前端','Frontend'],['后端','Backend'],['移动','Mobile'],['硬件','Hardware'],['软件','Software'],['通信','Telecom'],['项目','Project '],['内容','Content '],['用户','User '],['职业','Vocational '],['实习生','Intern']
+  ].forEach(([zh,en]) => { out = out.split(zh).join(en); });
+  return out.trim() || raw;
+}
+function internLabels(){
+  return internIsEnglish()
+    ? {all:'All categories', source:'data source: https://www.shixiseng.com, through 2026.7.1', skills:'Required skills', links:'JD evidence links', direct:'Direct training', support:'Foundational support', noCourses:'No campus course recommendation yet.', noLinks:'No JD evidence link recorded.', pick:'Hover a job keyword, then click a skill to view JD evidence and campus courses.'}
+    : {all:'全部分类', source:'数据来源：https://www.shixiseng.com，截止到（2026.7.1）', skills:'所需能力', links:'JD证据链接', direct:'直接培养', support:'基础支撑', noCourses:'暂无校内课程推荐。', noLinks:'暂无JD证据链接。', pick:'悬停职位关键词，并点击能力查看JD证据与校内课程。'};
+}
+function internCourseTitle(course){
+  if (!course) return '';
+  if (internIsEnglish()) return course.courseNameEn || course.courseNameZh || '';
+  return course.courseNameZh || course.courseNameEn || '';
+}
+function selectInternRole(keyword){
+  activeInternRole = keyword || '';
+  activeInternSkill = '';
+  renderInternPrepPanel();
+}
+function selectInternSkill(skill){
+  activeInternSkill = skill || '';
+  renderInternPrepPanel();
 }
 function renderInternPrepPanel(){
   const card = document.getElementById('section-intern-prep');
   if (!card) return;
   const data = internPrepData();
   const categories = data.categories || {};
-  const all = Object.keys(categories);
+  const all = internCategories();
   if (!all.length){
     card.style.display = 'none';
     return;
   }
   card.style.display = '';
-  renderInternTabs();
+  const labels = internLabels();
+  const titleEl = document.getElementById('intern-title');
+  if (titleEl) titleEl.textContent = internIsEnglish() ? 'Prepare for your intern' : '准备你的实习';
+  const sourceEl = document.getElementById('intern-source');
+  if (sourceEl) sourceEl.textContent = labels.source;
+  const allEl = document.getElementById('intern-all-cats');
+  if (allEl) allEl.textContent = labels.all;
+  if (!activeInternCategory || !categories[activeInternCategory]){
+    activeInternCategory = data.defaultCategory && categories[data.defaultCategory] ? data.defaultCategory : all[0];
+  }
   const entry = categories[activeInternCategory] || categories[all[0]];
   if (!entry) return;
+  const roles = entry.roles || [];
+  if (!activeInternRole || !roles.some(r => r.keyword === activeInternRole)){
+    activeInternRole = roles[0] && roles[0].keyword || '';
+  }
+  const role = roles.find(r => r.keyword === activeInternRole) || roles[0] || {skills:[]};
+  const skills = role.skills || [];
+  const defaultSkill = skills.find(s => (s.directCourses && s.directCourses.length) || (s.supportCourses && s.supportCourses.length)) || skills[0];
+  if (!activeInternSkill || !skills.some(s => s.skill === activeInternSkill)){
+    activeInternSkill = defaultSkill && defaultSkill.skill || '';
+  }
+  const skill = skills.find(s => s.skill === activeInternSkill) || skills[0] || null;
 
-  const sourceEl = document.getElementById('intern-source');
-  const sourceLinks = (entry.sourceUrls || []).slice(0, 4)
-    .map((u, i) => `<a href="${esc(u)}" target="_blank" rel="noopener">JD ${i + 1}</a>`).join('');
-  if (sourceEl){
-    sourceEl.innerHTML = `讲一下数据来源：数据来源于${esc(data.sourceName || '实习僧')} <span>（${esc(data.dataDate || '2026.7.1')}）</span>${sourceLinks ? `<div class="intern-source-links">${sourceLinks}</div>` : ''}`;
+  const catEl = document.getElementById('intern-category-list');
+  if (catEl){
+    catEl.innerHTML = all.map(cat => {
+      const catEntry = categories[cat] || {};
+      const subs = (catEntry.roles || []).slice(0, 3).map(r => internText(r.keyword)).join('  ');
+      return `<div class="intern-cat-row ${cat===activeInternCategory?'on':''}" data-cat="${esc(cat)}">
+        <span class="intern-cat-main">${esc(internText(cat))}</span>
+        <span class="intern-cat-subs">${esc(subs)}</span>
+        <span class="intern-cat-arrow">›</span>
+      </div>`;
+    }).join('');
+    catEl.querySelectorAll('[data-cat]').forEach(el => {
+      el.addEventListener('mouseenter', () => selectInternCategory(el.dataset.cat));
+      el.addEventListener('click', () => selectInternCategory(el.dataset.cat));
+    });
   }
 
-  const roleValues = (entry.roleSignals || []).map(x => x.mentionTotal || x.sampleJds || 0);
-  const roleEl = document.getElementById('intern-role-list');
-  if (roleEl){
-    roleEl.innerHTML = (entry.roleSignals || []).slice(0, 9).map(row => {
-      const count = row.mentionTotal || row.sampleJds || 0;
-      return `<div class="intern-row ${internHeat(count, roleValues)}"><span>${esc(row.keyword)}</span><small>${internCount(count)}</small></div>`;
-    }).join('') || '<div class="headway-muted">No role signal data.</div>';
+  const panelEl = document.getElementById('intern-keyword-panel');
+  if (panelEl){
+    const rows = [];
+    for (let i = 0; i < roles.length; i += 6){
+      const chunk = roles.slice(i, i + 6);
+      const head = chunk[0];
+      if (!head) continue;
+      rows.push(`<div class="intern-keyword-line">
+        <span class="intern-keyword-head">${esc(internText(head.keyword))}</span>
+        ${chunk.map(r => `<button class="intern-keyword-pill ${r.keyword===activeInternRole?'on':''}" data-role="${esc(r.keyword)}" title="${esc((r.skills || []).map(s => internText(s.skill)).join('\n'))}">${esc(internText(r.keyword))}</button>`).join('')}
+      </div>`);
+    }
+    const skillButtons = skills.map(s => `<button class="intern-skill-button ${s.skill===activeInternSkill?'on':''}" data-skill="${esc(s.skill)}"><span>${esc(internText(s.skill))}</span><small>${internCount(s.mentionJds)}</small></button>`).join('');
+    panelEl.innerHTML = rows.join('') + `<div class="intern-hover-card"><div class="intern-hover-title">${esc(labels.skills)} · ${esc(internText(role.keyword || ''))}</div><div class="intern-hover-skills">${skillButtons || `<div class="intern-empty">${esc(labels.pick)}</div>`}</div></div>`;
+    panelEl.querySelectorAll('[data-role]').forEach(el => {
+      el.addEventListener('mouseenter', () => selectInternRole(el.dataset.role));
+      el.addEventListener('click', () => selectInternRole(el.dataset.role));
+    });
+    panelEl.querySelectorAll('[data-skill]').forEach(el => el.addEventListener('click', () => selectInternSkill(el.dataset.skill)));
   }
 
-  const skillValues = (entry.skills || []).map(x => x.mentionJds || 0);
-  const skillEl = document.getElementById('intern-skill-list');
-  if (skillEl){
-    skillEl.innerHTML = (entry.skills || []).slice(0, 14).map(skill => `<div class="intern-skill ${internHeat(skill.mentionJds, skillValues)}" title="${esc(skill.skillType || '')}"><span>${esc(skill.skill)}</span><small>${internCount(skill.mentionJds)}</small></div>`).join('') || '<div class="headway-muted">No skill data.</div>';
-  }
-
-  const courseEl = document.getElementById('intern-course-links');
-  const courses = (entry.directCourses || []).slice(0, 5);
-  if (courseEl){
-    courseEl.innerHTML = courses.map(course => {
-      const code = normalizeCourseCode(course.courseCode || '');
-      const title = course.courseNameEn || course.courseNameZh || code;
-      const detail = [`${course.matchCount || 0} matches`, ...(course.skills || []).slice(0, 3)].filter(Boolean).join(' · ');
-      return `<a href="course_detail.html?code=${encodeURIComponent(code)}" title="${esc(detail)}">${esc(compactCode(code))} · ${esc(title)}</a>`;
-    }).join('') || '<span class="headway-muted">No direct course recommendation.</span>';
-  }
-
-  const supportEl = document.getElementById('intern-support-tags');
-  const supportTags = (entry.supportSkills && entry.supportSkills.length)
-    ? entry.supportSkills.slice(0, 8)
-    : (entry.supportCourses || []).flatMap(c => c.skills || []).slice(0, 8);
-  if (supportEl){
-    supportEl.innerHTML = supportTags.map(x => `<span>${esc(x)}</span>`).join('') || '<span>General preparation</span>';
-  }
-  const noteEl = document.getElementById('intern-note');
-  if (noteEl){
-    noteEl.textContent = `${activeInternCategory} category: role and skill colors become lighter as JD mention counts decrease; direct-training courses are ranked by matched skill evidence from the job-hunting module.`;
+  const detailEl = document.getElementById('intern-skill-detail');
+  if (detailEl){
+    if (!skill){
+      detailEl.innerHTML = `<div class="intern-empty">${esc(labels.pick)}</div>`;
+      return;
+    }
+    const evidence = (skill.evidenceLinks || []).slice(0, 6);
+    const evidenceHtml = evidence.length
+      ? evidence.map((u, i) => `<a href="${esc(u)}" target="_blank" rel="noopener">JD ${i + 1}</a>`).join('')
+      : `<span class="intern-empty">${esc(labels.noLinks)}</span>`;
+    const courseList = (courses) => courses && courses.length
+      ? `<div class="intern-course-list">${courses.slice(0, 8).map(c => {
+          const code = normalizeCourseCode(c.courseCode || '');
+          const title = internCourseTitle(c) || code;
+          return `<a class="intern-course-link" href="course_detail.html?code=${encodeURIComponent(code)}"><span class="intern-course-code">${esc(compactCode(code))}</span><span class="intern-course-title">${esc(title)}</span></a>`;
+        }).join('')}</div>`
+      : `<div class="intern-empty">${esc(labels.noCourses)}</div>`;
+    detailEl.innerHTML = `<h3>${esc(internText(skill.skill))}</h3>
+      <div class="intern-detail-meta">${esc(internText(activeInternCategory))} / ${esc(internText(role.keyword || ''))} · ${esc(internText(skill.skillType || ''))}</div>
+      <div class="intern-course-section"><h4>${esc(labels.links)}</h4><div class="intern-evidence">${evidenceHtml}</div></div>
+      <div class="intern-course-section"><h4>${esc(labels.direct)}</h4>${courseList(skill.directCourses || [])}</div>
+      <div class="intern-course-section"><h4>${esc(labels.support)}</h4>${courseList(skill.supportCourses || [])}</div>`;
   }
 }
+
 function renderProfileSummary(majorDims, majorScores, genDims, genScores){
   const all = [...majorDims.map(d => ({d, s:majorScores[d.id]||0})), ...genDims.map(d => ({d, s:genScores[d.id]||0}))];
   // Avg GPA: compute from gpaRecords (4.0 scale) — fall back to '—'
@@ -2676,7 +2860,7 @@ function semSortValue(sem, fallback){
   }
   return 100000 + (fallback || 0);
 }
-// Display label: F24 → FAL 24, S25 → SPR 25, SUM24 → SUM 24
+// Display label: F24 -> 24-25 Term 1, S25 -> 24-25 Term 2, SUM24 -> SUM 24
 function semSortValue(sem, fallback){
   const s = String(sem || '').trim().toUpperCase();
   let m = s.match(/^F\s*(\d{2})$/);
@@ -2694,10 +2878,13 @@ function semSortValue(sem, fallback){
 }
 function semDisplayLabel(sem){
   const s = String(sem || '').trim().toUpperCase();
-  let m = s.match(/^F(\d{2})$/); if (m) return `FAL ${m[1]}`;
-  m = s.match(/^S(\d{2})$/);     if (m) return `SPR ${m[1]}`;
+  let m = s.match(/^F(\d{2})$/); if (m) return `${m[1]}-${String((Number(m[1]) + 1) % 100).padStart(2, '0')} Term 1`;
+  m = s.match(/^S(\d{2})$/);     if (m) return `${String((Number(m[1]) + 99) % 100).padStart(2, '0')}-${m[1]} Term 2`;
   m = s.match(/^SUM\s*(\d{2})$/); if (m) return `SUM ${m[1]}`;
   return s;
+}
+function semAxisLabel(sem){
+  return semDisplayLabel(sem).replace(/\bTerm\s*1\b/i, 'T1').replace(/\bTerm\s*2\b/i, 'T2');
 }
 
 function addGrade(){
@@ -2712,7 +2899,7 @@ function addGrade(){
   document.getElementById('g-code').value = '';
   // Auto-add the course to portfolio if found
   const c = DATA.courses.find(x => x.code === code);
-  if (c) selectedCodes.add(c.code);
+  if (c && isPortfolioCreditGrade(grade)) selectedCodes.add(c.code);
   renderAll(); saveState();
 }
 function removeGrade(i){
@@ -2725,7 +2912,7 @@ function removeGrade(i){
   }
   renderAll(); saveState();
 }
-function clearGrades(){ if(confirm('Clear all grade records?')){ gpaRecords = []; renderAll(); saveState(); } }
+function clearGrades(){ clearAllCourseRecords('Clear all portfolio and grade records?'); }
 function loadDemoGrades(){
   gpaRecords = [
     {sem:'F23',code:'MAT 1001',grade:'B+'},
@@ -2747,10 +2934,10 @@ function loadDemoGrades(){
 }
 function renderGPAList(){
   const el = document.getElementById('gpa-list');
-  const displayRows = gpaEligibleRecords();
+  const displayRows = (gpaRecords || []).filter(g => isGpaGrade(g.grade) || isNonGpaPassGrade(g.grade));
   if (!displayRows.length){ el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:14px;font-size:12px">No grades yet. Type a course code above, pick a grade, and click + Add Grade.</div>'; return; }
   // Sort by semester (chronological), then by code — keep original index for removal
-  const indexed = gpaRecords.map((g, i) => ({...g, _i: i})).filter(g => isGpaGrade(g.grade));
+  const indexed = gpaRecords.map((g, i) => ({...g, _i: i})).filter(g => isGpaGrade(g.grade) || isNonGpaPassGrade(g.grade));
   indexed.sort((a,b) => {
     const d = semSortValue(a.sem, a._i) - semSortValue(b.sem, b._i);
     return d || String(a.code).localeCompare(String(b.code));
@@ -2891,6 +3078,7 @@ function renderGPAChart(){
   const minY = Math.max(0, Math.floor((Math.min(...values) - 0.15) * 10) / 10);
   const maxY = Math.min(4.05, Math.max(3.0, Math.ceil((Math.max(...values) + 0.15) * 10) / 10));
   const latest = sems[sems.length - 1];
+  const xPad = sems.length <= 1 ? 0.75 : 0.55;
   document.getElementById('gpa-stats').innerHTML =
     `<b>CGPA</b>: <b style="color:var(--accent)">${summaryCgpa == null ? '—' : summaryCgpa.toFixed(3)}</b>` +
     ` &nbsp;·&nbsp; <b>MGPA</b>: <b style="color:var(--accent)">${summaryMgpa == null ? '—' : summaryMgpa.toFixed(3)}</b>` +
@@ -2906,7 +3094,7 @@ function renderGPAChart(){
     options:{responsive:true, maintainAspectRatio:false,
       layout:{padding:{top:18,right:12,bottom:4,left:8}},
       scales:{
-        x:{type:'linear', min:-0.3, max:sems.length-0.7, grid:{color:'rgba(33,113,181,.10)', drawBorder:false}, ticks:{callback:(v)=>semDisplayLabel(sems[Math.round(v)]||''), stepSize:1, font:{size:12, weight:'500'}, color:'#1a1d2e'}, title:{display:true,text:'Semester',font:{size:12,weight:'500'},color:'#5a6076',padding:{top:10}}},
+        x:{type:'linear', min:-xPad, max:(sems.length - 1) + xPad, grid:{color:'rgba(33,113,181,.10)', drawBorder:false}, afterBuildTicks:(axis)=>{axis.ticks=sems.map((_,i)=>({value:i}));}, ticks:{callback:(v)=>semAxisLabel(sems[Math.round(v)]||''), stepSize:1, autoSkip:false, maxRotation:24, minRotation:0, font:{size:12, weight:'500'}, color:'#1a1d2e'}, title:{display:true,text:'Semester',font:{size:12,weight:'500'},color:'#5a6076',padding:{top:10}}},
         y:{min:minY, max:maxY, grid:{color:'rgba(33,113,181,.10)', drawBorder:false}, ticks:{callback:(v)=>Number(v) > 4 ? '' : Number(v).toFixed(1), padding:8, font:{size:12, weight:'500'}, color:'#1a1d2e'}, title:{display:true,text:'GPA',font:{size:12,weight:'500'},color:'#5a6076'}}
       },
       plugins:{legend:{position:'bottom', align:'center', labels:{font:{size:12, weight:'500'}, color:'#1a1d2e', padding:16, boxWidth:30, boxHeight:2, usePointStyle:true, pointStyle:'line', pointStyleWidth:34}},
@@ -2916,11 +3104,7 @@ function renderGPAChart(){
 }
 
 function clearGrades(){
-  if(confirm('Clear all grade records?')){
-    gpaRecords = [];
-    transcriptSummary = { cgpa:null, mgpa:null, totalUnits:null, termSummaries:{} };
-    renderAll(); saveState();
-  }
+  clearAllCourseRecords('Clear all portfolio and grade records?');
 }
 
 function renderAll(){
@@ -3019,8 +3203,9 @@ const I18N = {
     'card.matrix.sub':'All courses by all skills — click any column header to sort',
     'ps.courses':'📚 Courses','ps.credits':'⭐ Credits','ps.avg':'🎓 CGPA / MGPA','ps.top':'🏆 Top 3 Strengths',
     'gpa.clear':'Clear','gpa.sub':'Track your letter grades, semester GPA, current CGPA, and goal GPA over time',
-    'gpa.add':'Add a grade','gpa.manualNote':'If a waived or approved course does not appear on the transcript, enter it manually with its semester and grade; it will be included in term GPA only.','gpa.recorded':'Recorded grades (Fall / Spring / Summer order)','gpa.addbtn':'＋ Add Grade',
+    'gpa.add':'Add a grade','gpa.manualNote':'Enter a course manually with its semester, units, and grade. Letter grades update the GPA graph; P records a passed course in the portfolio only.','gpa.recorded':'Recorded grades (term order)','gpa.addbtn':'＋ Add Grade',
     'gpa.target':'🎯 Target CGPA','gpa.cgpa':'CGPA','gpa.lastsem':'Latest sem',
+    'competency.title':'School Competency Pool','competency.sub':'Click a competency to see highly related courses ranked by relevance.',
     'skill.major':'Major Skills','skill.gen':'General Skills','skill.major.dept':'Major dept:',
     'skill.major.sub':'9 specialized dimensions for the selected category · gray dot = your score · red mark = category average',
     'skill.gen.sub':'9 cross-disciplinary competencies · PK is auto-computed as the average of your major skills',
@@ -3038,8 +3223,9 @@ const I18N = {
     'card.matrix.sub':'所有课程 × 所有技能 — 点击任意列标题排序',
     'ps.courses':'📚 课程数','ps.credits':'⭐ 学分','ps.avg':'🎓 CGPA / MGPA','ps.top':'🏆 三大优势',
     'gpa.clear':'清空','gpa.sub':'追踪字母成绩、学期 GPA、当前 CGPA 和目标 GPA',
-    'gpa.add':'添加成绩','gpa.manualNote':'如果有成绩单未显示但已获豁免或认可的课程，请手动输入课程、学期和成绩；系统只会计入学期 GPA。','gpa.recorded':'已记录成绩（秋 / 春 / 夏顺序）','gpa.addbtn':'＋ 添加',
+    'gpa.add':'添加成绩','gpa.manualNote':'手动输入课程、学期、学分和成绩。字母成绩会更新 GPA 图；P 只记录已通过课程到 portfolio。','gpa.recorded':'已记录成绩（学期顺序）','gpa.addbtn':'＋ 添加',
     'gpa.target':'🎯 目标 CGPA','gpa.cgpa':'CGPA','gpa.lastsem':'最近学期',
+    'competency.title':'学院能力池','competency.sub':'点击一项能力，查看按相关性排序的课程。',
     'skill.major':'专业技能','skill.gen':'通用技能','skill.major.dept':'专业方向:',
     'skill.major.sub':'9 个选定类别的专业维度 · 灰点 = 你的得分 · 红线 = 类别均值',
     'skill.gen.sub':'9 项跨学科能力 · PK 自动等于你专业技能的平均值',
@@ -3057,8 +3243,9 @@ const I18N = {
     'card.matrix.sub':'所有課程 × 所有技能 — 點擊任意列標題排序',
     'ps.courses':'📚 課程數','ps.credits':'⭐ 學分','ps.avg':'🎓 CGPA / MGPA','ps.top':'🏆 三大優勢',
     'gpa.clear':'清空','gpa.sub':'追蹤字母成績、學期 GPA、當前 CGPA 和目標 GPA',
-    'gpa.add':'新增成績','gpa.manualNote':'如果有成績單未顯示但已獲豁免或認可的課程，請手動輸入課程、學期和成績；系統只會計入學期 GPA。','gpa.recorded':'已記錄成績（秋 / 春 / 夏順序）','gpa.addbtn':'＋ 新增',
+    'gpa.add':'新增成績','gpa.manualNote':'手動輸入課程、學期、學分和成績。字母成績會更新 GPA 圖；P 只記錄已通過課程到 portfolio。','gpa.recorded':'已記錄成績（學期順序）','gpa.addbtn':'＋ 新增',
     'gpa.target':'🎯 目標 CGPA','gpa.cgpa':'CGPA','gpa.lastsem':'最近學期',
+    'competency.title':'學院能力池','competency.sub':'點擊一項能力，查看按相關性排序的課程。',
     'skill.major':'專業技能','skill.gen':'通用技能','skill.major.dept':'專業方向:',
     'skill.major.sub':'9 個所選類別的專業維度 · 灰點 = 你的得分 · 紅線 = 類別均值',
     'skill.gen.sub':'9 項跨學科能力 · PK 自動等於你專業技能的平均值',

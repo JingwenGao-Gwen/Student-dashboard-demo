@@ -63,14 +63,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .term-list-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:8px}
 .term-list-item{padding:7px 9px;border-radius:8px;background:var(--bg);font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px}
 .muted-note{color:var(--text3);font-size:12px;margin-top:8px}
-.course-competency-card{border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,#fff,#f8fbff);padding:22px;margin-top:10px}
-.course-competency-intro{text-align:center;margin-bottom:18px}
-.course-competency-intro h3{font-size:22px;font-weight:800;margin-bottom:8px;color:var(--text)}
-.course-competency-intro p{font-size:13px;color:var(--text2);max-width:780px;margin:0 auto;line-height:1.55}
-.course-competency-cloud{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;min-height:170px}
-.course-competency-chip{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1px solid rgba(33,113,181,.28);background:#fff;color:#12385f;border-radius:999px;padding:8px 13px;font-weight:850;line-height:1.2;box-shadow:0 3px 12px rgba(33,113,181,.08);transition:transform .15s,border-color .15s,box-shadow .15s,background .15s}
-.course-competency-chip:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 8px 18px rgba(33,113,181,.16);background:#f8fbff}
-.course-competency-score{font-size:11px;font-weight:900;color:#fff;background:var(--accent);border-radius:999px;padding:2px 7px;white-space:nowrap}
+.course-competency-card{border:1px solid var(--border);border-radius:14px;background:#fff;padding:20px;margin-top:10px}
+.course-competency-intro{margin-bottom:16px}
+.course-competency-intro h3{font-size:18px;font-weight:750;margin-bottom:5px;color:var(--text)}
+.course-competency-intro p{font-size:13px;color:var(--text2);line-height:1.55}
+.competency-relevance-block{border-top:1px solid var(--border);padding-top:14px;margin-top:14px}
+.competency-relevance-block:first-of-type{border-top:none;padding-top:0;margin-top:0}
+.competency-relevance-title{font-size:12px;font-weight:850;color:var(--text);letter-spacing:.02em;margin-bottom:8px}
+.course-competency-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.78fr);gap:18px;align-items:start;text-decoration:none;color:var(--text);border:1px solid var(--border);background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:7px}
+.course-competency-row:hover{border-color:var(--accent);background:#f8fbff}
+.course-competency-name{font-size:13.5px;font-weight:650;line-height:1.35;text-align:left}
+.course-competency-rationale{font-size:11.5px;color:var(--text2);line-height:1.4;text-align:right}
+@media(max-width:700px){.course-competency-row{grid-template-columns:1fr}.course-competency-rationale{text-align:left}}
 /* Outcome */
 .outcome-list{padding-left:20px;line-height:1.9;color:#374151}
 .outcome-list li{margin-bottom:4px;font-size:14px}
@@ -152,9 +156,9 @@ const code = params.get('code') || '';
 const contentEl = document.getElementById('content');
 const codeKey = value => String(value || '').replace(/\s+/g, '').toUpperCase();
 const I18N = {
-  en: {pageTitle:'Course Detail', back:'Back to Course Browser', loading:'Loading course...', notFound:'Course Not Found', missing:'No course matched this code.', loadError:'Could not load this course from the API.', subject:'Subject', units:'Units', level:'Level', outline:'Outline', outlineOk:'SIS outline available', info:'Course Information', academicOrg:'Academic Org', gradeType:'Grade Type', description:'Description', prerequisites:'Prerequisites', coReq:'Co-requisites', outcomes:'Learning Outcomes', syllabus:'Course Syllabus', assessment:'Assessment Scheme', components:'Course Components', terms:'Offered Terms', item:'Item', value:'Value', component:'Component', hours:'Hours', timeline:'Timeline', offeredList:'All Offered Terms', note:'Highlighted nodes show terms when this course was offered.', term1:'Term 1', term2:'Term 2', summer:'Summer'},
-  'zh-CN': {pageTitle:'课程详细信息', back:'返回 浏览课程目录', loading:'正在载入课程...', notFound:'未找到课程', missing:'没有匹配该代码的课程。', loadError:'无法从 API 载入课程。', subject:'科目', units:'学分', level:'级别', outline:'大纲', outlineOk:'已有 SIS 课程大纲', info:'课程信息', academicOrg:'Academic Org', gradeType:'成绩类型', description:'课程描述', prerequisites:'先修要求', coReq:'并修要求', outcomes:'学习成果', syllabus:'课程大纲', assessment:'考核方案', components:'课程组件', terms:'开课学期', item:'项目', value:'数值', component:'组件', hours:'学时', timeline:'时间轴', offeredList:'全部开课记录', note:'高亮节点表示该课程曾在对应学期开设。', term1:'Term 1', term2:'Term 2', summer:'Summer'},
-  'zh-TW': {pageTitle:'課程詳細資訊', back:'返回 瀏覽課程目錄', loading:'正在載入課程...', notFound:'未找到課程', missing:'沒有匹配該代碼的課程。', loadError:'無法從 API 載入課程。', subject:'科目', units:'學分', level:'級別', outline:'大綱', outlineOk:'已有 SIS 課程大綱', info:'課程資訊', academicOrg:'Academic Org', gradeType:'成績類型', description:'課程描述', prerequisites:'先修要求', coReq:'並修要求', outcomes:'學習成果', syllabus:'課程大綱', assessment:'考核方案', components:'課程組件', terms:'開課學期', item:'項目', value:'數值', component:'組件', hours:'學時', timeline:'時間軸', offeredList:'全部開課記錄', note:'高亮節點表示該課程曾在對應學期開設。', term1:'Term 1', term2:'Term 2', summer:'Summer'}
+  en: {pageTitle:'Course Detail', back:'Back to Course Browser', loading:'Loading course...', notFound:'Course Not Found', missing:'No course matched this code.', loadError:'Could not load this course from the API.', subject:'Subject', units:'Units', level:'Level', outline:'Outline', outlineOk:'SIS outline available', info:'Course Information', academicOrg:'Academic Org', gradeType:'Grade Type', description:'Description', prerequisites:'Prerequisites', coReq:'Co-requisites', outcomes:'Learning Outcomes', syllabus:'Course Syllabus', assessment:'Assessment Scheme', components:'Course Components', terms:'Offered Terms', item:'Item', value:'Value', component:'Component', hours:'Hours', timeline:'Timeline', offeredList:'All Offered Terms', note:'Highlighted nodes show terms when this course was offered.', term1:'Term 1', term2:'Term 2', summer:'Summer', courseCompetencies:'Course competencies', competencyIntro:'All positive competency matches for this course.', highRel:'High relevance', moderateRel:'Moderate relevance', lowRel:'Low relevance'},
+  'zh-CN': {pageTitle:'课程详细信息', back:'返回 浏览课程目录', loading:'正在载入课程...', notFound:'未找到课程', missing:'没有匹配该代码的课程。', loadError:'无法从 API 载入课程。', subject:'科目', units:'学分', level:'级别', outline:'大纲', outlineOk:'已有 SIS 课程大纲', info:'课程信息', academicOrg:'Academic Org', gradeType:'成绩类型', description:'课程描述', prerequisites:'先修要求', coReq:'并修要求', outcomes:'学习成果', syllabus:'课程大纲', assessment:'考核方案', components:'课程组件', terms:'开课学期', item:'项目', value:'数值', component:'组件', hours:'学时', timeline:'时间轴', offeredList:'全部开课记录', note:'高亮节点表示该课程曾在对应学期开设。', term1:'Term 1', term2:'Term 2', summer:'Summer', courseCompetencies:'课程能力匹配', competencyIntro:'本课程所有正向能力匹配。', highRel:'高相关', moderateRel:'中等相关', lowRel:'低相关'},
+  'zh-TW': {pageTitle:'課程詳細資訊', back:'返回 瀏覽課程目錄', loading:'正在載入課程...', notFound:'未找到課程', missing:'沒有匹配該代碼的課程。', loadError:'無法從 API 載入課程。', subject:'科目', units:'學分', level:'級別', outline:'大綱', outlineOk:'已有 SIS 課程大綱', info:'課程資訊', academicOrg:'Academic Org', gradeType:'成績類型', description:'課程描述', prerequisites:'先修要求', coReq:'並修要求', outcomes:'學習成果', syllabus:'課程大綱', assessment:'考核方案', components:'課程組件', terms:'開課學期', item:'項目', value:'數值', component:'組件', hours:'學時', timeline:'時間軸', offeredList:'全部開課記錄', note:'高亮節點表示該課程曾在對應學期開設。', term1:'Term 1', term2:'Term 2', summer:'Summer', courseCompetencies:'課程能力匹配', competencyIntro:'本課程所有正向能力匹配。', highRel:'高相關', moderateRel:'中等相關', lowRel:'低相關'}
 };
 let LANG = 'en';
 try { LANG = localStorage.getItem('cuhksz_lang') || 'en'; } catch(e){}
@@ -171,10 +175,102 @@ function meta(label, value){
   return `<span class="meta-tag"><strong>${esc(label)}</strong> ${esc(value)}</span>`;
 }
 function localText(enValue, zhValue){ return LANG === 'en' ? (enValue || zhValue || '') : (zhValue || enValue || ''); }
+function titleCandidate(course, keys){
+  if (!course) return '';
+  const code = course.code || course.raw_code || course.course_code || course.catalog_code || '';
+  for (const key of keys){
+    const value = String(course[key] == null ? '' : course[key]).trim();
+    if (value && compactCode(value) !== compactCode(code)) return value;
+  }
+  return '';
+}
 function courseTitle(course){
-  if (LANG === 'zh-CN') return course.title_zh_cn || course.title_zh_tw || course.title_en || course.title || course.code;
-  if (LANG === 'zh-TW') return course.title_zh_tw || course.title_zh_cn || course.title_en || course.title || course.code;
-  return course.title_en || course.code;
+  if (LANG === 'zh-CN') return titleCandidate(course, ['title_zh_cn','course_title_zh_cn','title_cn','course_title_cn','chinese_title','title_chinese','name_zh_cn','name_cn','title_zh','title_sc','title_zh_tw','title_en','name_en','title','name']) || course.code;
+  if (LANG === 'zh-TW') return titleCandidate(course, ['title_zh_tw','course_title_zh_tw','title_tw','course_title_tw','chinese_title','title_chinese','name_zh_tw','name_tw','title_zh','title_tc','title_zh_cn','title_en','name_en','title','name']) || course.code;
+  return titleCandidate(course, ['title_en','course_title_en','english_title','title_english','name_en','title','name','title_zh_cn','title_zh_tw']) || course.code;
+}
+const COMPETENCY_ZH_PHRASES = [
+  ['AI ethics, governance and regulation','AI伦理、治理与监管'],
+  ['AI programming and software implementation','AI编程与软件实现'],
+  ['AI systems, algorithms and data-driven problem solving','AI系统、算法与数据驱动问题解决'],
+  ['Embodied, robotic and domain AI applications','具身智能、机器人与领域AI应用'],
+  ['Machine learning, deep learning and large language models','机器学习、深度学习与大语言模型'],
+  ['Mathematical and statistical foundations for AI','AI的数学与统计基础'],
+  ['Project-based AI exploration, practice and capstone execution','项目式AI探索、实践与毕业项目执行'],
+  ['Big data analytics and data-driven modelling','大数据分析与数据驱动建模'],
+  ['Data structures, databases and computing infrastructure','数据结构、数据库与计算基础设施'],
+  ['Domain applications in business, finance, life science and engineering','商业、金融、生命科学与工程领域应用'],
+  ['Machine learning, AI and data mining','机器学习、AI与数据挖掘'],
+  ['Programming, algorithms, software and computing systems','编程、算法、软件与计算系统'],
+  ['Quantitative modelling and mathematical foundations','定量建模与数学基础'],
+  ['Research, capstone and project execution','研究、毕业项目与项目执行'],
+  ['Robotics, control and embodied intelligent systems','机器人、控制与具身智能系统'],
+  ['Statistical reasoning, probability and inference','统计推理、概率与推断'],
+  ['course outline matches','课程大纲匹配'],
+  ['prefix aligns with this competency area','课程前缀与该能力领域相关'],
+  ['Ability to','能够'],
+  ['understand and apply','理解并应用'],
+  ['understand','理解'],
+  ['apply','应用'],
+  ['analyze','分析'],
+  ['reason about','推理'],
+  ['use','使用'],
+  ['complete','完成'],
+  ['carry out','开展'],
+  ['implement','实现'],
+  ['design','设计'],
+  ['large-scale data','大规模数据'],
+  ['data-driven models','数据驱动模型'],
+  ['decisions','决策'],
+  ['programming','编程'],
+  ['software','软件'],
+  ['algorithms','算法'],
+  ['algorithm','算法'],
+  ['data structures','数据结构'],
+  ['databases','数据库'],
+  ['database','数据库'],
+  ['infrastructure','基础设施'],
+  ['mathematics','数学'],
+  ['statistics','统计'],
+  ['statistical','统计'],
+  ['probability','概率'],
+  ['inference','推断'],
+  ['optimization','优化'],
+  ['optimisation','优化'],
+  ['modelling','建模'],
+  ['modeling','建模'],
+  ['model','模型'],
+  ['data mining','数据挖掘'],
+  ['visualization','可视化'],
+  ['analysis','分析'],
+  ['data','数据'],
+  ['research','研究'],
+  ['project','项目'],
+  ['capstone','毕业项目'],
+  ['team','团队'],
+  ['practice','实践'],
+  ['presentation','展示'],
+  ['business','商业'],
+  ['finance','金融'],
+  ['life science','生命科学'],
+  ['engineering','工程'],
+  ['robotics','机器人'],
+  ['robot','机器人'],
+  ['control','控制'],
+  ['sensors','传感器'],
+  ['sensor','传感器'],
+];
+function isChineseLang(){ return LANG !== 'en'; }
+function localizeCompetencyText(text){
+  let out = String(text || '');
+  if (!isChineseLang()) return out;
+  COMPETENCY_ZH_PHRASES.forEach(([en, zh]) => {
+    out = out.replace(new RegExp(en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), zh);
+  });
+  return out;
+}
+function localizeRationale(text){
+  return localizeCompetencyText(String(text || '').replace(/\s*\(\+\d+(?:\.\d+)?\)/g, ''));
 }
 const ORG_BY_SUBJECT = {
   AIE:'SAI',
@@ -191,16 +287,23 @@ function academicOrg(course){
   return ORG_BY_SUBJECT[course.subject_code || course.dept] || '';
 }
 async function hydrateCourseTitle(course){
-  if (course.title_en && course.title_en !== course.code && codeKey(course.title_en) !== codeKey(course.code)) return course;
+  if (titleCandidate(course, ['title_en','title_zh_cn','title_zh_tw','title','name'])) return course;
   try {
     const res = await fetch(API_BASE + '/api/courses', {cache:'no-store'});
     if (!res.ok) return course;
     const payload = await res.json();
-    const found = (payload.courses || []).find(c => codeKey(c.code) === codeKey(course.code) || codeKey(c.raw_code) === codeKey(course.code));
-    if (found && found.title_en && codeKey(found.title_en) !== codeKey(found.code)){
-      course.title_en = found.title_en;
-      course.title_zh_cn = course.title_zh_cn || found.title_zh_cn;
-      course.title_zh_tw = course.title_zh_tw || found.title_zh_tw;
+    const target = codeKey(course.code);
+    const found = (payload.courses || []).find(c => {
+      const values = [c.code, c.raw_code, c.course_code, c.catalog_code, c.subject_catalog];
+      const subject = c.subject_code || c.dept || c.subject || '';
+      const catalog = c.catalog_number || c.catalog_nbr || c.course_number || c.number || '';
+      if (subject && catalog) values.push(`${subject} ${catalog}`, `${subject}${catalog}`);
+      return values.some(v => codeKey(v) === target);
+    });
+    if (found){
+      ['title_en','course_title_en','english_title','title_english','name_en','title_zh_cn','course_title_zh_cn','title_cn','course_title_cn','chinese_title','title_chinese','name_zh_cn','name_cn','title_zh_tw','course_title_zh_tw','title_tw','course_title_tw','name_zh_tw','name_tw','title_zh','title_sc','title_tc','title','name'].forEach(key => {
+        if (!course[key] && found[key]) course[key] = found[key];
+      });
     }
   } catch(err){}
   return course;
@@ -254,15 +357,34 @@ function competencySection(course){
   const record = data.courses && data.courses[compactCode(course.code)];
   const scores = record && Array.isArray(record.scores) ? record.scores.filter(x => Number(x.score) > 0) : [];
   if (!scores.length) return '';
-  const chips = scores.map(row => {
-    const score = Number(row.score || 0);
-    const size = Math.max(12, Math.min(24, 12 + score * 1.2));
+  const groups = [
+    {key:'High', title:t('highRel'), rows:[]},
+    {key:'Moderate', title:t('moderateRel'), rows:[]},
+    {key:'Low', title:t('lowRel'), rows:[]}
+  ];
+  scores
+    .slice()
+    .sort((a,b) => Number(b.score || 0) - Number(a.score || 0))
+    .forEach(row => {
+      const score = Number(row.score || 0);
+      const level = row.level || (score >= 6.5 ? 'High' : (score >= 4 ? 'Moderate' : 'Low'));
+      const group = groups.find(g => g.key === level) || groups[2];
+      group.rows.push(row);
+    });
+  const blocks = groups.filter(group => group.rows.length).map(group => {
+    const rows = group.rows.map(row => {
+      const score = Number(row.score || 0);
+      const level = row.level || group.key;
+      const rationale = localizeRationale(row.rationale || '');
     const href = `student_dashboard_index.html?competency=${encodeURIComponent(row.item)}${row.abbr ? `&competencySchool=${encodeURIComponent(row.abbr)}` : ''}#section-competency-pool`;
-    return `<a class="course-competency-chip" href="${href}" style="font-size:${size}px" title="${esc((row.level ? row.level + ' - ' : '') + score.toFixed(1) + '/10' + (row.rationale ? ': ' + row.rationale : ''))}">
-      <span>${esc(row.item)}</span><span class="course-competency-score">${score.toFixed(1)}</span>
+      return `<a class="course-competency-row" href="${href}" title="${esc(level + ' relevance')}">
+      <span class="course-competency-name">${esc(localizeCompetencyText(row.item))}</span>
+      <span class="course-competency-rationale">${esc(rationale)}</span>
     </a>`;
+    }).join('');
+    return `<div class="competency-relevance-block"><div class="competency-relevance-title">${esc(group.title)}</div>${rows}</div>`;
   }).join('');
-  return `<div class="section"><h2>Course competencies</h2><div class="course-competency-card"><div class="course-competency-intro"><h3>Course competencies</h3><p>All positive competency matches for this course. Size follows relevance score; hover to see the exact score and rationale, or click through to the school competency pool.</p></div><div class="course-competency-cloud">${chips}</div></div></div>`;
+  return `<div class="section"><h2>${esc(t('courseCompetencies'))}</h2><div class="course-competency-card"><div class="course-competency-intro"><h3>${esc(t('courseCompetencies'))}</h3><p>${esc(t('competencyIntro'))}</p></div>${blocks}</div></div>`;
 }
 function statusText(course){ return course.has_outline ? t('outlineOk') : ''; }
 function applyChromeText(){

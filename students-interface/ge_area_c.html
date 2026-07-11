@@ -32,6 +32,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .title{font-size:14px;font-weight:750;color:var(--text);line-height:1.35}
 .meta{margin-top:auto;display:flex;gap:6px;flex-wrap:wrap}
 .pill{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800;color:var(--text2);background:var(--bg)}
+.pill.ok{color:#0f766e;background:#ecfdf5;border-color:#99f6e4}
+.availability-section{margin-bottom:22px}
+.section-head{display:flex;align-items:center;gap:10px;margin:8px 0 12px;font-size:13px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
+.section-head::after{content:"";height:1px;background:var(--border);flex:1}
 .empty{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;text-align:center;color:var(--text3);font-weight:700}
 @media(max-width:700px){.wrap{padding:0 14px;margin:20px auto}.toolbar{align-items:stretch;flex-direction:column}.grid{grid-template-columns:1fr}.hero h1{font-size:26px}}
 </style>
@@ -56,7 +60,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <input id="search" type="search" placeholder="Search course code or title..."/>
     <div class="count" id="count">0 courses</div>
   </div>
-  <div class="grid" id="course-grid"></div>
+  <div id="course-grid"></div>
 </main>
 <script>
 const API_BASE = window.location.protocol === 'file:'
@@ -90,19 +94,40 @@ function handleCourseClick(e, c){
   e.preventDefault();
   alert(lang==='en' ? 'The syllabus for this course has not been provided yet.' : '该课程syllabus尚未提供。');
 }
-function render(){
-  const q = String(document.getElementById('search').value||'').trim().toLowerCase();
-  const visible = courses.filter(c => !q || compact(c.code).toLowerCase().includes(q) || title(c).toLowerCase().includes(q));
-  document.getElementById('count').textContent = `${visible.length} courses`;
-  document.getElementById('course-grid').innerHTML = visible.length ? visible.map(c => `
-    <article class="course">
+function availabilityLabel(available){
+  if (lang === 'zh-CN') return available ? '可查看 syllabus' : '暂无 syllabus';
+  if (lang === 'zh-TW') return available ? '可查看 syllabus' : '暫無 syllabus';
+  return available ? 'Syllabus available' : 'No syllabus yet';
+}
+function availabilityHeading(available, count){
+  const suffix = lang === 'en' ? `${count} courses` : `${count} 门课程`;
+  if (lang === 'zh-CN') return `${available ? 'Available' : 'No syllabus yet'} · ${suffix}`;
+  if (lang === 'zh-TW') return `${available ? 'Available' : 'No syllabus yet'} · ${suffix}`;
+  return `${available ? 'Available' : 'No syllabus yet'} · ${suffix}`;
+}
+function courseCard(c){
+  return `<article class="course">
       <a class="code" href="${courseHref(c)}" data-code="${esc(c.code)}">${esc(compact(c.code))}</a>
       <div class="title">${esc(title(c))}</div>
       <div class="meta">
         <span class="pill">${esc(c.units || c.credit || 3)} units</span>
-        <span class="pill">${c.has_outline ? 'Syllabus' : 'No syllabus'}</span>
+        <span class="pill ${c.has_outline ? 'ok' : ''}">${availabilityLabel(!!c.has_outline)}</span>
       </div>
-    </article>`).join('') : '<div class="empty">No courses found.</div>';
+    </article>`;
+}
+function render(){
+  const q = String(document.getElementById('search').value||'').trim().toLowerCase();
+  const visible = courses.filter(c => !q || compact(c.code).toLowerCase().includes(q) || title(c).toLowerCase().includes(q));
+  document.getElementById('count').textContent = `${visible.length} courses`;
+  const groups = [
+    {available:true, rows:visible.filter(c => c.has_outline)},
+    {available:false, rows:visible.filter(c => !c.has_outline)}
+  ].filter(g => g.rows.length);
+  document.getElementById('course-grid').innerHTML = groups.length ? groups.map(g => `
+    <section class="availability-section">
+      <div class="section-head"><span>${availabilityHeading(g.available, g.rows.length)}</span></div>
+      <div class="grid">${g.rows.map(courseCard).join('')}</div>
+    </section>`).join('') : '<div class="empty">No courses found.</div>';
   document.querySelectorAll('.course .code').forEach(a => {
     const c = visible.find(x => x.code === a.dataset.code);
     if (c) a.addEventListener('click', e => handleCourseClick(e, c));
