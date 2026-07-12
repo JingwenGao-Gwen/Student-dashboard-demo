@@ -364,6 +364,10 @@ table.matrix tr:hover td{background:#f8f9ff}
 .headway-course .hc-code{font-weight:800;line-height:1.35}
 .headway-course .hc-status{flex-shrink:0;border-radius:999px;padding:2px 6px;font-size:10px;font-weight:900;color:var(--text3);background:var(--bg)}
 .headway-course.done .hc-status{color:#0f7a3a;background:rgba(53,167,102,.14)}
+/* Headway content scroll container — capped to avoid overlapping intern-prep section */
+#headway-content{overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+#headway-content::-webkit-scrollbar{width:5px}
+#headway-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 </style>
 </head>
 <body>
@@ -1709,6 +1713,17 @@ function progressBlock(title, done, total, bodyHtml){
     <div class="headway-details">${bodyHtml || ''}</div>
   </div>`;
 }
+
+// Dynamically cap headway-content height so it never overlaps the intern-prep section
+function updateHeadwayMaxHeight(){
+  const content = document.getElementById('headway-content');
+  if (!content) return;
+  const rect = content.getBoundingClientRect();
+  const buffer = 40; // bottom breathing room
+  const available = window.innerHeight - rect.top - buffer;
+  content.style.maxHeight = Math.max(200, Math.floor(available)) + 'px';
+}
+
 function ucoreRuleForYear(year){
   const y = Number(year || studyAdmissionYear || 2023);
   if (y >= 2025){
@@ -1972,6 +1987,7 @@ function renderStudyHeadway(){
     progressBlock('Credit Progress', Math.min(120, creditDone), 120, '<div class="headway-muted">All passed transcript units plus manually added exemption/approved units.</div>') +
     progressBlock('Major Progress', major.done, major.total, majorBody) +
     progressBlock('U-core Progress', ucore.done, ucore.total, ucoreBody);
+  updateHeadwayMaxHeight();
 }
 
 function competencyData(){
@@ -3537,6 +3553,7 @@ async function bootstrap(){
     applyChartDefaults();
     wireButtons();
     renderAll();
+    window.addEventListener('resize', updateHeadwayMaxHeight);
     initI18n();
     console.log('[dashboard api] Init OK — courses:', DATA.courses.length, '· depts:', ALL_DEPTS.length, '· selected:', selectedCodes.size);
   } catch(err){

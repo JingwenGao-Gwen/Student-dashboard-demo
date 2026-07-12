@@ -404,11 +404,12 @@ body{
       };
       saveSession(session);
 
+      var targetPage = currentRole === 'advisor' ? '../aa_dashboard_v2.html' : 'student_dashboard_index.html';
       toast(ROLE_RULES[currentRole].welcome.replace('{name}', name.split(' ')[0]), 'success');
       setTimeout(function(){
         gate.classList.add('is-leaving');
         setTimeout(function(){
-          location.href = 'student_dashboard_index.html';
+          location.href = targetPage;
         }, 460);
       }, 700);
     }, 900);
@@ -417,7 +418,8 @@ body{
   // Auto-skip if already signed in
   var existing = loadSession();
   if (existing && existing.name){
-    location.replace('student_dashboard_index.html');
+    var targetPage = existing.role === 'advisor' ? '../aa_dashboard_v2.html' : 'student_dashboard_index.html';
+    location.replace(targetPage);
   }
 })();
 </script>
