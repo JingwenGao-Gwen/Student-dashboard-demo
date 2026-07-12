@@ -272,8 +272,15 @@ table.matrix tr:hover td{background:#f8f9ff}
 .intern-card{position:relative;overflow:visible}
 .intern-source{font-size:13px;color:var(--text2);font-weight:700;margin-top:4px}
 .intern-board{display:grid;grid-template-columns:260px minmax(0,1fr) 390px;gap:18px;margin-top:22px;align-items:start}
-.intern-cats{border:1px solid var(--border);background:#fff;border-radius:8px;overflow:hidden}
-.intern-cats-title{padding:14px 16px;font-size:16px;color:var(--text2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.intern-cats{border:1px solid var(--border);background:#fff;border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
+.intern-cats-title{padding:14px 16px;font-size:16px;color:var(--text2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.intern-cats-title .page-arrows{display:flex;gap:4px;align-items:center;user-select:none}
+.intern-cats-title .page-arrows span{cursor:pointer;padding:2px 6px;border-radius:4px;font-size:18px;line-height:1;color:var(--text3);transition:all .15s}
+.intern-cats-title .page-arrows span:hover{background:var(--bg);color:var(--accent)}
+.intern-cats-title .page-arrows span.disabled{opacity:.25;cursor:default;pointer-events:none}
+.intern-cat-list-wrap{flex:1;overflow-y:auto;min-height:0}
+.intern-cat-list-wrap::-webkit-scrollbar{width:4px}
+.intern-cat-list-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .intern-cat-row{display:grid;grid-template-columns:92px 1fr 18px;gap:8px;padding:13px 14px;border-bottom:1px solid rgba(226,229,237,.75);cursor:pointer;align-items:center}
 .intern-cat-row:hover,.intern-cat-row.on{background:#f8fbff}
 .intern-cat-main{font-size:17px;font-weight:700;color:var(--text)}
@@ -548,8 +555,8 @@ table.matrix tr:hover td{background:#f8f9ff}
       </div>
       <div class="intern-board">
         <div class="intern-cats">
-          <div class="intern-cats-title"><span id="intern-all-cats">All categories</span><span>‹ ›</span></div>
-          <div id="intern-category-list"></div>
+          <div class="intern-cats-title"><span id="intern-all-cats">All categories</span><span class="page-arrows"><span id="intern-page-prev" onclick="internCatPage=Math.max(0,internCatPage-1);renderInternPrepPanel()">‹</span><span id="intern-page-indicator"></span><span id="intern-page-next" onclick="internCatPage++;renderInternPrepPanel()">›</span></span></div>
+          <div class="intern-cat-list-wrap" id="intern-category-list"></div>
         </div>
         <div class="intern-keyword-panel" id="intern-keyword-panel"></div>
         <div class="intern-detail" id="intern-skill-detail"></div>
@@ -1079,6 +1086,8 @@ let dragCode = null; // course being dragged
 let activeCompetencySchool = '';
 let activeCompetencyItem = '';
 let activeInternCategory = '';
+let internCatPage = 0;
+const INTERN_CATS_PER_PAGE = 10;
 let activeInternRole = '';
 let activeInternSkill = '';
 
@@ -2280,7 +2289,12 @@ function renderInternPrepPanel(){
 
   const catEl = document.getElementById('intern-category-list');
   if (catEl){
-    catEl.innerHTML = all.map(cat => {
+    const totalPages = Math.ceil(all.length / INTERN_CATS_PER_PAGE) || 1;
+    if (internCatPage >= totalPages) internCatPage = totalPages - 1;
+    if (internCatPage < 0) internCatPage = 0;
+    const start = internCatPage * INTERN_CATS_PER_PAGE;
+    const pageCats = all.slice(start, start + INTERN_CATS_PER_PAGE);
+    catEl.innerHTML = pageCats.map(cat => {
       const catEntry = categories[cat] || {};
       const subs = (catEntry.roles || []).slice(0, 3).map(r => internText(r.keyword)).join('  ');
       return `<div class="intern-cat-row ${cat===activeInternCategory?'on':''}" data-cat="${esc(cat)}">
@@ -2293,6 +2307,13 @@ function renderInternPrepPanel(){
       el.addEventListener('mouseenter', () => selectInternCategory(el.dataset.cat));
       el.addEventListener('click', () => selectInternCategory(el.dataset.cat));
     });
+    // Update page arrows state
+    const prevEl = document.getElementById('intern-page-prev');
+    const nextEl = document.getElementById('intern-page-next');
+    const indEl = document.getElementById('intern-page-indicator');
+    if (prevEl) prevEl.classList.toggle('disabled', internCatPage === 0);
+    if (nextEl) nextEl.classList.toggle('disabled', internCatPage >= totalPages - 1);
+    if (indEl) indEl.textContent = totalPages > 1 ? (internCatPage + 1) + '/' + totalPages : '';
   }
 
   const panelEl = document.getElementById('intern-keyword-panel');
