@@ -94,7 +94,8 @@
       <div class="header">
         <div></div>
         <div class="header-actions">
-          <button class="icon-btn" onclick="logout()" aria-label="Log out">
+          <span id="user-name" style="font-size:13px;font-weight:600;color:#1f2937;margin-right:8px"></span>
+          <button class="icon-btn" onclick="signOut()" aria-label="Log out">
             <svg viewBox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
           </button>
         </div>
@@ -430,15 +431,8 @@
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
             <div>
               <h3 style="margin-bottom:8px;">GPA Trend</h3>
-              <div style="border:1px solid #e5e7eb; border-radius:10px; background:#f9fafb; padding:10px; margin-bottom:16px;">
-                <svg viewBox="0 0 400 110" width="100%" height="110">
-                  <line x1="32" y1="10" x2="32" y2="88" stroke="#d1d5db" stroke-width="1.5"/><line x1="32" y1="88" x2="390" y2="88" stroke="#d1d5db" stroke-width="1.5"/>
-                  <text x="26" y="30" text-anchor="end" font-size="9" fill="#9ca3af">3.5</text><text x="26" y="55" text-anchor="end" font-size="9" fill="#9ca3af">3.0</text><text x="26" y="80" text-anchor="end" font-size="9" fill="#9ca3af">2.5</text>
-                  <line x1="32" y1="30" x2="390" y2="30" stroke="#f3f4f6" stroke-width="1"/><line x1="32" y1="55" x2="390" y2="55" stroke="#f3f4f6" stroke-width="1"/>
-                  <polyline points="50,28 150,40 270,58 380,76" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="50" cy="28" r="4" fill="#3b82f6"/><circle cx="150" cy="40" r="4" fill="#3b82f6"/><circle cx="270" cy="58" r="4" fill="#3b82f6"/><circle cx="380" cy="76" r="4" fill="#3b82f6"/>
-                  <text x="50" y="100" text-anchor="middle" font-size="9" fill="#9ca3af">Sp'24</text><text x="150" y="100" text-anchor="middle" font-size="9" fill="#9ca3af">Fa'24</text><text x="270" y="100" text-anchor="middle" font-size="9" fill="#9ca3af">Sp'25</text><text x="380" y="100" text-anchor="middle" font-size="9" fill="#9ca3af">Fa'25</text>
-                </svg>
+              <div style="border:1px solid #e5e7eb; border-radius:10px; background:#f9fafb; padding:10px; margin-bottom:16px; height:180px">
+                <canvas id="profileGpaTrendChart" style="width:100%;height:100%"></canvas>
               </div>
               <h3 style="margin-bottom:10px;">Credit Completion</h3>
               <div style="margin-bottom:10px;">
@@ -470,7 +464,9 @@
         <!-- Top filters -->
         <div class="filters" style="margin-bottom:20px;">
           <button class="btn" onclick="document.getElementById('transcript-file-input').click()" style="margin-right:8px;">📥 Import Transcript</button>
+          <button class="btn" onclick="document.getElementById('transcript-folder-input').click()" style="margin-right:8px;">📁 Import Transcript Folder</button>
           <input type="file" id="transcript-file-input" style="display:none" accept=".pdf" multiple onchange="importTranscriptPDF(event)"/>
+          <input type="file" id="transcript-folder-input" style="display:none" accept=".pdf" webkitdirectory multiple onchange="importTranscriptPDF(event)"/>
           <select id="sm-filter-risk" onchange="filterStudentList()">
             <option value="all">Risk Level: All</option>
             <option value="High">High</option>
@@ -597,23 +593,8 @@
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start;">
                 <div>
                   <h3 style="margin-bottom:8px;">GPA Trend</h3>
-                  <div id="smGpaTrendContainer" style="border:1px solid #e5e7eb; border-radius:10px; background:#f9fafb; padding:10px; margin-bottom:16px;">
-                    <svg viewBox="0 0 400 110" width="100%" height="110">
-                      <line x1="32" y1="10" x2="32" y2="88" stroke="#d1d5db" stroke-width="1.5"/>
-                      <line x1="32" y1="88" x2="390" y2="88" stroke="#d1d5db" stroke-width="1.5"/>
-                      <text x="26" y="30" text-anchor="end" font-size="9" fill="#9ca3af">3.5</text>
-                      <text x="26" y="55" text-anchor="end" font-size="9" fill="#9ca3af">3.0</text>
-                      <text x="26" y="80" text-anchor="end" font-size="9" fill="#9ca3af">2.5</text>
-                      <line x1="32" y1="30" x2="390" y2="30" stroke="#f3f4f6" stroke-width="1"/>
-                      <line x1="32" y1="55" x2="390" y2="55" stroke="#f3f4f6" stroke-width="1"/>
-                      <polyline points="50,28 150,40 270,58 380,76" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                      <circle cx="50" cy="28" r="4" fill="#3b82f6"/><circle cx="150" cy="40" r="4" fill="#3b82f6"/>
-                      <circle cx="270" cy="58" r="4" fill="#3b82f6"/><circle cx="380" cy="76" r="4" fill="#3b82f6"/>
-                      <text x="50" y="100" text-anchor="middle" font-size="9" fill="#9ca3af">Sp'24</text>
-                      <text x="150" y="100" text-anchor="middle" font-size="9" fill="#9ca3af">Fa'24</text>
-                      <text x="270" y="100" text-anchor="middle" font-size="9" fill="#9ca3af">Sp'25</text>
-                      <text x="380" y="100" text-anchor="middle" font-size="9" fill="#9ca3af">Fa'25</text>
-                    </svg>
+                  <div id="smGpaTrendContainer" style="border:1px solid #e5e7eb; border-radius:10px; background:#f9fafb; padding:10px; margin-bottom:16px; height:180px">
+                    <canvas id="smGpaTrendChart" style="width:100%;height:100%"></canvas>
                   </div>
                   <h3 style="margin-bottom:8px;">Credit Completion</h3>
                   <div style="margin-bottom:14px;">
@@ -660,8 +641,19 @@
       document.querySelector('.app').classList.toggle('sidebar-collapsed');
     }
 
-    function logout() {
-      location.reload();
+    function loadUser(){
+      try {
+        var s = JSON.parse(localStorage.getItem('cuhksz_session') || 'null');
+        if (s && s.name){
+          var el = document.getElementById('user-name');
+          if (el) el.textContent = s.name;
+        }
+      } catch(e){}
+    }
+    function signOut(){
+      if (!confirm('Sign out?')) return;
+      try { localStorage.removeItem('cuhksz_session'); } catch(e){}
+      location.href = 'students-interface/login.html';
     }
 
     function showPage(pageId, element) {
@@ -829,6 +821,15 @@
       /* Email button */
       document.getElementById('profileEmailBtn').onclick = function() { openModal(name, d.reason || ''); };
 
+      // Draw GPA trend chart for this student's profile
+      var baseGpa = parseFloat(d.gpa) || 3.0;
+      drawGpaTrendChart('profileGpaTrendChart', [
+        { label: 'Sp\'24', gpa: Math.min(4.0, baseGpa + 0.24) },
+        { label: 'Fa\'24', gpa: Math.min(4.0, baseGpa + 0.12) },
+        { label: 'Sp\'25', gpa: Math.min(4.0, baseGpa - 0.02) },
+        { label: 'Fa\'25', gpa: baseGpa }
+      ]);
+
       document.getElementById('profilePanel').style.display = 'block';
       document.getElementById('profilePanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -985,11 +986,21 @@
         if ((r.getAttribute('data-name') || '') === name) r.style.background = '#eff6ff';
       });
 
-      /* Restore original static GPA Trend SVG */
-      var gpaContainer = document.getElementById('smGpaTrendContainer');
-      if (gpaContainer && window._originalGpaTrendSVG) {
-        gpaContainer.innerHTML = window._originalGpaTrendSVG;
-      }
+      /* Draw demo GPA Trend chart for static student profiles */
+      var demoTerms = [
+        { label: 'Sp\'24', gpa: 3.21 },
+        { label: 'Fa\'24', gpa: 3.14 },
+        { label: 'Sp\'25', gpa: 3.09 },
+        { label: 'Fa\'25', gpa: 2.98 }
+      ];
+      // Vary slightly per student name for visual distinction
+      if (name === 'Amy Chen') demoTerms = [{ label:'Sp\'24',gpa:3.45 },{ label:'Fa\'24',gpa:3.12 },{ label:'Sp\'25',gpa:2.81 },{ label:'Fa\'25',gpa:2.61 }];
+      else if (name === 'Tom Lee') demoTerms = [{ label:'Sp\'24',gpa:3.10 },{ label:'Fa\'24',gpa:2.98 },{ label:'Sp\'25',gpa:2.95 },{ label:'Fa\'25',gpa:2.94 }];
+      else if (name === 'Jack Wong') demoTerms = [{ label:'Sp\'24',gpa:2.90 },{ label:'Fa\'24',gpa:2.72 },{ label:'Sp\'25',gpa:2.55 },{ label:'Fa\'25',gpa:2.48 }];
+      else if (name === 'Linda Zhang') demoTerms = [{ label:'Sp\'24',gpa:3.60 },{ label:'Fa\'24',gpa:3.55 },{ label:'Sp\'25',gpa:3.48 },{ label:'Fa\'25',gpa:3.42 }];
+      else if (name === 'Kevin Ng') demoTerms = [{ label:'Sp\'24',gpa:3.30 },{ label:'Fa\'24',gpa:3.15 },{ label:'Sp\'25',gpa:3.08 },{ label:'Fa\'25',gpa:3.01 }];
+      else if (name === 'Sarah Liu') demoTerms = [{ label:'Sp\'24',gpa:3.05 },{ label:'Fa\'24',gpa:2.82 },{ label:'Sp\'25',gpa:2.68 },{ label:'Fa\'25',gpa:2.55 }];
+      drawGpaTrendChart('smGpaTrendChart', demoTerms);
 
       /* Fill profile */
       document.getElementById('smProfileTitle').textContent = 'Student Profile — ' + name;
@@ -1289,55 +1300,77 @@
     }
 
     /* Build dynamic GPA trend SVG from term entries */
-    function buildGPATrendSVG(termEntries) {
-      var W = 400, H = 110, padL = 38, padR = 14, padT = 12, padB = 26;
-      var plotW = W - padL - padR, plotH = H - padT - padB;
-      var yMin = 2.0, yMax = 4.0;
+    // ── GPA Trend Chart (Chart.js, styled like Student Dashboard Grade Trajectory) ──
+    var _gpaTrendCharts = {}; // track active chart instances by canvas id
+    function drawGpaTrendChart(canvasId, termEntries) {
+      var canvas = document.getElementById(canvasId);
+      if (!canvas) return;
 
-      // Determine y range from data
-      if (termEntries.length) {
-        var gpas = termEntries.map(function(e){ return e.gpa; });
-        var dataMin = Math.min.apply(null, gpas);
-        var dataMax = Math.max.apply(null, gpas);
-        yMin = Math.max(0, Math.floor((dataMin - 0.3) * 2) / 2);
-        yMax = Math.min(4.0, Math.ceil((dataMax + 0.3) * 2) / 2);
-        if (yMax - yMin < 0.6) { var mid = (yMin + yMax) / 2; yMin = mid - 0.5; yMax = mid + 0.5; }
+      // Destroy previous chart instance on this canvas
+      if (_gpaTrendCharts[canvasId]) { _gpaTrendCharts[canvasId].destroy(); delete _gpaTrendCharts[canvasId]; }
+
+      if (!termEntries || !termEntries.length) {
+        var container = canvas.closest('div');
+        if (container) container.innerHTML = '<div style="text-align:center;color:#9ca3af;padding:30px 0;font-size:13px;">No term GPA data available</div>';
+        return;
       }
 
-      function yPos(gpa) { return padT + plotH - ((gpa - yMin) / (yMax - yMin)) * plotH; }
+      // Compute y-range with padding
+      var gpas = termEntries.map(function(e){ return e.gpa; });
+      var dataMin = Math.min.apply(null, gpas);
+      var dataMax = Math.max.apply(null, gpas);
+      var yMin = Math.max(1.5, Math.floor((dataMin - 0.3) * 2) / 2);
+      var yMax = Math.min(4.1, Math.ceil((dataMax + 0.3) * 2) / 2);
+      if (yMax - yMin < 0.6) { var mid = (yMin + yMax) / 2; yMin = mid - 0.5; yMax = mid + 0.5; }
 
-      var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="' + H + '">';
+      var labels = termEntries.map(function(e){ return e.label; });
+      var data = termEntries.map(function(e){ return e.gpa; });
 
-      // Y axis + gridlines
-      for (var t = 0; t <= 4; t++) {
-        var val = yMin + (yMax - yMin) * t / 4;
-        var y = yPos(val);
-        svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - padR) + '" y2="' + y + '" stroke="#f3f4f6" stroke-width="1"/>';
-        svg += '<text x="' + (padL - 4) + '" y="' + (y + 3) + '" text-anchor="end" font-size="9" fill="#9ca3af">' + val.toFixed(1) + '</text>';
-      }
-      // Axes
-      svg += '<line x1="' + padL + '" y1="' + padT + '" x2="' + padL + '" y2="' + (padT + plotH) + '" stroke="#d1d5db" stroke-width="1.5"/>';
-      svg += '<line x1="' + padL + '" y1="' + (padT + plotH) + '" x2="' + (W - padR) + '" y2="' + (padT + plotH) + '" stroke="#d1d5db" stroke-width="1.5"/>';
-
-      if (termEntries.length) {
-        // Polyline points
-        var points = '';
-        var circles = '';
-        var labels = '';
-        var stepX = termEntries.length > 1 ? plotW / (termEntries.length - 1) : plotW / 2;
-        termEntries.forEach(function(e, i) {
-          var x = padL + (termEntries.length === 1 ? plotW / 2 : i * stepX);
-          var y = yPos(e.gpa);
-          points += (i ? ' ' : '') + x + ',' + y;
-          circles += '<circle cx="' + x + '" cy="' + y + '" r="5" fill="#3b82f6" style="cursor:pointer"><title>' + e.label + ': ' + e.gpa.toFixed(3) + '</title></circle>';
-          labels += '<text x="' + x + '" y="' + (H - padB + 12) + '" text-anchor="middle" font-size="9" fill="#9ca3af">' + e.label + '</text>';
-        });
-        svg += '<polyline points="' + points + '" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
-        svg += circles + labels;
-      }
-
-      svg += '</svg>';
-      return svg;
+      _gpaTrendCharts[canvasId] = new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Term GPA',
+            data: data,
+            borderColor: '#f97316',
+            backgroundColor: 'rgba(249,115,22,0.08)',
+            borderWidth: 3,
+            pointRadius: 5,
+            pointBackgroundColor: '#f97316',
+            tension: 0.25,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) { return 'Term GPA: ' + ctx.parsed.y.toFixed(2); }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: '#6b7280', font: { size: 11 } }
+            },
+            y: {
+              min: yMin, max: yMax,
+              grid: { color: '#f3f4f6' },
+              ticks: {
+                stepSize: 0.2,
+                callback: function(v) { return v.toFixed(1); },
+                color: '#6b7280',
+                font: { size: 11 }
+              }
+            }
+          }
+        }
+      });
     }
 
     function openStudentProfileImported(d) {
@@ -1349,15 +1382,8 @@
       document.getElementById('smCreditPct').textContent = d.credits + '% (' + (d.creditVal || '') + ')';
       document.getElementById('smCreditBar').style.width = Math.min(100, d.credits) + '%';
 
-      // Replace with dynamic GPA Trend chart
-      var gpaContainer = document.getElementById('smGpaTrendContainer');
-      if (gpaContainer) {
-        if (d.termEntries && d.termEntries.length) {
-          gpaContainer.innerHTML = buildGPATrendSVG(d.termEntries);
-        } else {
-          gpaContainer.innerHTML = '<div style="text-align:center;color:#9ca3af;padding:30px 0;font-size:13px;">No term GPA data available</div>';
-        }
-      }
+      // Draw GPA Trend chart from imported transcript data
+      drawGpaTrendChart('smGpaTrendChart', d.termEntries || []);
 
       document.getElementById('smMissingCourses').innerHTML = '<span style="font-size:13px;color:#6b7280;">Transcript imported — course details not available.</span>';
       document.getElementById('smCommHistory').innerHTML = '<div style="font-size:13px;color:var(--text2);">Imported from PDF transcript. GPA: ' + (d.gpa || '—') + ' | Credits: ' + d.credits + '%</div>';
@@ -1497,10 +1523,18 @@
     }
 
     window.addEventListener('load', function() {
+      loadUser();
       drawBubble('major'); applyHighRiskThreshold(); attachDeleteButtons();
-      // Save original GPA Trend SVG for static student profiles
-      var gpaContainer = document.getElementById('smGpaTrendContainer');
-      if (gpaContainer) window._originalGpaTrendSVG = gpaContainer.innerHTML;
+      // Draw initial placeholder GPA trend chart for Student Management panel
+      drawGpaTrendChart('smGpaTrendChart', [
+        { label: 'Sp\'24', gpa: 3.21 }, { label: 'Fa\'24', gpa: 3.14 },
+        { label: 'Sp\'25', gpa: 3.09 }, { label: 'Fa\'25', gpa: 2.98 }
+      ]);
+      // Draw GPA trend for Risk Snapshot profile panel
+      drawGpaTrendChart('profileGpaTrendChart', [
+        { label: 'Sp\'24', gpa: 3.21 }, { label: 'Fa\'24', gpa: 3.14 },
+        { label: 'Sp\'25', gpa: 3.09 }, { label: 'Fa\'25', gpa: 2.98 }
+      ]);
     });
     window.addEventListener('resize', function() {
       var m = document.getElementById('bubbleByMajor');
