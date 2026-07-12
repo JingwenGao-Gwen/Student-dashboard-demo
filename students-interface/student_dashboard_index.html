@@ -1714,14 +1714,16 @@ function progressBlock(title, done, total, bodyHtml){
   </div>`;
 }
 
-// Dynamically cap headway-content height so it never overlaps the intern-prep section
+// Dynamically size the headway-content area — generous height, scrolls only when
+// the content would push past the bottom of the viewport.
 function updateHeadwayMaxHeight(){
   const content = document.getElementById('headway-content');
   if (!content) return;
   const rect = content.getBoundingClientRect();
-  const buffer = 40; // bottom breathing room
+  const buffer = 24; // bottom breathing room
   const available = window.innerHeight - rect.top - buffer;
-  content.style.maxHeight = Math.max(200, Math.floor(available)) + 'px';
+  // Use at least 70% of viewport height, and never smaller than 480px
+  content.style.maxHeight = Math.max(480, Math.floor(available), Math.floor(window.innerHeight * 0.7)) + 'px';
 }
 
 function ucoreRuleForYear(year){
