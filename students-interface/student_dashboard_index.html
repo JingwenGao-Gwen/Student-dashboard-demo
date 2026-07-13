@@ -317,13 +317,13 @@ table.matrix tr:hover td{background:#f8f9ff}
 @media(max-width:1120px){.intern-board{grid-template-columns:1fr}.intern-hover-skills{grid-template-columns:1fr}.intern-detail{min-height:0}.intern-keyword-panel{min-height:0}}
 
 /* GPA chart */
-.gpa-grid{display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,32%,360px);gap:24px;align-items:stretch}
+.gpa-grid{--gpa-chart-h:680px;display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,32%,360px);gap:24px;align-items:stretch}
 .gpa-left-pane{min-width:0;display:grid;grid-template-rows:auto 1fr;gap:28px;align-items:start}
-.gpa-add-pane{min-width:0;max-width:430px}
+.gpa-add-pane{min-width:0;max-width:none}
 .gpa-chart-pane{min-width:0;max-width:none}
-.gpa-recorded-pane{min-width:0;align-self:stretch;display:flex;flex-direction:column}
-.gpa-chart-pane .canvas-wrap{height:680px;min-height:680px}
-@media(max-width:1100px){.gpa-grid{grid-template-columns:1fr}.gpa-left-pane{display:block}.gpa-add-pane,.gpa-chart-pane,.gpa-recorded-pane{max-width:none}.gpa-chart-pane{margin-top:28px}.gpa-recorded-pane{display:block}}
+.gpa-recorded-pane{min-width:0;align-self:stretch;display:flex;flex-direction:column;min-height:0}
+.gpa-chart-pane .canvas-wrap{height:var(--gpa-chart-h);min-height:var(--gpa-chart-h)}
+@media(max-width:1100px){.gpa-grid{grid-template-columns:1fr}.gpa-left-pane{display:block}.gpa-add-pane,.gpa-chart-pane,.gpa-recorded-pane{max-width:none}.gpa-chart-pane{margin-top:28px}.gpa-recorded-pane{display:block;height:auto;min-height:0}}
 .gpa-input{display:flex;gap:8px;margin-bottom:14px;align-items:center}
 .gpa-input select, .gpa-input input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;background:var(--surface);outline:none}
 .gpa-input select{min-width:0;flex-shrink:1}
@@ -334,7 +334,7 @@ table.matrix tr:hover td{background:#f8f9ff}
 .gpa-input input[list]{appearance:textfield;-webkit-appearance:none}
 .gpa-input input#g-units{width:52px!important;flex:0 0 52px!important;padding-left:8px;padding-right:8px;text-align:center}
 .gpa-input select:focus, .gpa-input input:focus{border-color:var(--accent)}
-.gpa-list{flex:1;min-height:760px;max-height:none;overflow-y:auto;font-size:13px;border:1px solid var(--border);border-radius:10px;padding:8px;background:var(--surface)}
+.gpa-list{flex:1;min-height:0;max-height:none;overflow-y:auto;font-size:13px;border:1px solid var(--border);border-radius:10px;padding:8px;background:var(--surface)}
 .gpa-list .row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--bg);border-radius:8px;margin-bottom:4px;font-size:13px}
 .gpa-list .row:hover{background:var(--b1)}
 .gpa-list .rg{font-weight:800;color:var(--accent);margin-right:8px;background:var(--b1);padding:3px 10px;border-radius:8px;font-size:13px}
