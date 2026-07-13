@@ -317,7 +317,7 @@ table.matrix tr:hover td{background:#f8f9ff}
 @media(max-width:1120px){.intern-board{grid-template-columns:1fr}.intern-hover-skills{grid-template-columns:1fr}.intern-detail{min-height:0}.intern-keyword-panel{min-height:0}}
 
 /* GPA chart */
-.gpa-grid{display:grid;grid-template-columns:minmax(620px,760px) minmax(420px,1fr);gap:24px;align-items:stretch}
+.gpa-grid{display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,32%,360px);gap:24px;align-items:stretch}
 .gpa-left-pane{min-width:0;display:grid;grid-template-rows:auto 1fr;gap:28px;align-items:start}
 .gpa-add-pane{min-width:0;max-width:430px}
 .gpa-chart-pane{min-width:0;max-width:none}
