@@ -317,11 +317,12 @@ table.matrix tr:hover td{background:#f8f9ff}
 @media(max-width:1120px){.intern-board{grid-template-columns:1fr}.intern-hover-skills{grid-template-columns:1fr}.intern-detail{min-height:0}.intern-keyword-panel{min-height:0}}
 
 /* GPA chart */
-.gpa-grid{display:grid;grid-template-columns:minmax(0,1fr) 520px;gap:24px;align-items:start}
-.gpa-chart-pane{min-width:0;max-width:none;margin-top:18px}
-.gpa-control-pane,.gpa-recorded-pane{min-width:0}
+.gpa-grid{display:grid;grid-template-columns:minmax(560px,1fr) minmax(420px,520px);grid-template-rows:auto minmax(700px,auto);gap:24px;align-items:start}
+.gpa-add-pane{grid-column:1;grid-row:1;min-width:0;max-width:430px}
+.gpa-chart-pane{grid-column:1;grid-row:2;min-width:0;max-width:none;margin-top:28px}
+.gpa-recorded-pane{grid-column:2;grid-row:1 / span 2;min-width:0;align-self:stretch;display:flex;flex-direction:column}
 .gpa-chart-pane .canvas-wrap{height:680px;min-height:680px}
-@media(max-width:900px){.gpa-grid{grid-template-columns:1fr}}
+@media(max-width:1100px){.gpa-grid{grid-template-columns:1fr;grid-template-rows:auto auto auto}.gpa-add-pane,.gpa-chart-pane,.gpa-recorded-pane{grid-column:1;grid-row:auto;max-width:none}.gpa-recorded-pane{display:block}}
 .gpa-input{display:flex;gap:8px;margin-bottom:14px;align-items:center}
 .gpa-input select, .gpa-input input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;background:var(--surface);outline:none}
 .gpa-input select{min-width:0;flex-shrink:1}
@@ -332,7 +333,7 @@ table.matrix tr:hover td{background:#f8f9ff}
 .gpa-input input[list]{appearance:textfield;-webkit-appearance:none}
 .gpa-input input#g-units{width:52px!important;flex:0 0 52px!important;padding-left:8px;padding-right:8px;text-align:center}
 .gpa-input select:focus, .gpa-input input:focus{border-color:var(--accent)}
-.gpa-list{max-height:560px;overflow-y:auto;font-size:13px;border:1px solid var(--border);border-radius:10px;padding:8px;background:var(--surface)}
+.gpa-list{flex:1;min-height:760px;max-height:none;overflow-y:auto;font-size:13px;border:1px solid var(--border);border-radius:10px;padding:8px;background:var(--surface)}
 .gpa-list .row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--bg);border-radius:8px;margin-bottom:4px;font-size:13px}
 .gpa-list .row:hover{background:var(--b1)}
 .gpa-list .rg{font-weight:800;color:var(--accent);margin-right:8px;background:var(--b1);padding:3px 10px;border-radius:8px;font-size:13px}
@@ -502,7 +503,7 @@ table.matrix tr:hover td{background:#f8f9ff}
       </div>
 
       <div class="gpa-grid">
-        <div class="gpa-control-pane">
+        <div class="gpa-add-pane">
           <div style="font-size:13px;color:var(--text2);margin-bottom:8px;font-weight:700" data-i18n="gpa.add">Add a grade</div>
           <div style="font-size:12px;color:var(--text3);line-height:1.45;margin:-2px 0 10px" data-i18n="gpa.manualNote">Enter a course manually with its semester, units, and grade. Letter grades update the GPA graph; P records a passed course in the portfolio only.</div>
           <div class="gpa-input">
@@ -523,9 +524,9 @@ table.matrix tr:hover td{background:#f8f9ff}
             </select>
           </div>
           <button id="add-grade-btn" class="btn btn-primary" style="width:100%;margin-bottom:14px;justify-content:center" data-i18n="gpa.addbtn">＋ Add Grade</button>
-          <div class="gpa-chart-pane">
-            <div class="canvas-wrap"><canvas id="gpa-chart"></canvas></div>
-          </div>
+        </div>
+        <div class="gpa-chart-pane">
+          <div class="canvas-wrap"><canvas id="gpa-chart"></canvas></div>
         </div>
         <div class="gpa-recorded-pane">
           <div style="font-size:13px;color:var(--text2);margin-bottom:8px;font-weight:700" data-i18n="gpa.recorded">Recorded grades (chronological)</div>
