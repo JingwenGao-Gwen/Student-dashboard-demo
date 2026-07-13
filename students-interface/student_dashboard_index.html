@@ -653,9 +653,10 @@ table.matrix tr:hover td{background:#f8f9ff}
 <script src="intern_prep_data.js"></script>
 <script>
 // ── API-backed SIS course catalogue ──
+const REMOTE_API_BASE = 'https://student-dashboard-demo.onrender.com';
 const API_BASE = window.location.protocol === 'file:'
   ? 'http://localhost:8080'
-  : (window.location.hostname.endsWith('netlify.app') ? 'https://student-dashboard-demo.onrender.com' : '');
+  : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8080' : REMOTE_API_BASE);
 const COMPETENCY_ENABLED = false;
 window.DATA = {departments:{}, general_dimensions:[], courses:[]};
 
