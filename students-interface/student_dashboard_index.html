@@ -324,7 +324,8 @@ table.matrix tr:hover td{background:#f8f9ff}
 .gpa-chart-pane{min-width:0;max-width:none}
 .gpa-chart-pane{grid-column:1;grid-row:2}
 .gpa-recorded-pane{min-width:0;align-self:stretch;display:flex;flex-direction:column;min-height:0;height:calc(var(--gpa-add-h) + var(--gpa-chart-h) + 10px);max-height:calc(var(--gpa-add-h) + var(--gpa-chart-h) + 10px);overflow:hidden;grid-column:2;grid-row:1 / span 2}
-.gpa-chart-pane .canvas-wrap{height:var(--gpa-chart-h);min-height:var(--gpa-chart-h)}
+.gpa-chart-pane .canvas-wrap{height:var(--gpa-chart-h);min-height:var(--gpa-chart-h);overflow-x:auto;overflow-y:hidden}
+.gpa-chart-pane .gpa-chart-inner{height:100%;min-width:100%}
 @media(max-width:1100px){.gpa-grid{grid-template-columns:1fr;grid-template-rows:auto;row-gap:24px}.gpa-left-pane{display:block}.gpa-add-pane,.gpa-chart-pane,.gpa-recorded-pane{max-width:none;grid-column:auto;grid-row:auto}.gpa-chart-pane{margin-top:12px}.gpa-recorded-pane{display:block;height:auto;max-height:none;min-height:0}}
 .gpa-input{display:flex;gap:8px;margin-bottom:14px;align-items:center}
 .gpa-input select, .gpa-input input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;background:var(--surface);outline:none}
@@ -530,7 +531,7 @@ table.matrix tr:hover td{background:#f8f9ff}
           <button id="add-grade-btn" class="btn btn-primary" style="width:100%;margin-bottom:14px;justify-content:center" data-i18n="gpa.addbtn">＋ Add Grade</button>
         </div>
         <div class="gpa-chart-pane">
-          <div class="canvas-wrap"><canvas id="gpa-chart"></canvas></div>
+          <div class="canvas-wrap"><div class="gpa-chart-inner"><canvas id="gpa-chart"></canvas></div></div>
         </div>
         </div>
         <div class="gpa-recorded-pane">
@@ -3343,6 +3344,8 @@ function renderGPAChart(){
 function renderGPAChart(){
   if (gpaChart){ gpaChart.destroy(); gpaChart = null; }
   const ctx = document.getElementById('gpa-chart').getContext('2d');
+  const chartWrapEl = document.querySelector('#section-gpa .gpa-chart-pane .canvas-wrap');
+  const chartInnerEl = document.querySelector('#section-gpa .gpa-chart-pane .gpa-chart-inner');
   const summaryCgpa = transcriptSummary.cgpa;
   const summaryMgpa = transcriptSummary.mgpa;
   const rows = gpaEligibleRecords().map((g, i) => ({
@@ -3353,6 +3356,7 @@ function renderGPAChart(){
   }));
   if (!rows.length){
     ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
+    if (chartInnerEl) chartInnerEl.style.minWidth = '100%';
     document.getElementById('gpa-stats').innerHTML =
       `<b>CGPA</b>: <b style="color:var(--accent)">${summaryCgpa == null ? '—' : summaryCgpa.toFixed(3)}</b>` +
       ` &nbsp;·&nbsp; <b>MGPA</b>: <b style="color:var(--accent)">${summaryMgpa == null ? '—' : summaryMgpa.toFixed(3)}</b>`;
@@ -3382,6 +3386,20 @@ function renderGPAChart(){
   const maxY = Math.min(4.05, Math.max(3.0, Math.ceil((Math.max(...values) + 0.15) * 10) / 10));
   const latest = sems[sems.length - 1];
   const xPad = sems.length <= 1 ? 0.75 : 0.55;
+  const semCount = sems.length;
+  const denseLabels = semCount > 10;
+  const mediumLabels = semCount >= 7 && semCount <= 10;
+  const axisRotation = denseLabels ? 40 : (mediumLabels ? 35 : 0);
+  const axisFontSize = denseLabels ? 10 : (mediumLabels ? 11 : 12);
+  if (chartInnerEl){
+    if (semCount > 12){
+      const wrapW = chartWrapEl ? chartWrapEl.clientWidth : 0;
+      const targetW = Math.max(wrapW, semCount * 92);
+      chartInnerEl.style.minWidth = `${targetW}px`;
+    } else {
+      chartInnerEl.style.minWidth = '100%';
+    }
+  }
   document.getElementById('gpa-stats').innerHTML =
     `<b>CGPA</b>: <b style="color:var(--accent)">${summaryCgpa == null ? '—' : summaryCgpa.toFixed(3)}</b>` +
     ` &nbsp;·&nbsp; <b>MGPA</b>: <b style="color:var(--accent)">${summaryMgpa == null ? '—' : summaryMgpa.toFixed(3)}</b>` +
@@ -3397,7 +3415,7 @@ function renderGPAChart(){
     options:{responsive:true, maintainAspectRatio:false,
       layout:{padding:{top:24,right:14,bottom:8,left:22}},
       scales:{
-        x:{type:'linear', min:-xPad, max:(sems.length - 1) + xPad, grid:{color:'rgba(33,113,181,.10)', drawBorder:false}, afterBuildTicks:(axis)=>{axis.ticks=sems.map((_,i)=>({value:i}));}, ticks:{callback:(v)=>semAxisLabel(sems[Math.round(v)]||''), stepSize:1, autoSkip:false, maxRotation:24, minRotation:0, font:{size:12, weight:'500'}, color:'#1a1d2e'}, title:{display:true,text:'Semester',font:{size:12,weight:'500'},color:'#5a6076',padding:{top:10}}},
+        x:{type:'linear', min:-xPad, max:(sems.length - 1) + xPad, grid:{color:'rgba(33,113,181,.10)', drawBorder:false}, afterBuildTicks:(axis)=>{axis.ticks=sems.map((_,i)=>({value:i}));}, ticks:{callback:(v)=>{const idx=Math.round(v); if(idx<0||idx>=sems.length) return ''; if(denseLabels && idx % 2 === 1) return ''; return semAxisLabel(sems[idx]||'');}, stepSize:1, autoSkip:false, maxRotation:axisRotation, minRotation:axisRotation, font:{size:axisFontSize, weight:'500'}, color:'#1a1d2e'}, title:{display:true,text:'Semester',font:{size:12,weight:'500'},color:'#5a6076',padding:{top:10}}},
         y:{min:minY, max:maxY, grid:{color:'rgba(33,113,181,.10)', drawBorder:false}, ticks:{callback:(v)=>Number(v) > 4 ? '' : Number(v).toFixed(1), padding:8, font:{size:12, weight:'500'}, color:'#1a1d2e'}, title:{display:true,text:'GPA',font:{size:12,weight:'500'},color:'#5a6076',padding:{bottom:6}}}
       },
       plugins:{legend:{position:'bottom', align:'center', labels:{font:{size:12, weight:'500'}, color:'#1a1d2e', padding:16, boxWidth:30, boxHeight:2, usePointStyle:true, pointStyle:'line', pointStyleWidth:34}},
