@@ -39,24 +39,6 @@ writeFileSync(
 `,
 );
 
-// ── Cloudflare Pages _redirects ──────────────────────────────────────
-// Note: Workers + Assets mode does NOT support proxy (200) to external URLs.
-// The frontend calls https://student-dashboard-demo.onrender.com directly.
-// SPA fallback is handled by wrangler.jsonc → assets.not_found_handling.
-writeFileSync(
-  join(distDir, '_redirects'),
-  `# Cloudflare Pages redirects
-/                           /students-interface/student_dashboard_index.html  302
-/index.html                 /students-interface/student_dashboard_index.html  302
-/aa_dashboard.html          /aa_dashboard.html                                200
-/aa_dashboard               /aa_dashboard.html                                200
-/aa_dashboard_v2.html       /aa_dashboard_v2.html                             200
-/aa_dashboard_v2            /aa_dashboard_v2.html                             200
-/student_dashboard.html     /student_dashboard.html                           200
-/students-interface/*       /students-interface/:splat                        200
-`,
-);
-
 // ── Cloudflare Pages _headers ────────────────────────────────────────
 writeFileSync(
   join(distDir, '_headers'),
