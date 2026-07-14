@@ -18,6 +18,9 @@ copyFileSync(
 copyIfExists('aa_dashboard.html', join(distDir, 'aa_dashboard.html'));
 copyIfExists(join('assets', 'favicon.svg'), join(distDir, 'assets', 'favicon.svg'));
 
+// Copy aa_dashboard_v2.html
+copyIfExists('aa_dashboard_v2.html', join(distDir, 'aa_dashboard_v2.html'));
+
 writeFileSync(
   join(distDir, 'index.html'),
   `<!doctype html>
@@ -33,5 +36,36 @@ writeFileSync(
     <p>Redirecting to <a href="${dashboardPath}">Study Dashboard</a>...</p>
   </body>
 </html>
+`,
+);
+
+// ── Cloudflare Pages _redirects ──────────────────────────────────────
+writeFileSync(
+  join(distDir, '_redirects'),
+  `# Cloudflare Pages redirects
+/                           /students-interface/student_dashboard_index.html  302
+/index.html                 /students-interface/student_dashboard_index.html  302
+/aa_dashboard.html          /aa_dashboard.html                                200
+/aa_dashboard               /aa_dashboard.html                                200
+/aa_dashboard_v2.html       /aa_dashboard_v2.html                             200
+/aa_dashboard_v2            /aa_dashboard_v2.html                             200
+/student_dashboard.html     /student_dashboard.html                           200
+/students-interface/*       /students-interface/:splat                        200
+/api/*                      https://student-dashboard-demo.onrender.com/api/:splat  200
+/*                          /index.html                                       200
+`,
+);
+
+// ── Cloudflare Pages _headers ────────────────────────────────────────
+writeFileSync(
+  join(distDir, '_headers'),
+  `# Cloudflare Pages headers
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
 `,
 );
