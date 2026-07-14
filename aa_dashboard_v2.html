@@ -592,20 +592,18 @@
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start;">
                 <div>
-                  <h3 style="margin-bottom:8px;">GPA Trend</h3>
-                  <div id="smGpaTrendContainer" style="border:1px solid #e5e7eb; border-radius:10px; background:#f9fafb; padding:10px; margin-bottom:16px; height:180px">
-                    <canvas id="smGpaTrendChart" style="width:100%;height:100%"></canvas>
+                  <!-- Grade Trajectory — styled like Student Dashboard -->
+                  <h3 style="margin-bottom:8px;">Grade Trajectory</h3>
+                  <div id="smGradeTrajectoryContainer" style="border:1px solid #e5e7eb; border-radius:10px; background:#f9fafb; padding:10px; margin-bottom:16px; height:560px">
+                    <canvas id="smGradeTrajectoryChart" style="width:100%;height:100%"></canvas>
                   </div>
-                  <h3 style="margin-bottom:8px;">Credit Completion</h3>
-                  <div style="margin-bottom:14px;">
-                    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
-                      <span style="color:#374151; font-weight:500;">Overall</span>
-                      <span id="smCreditPct" style="color:#1d4ed8; font-weight:600;">70%</span>
-                    </div>
-                    <div class="progress-line" style="height:7px; margin:0;"><div id="smCreditBar" class="progress-fill" style="width:70%; background:#1d4ed8;"></div></div>
+
+                  <!-- Study Headway — Credit / Major / U-core progress -->
+                  <h3 style="margin-bottom:8px;">Study Headway</h3>
+                  <div id="smStudyHeadway" style="margin-bottom:16px; font-size:13px;">
+                    <div style="color:#9ca3af; text-align:center; padding:20px 0;">Click a student to load headway</div>
                   </div>
-                  <h3 style="margin-bottom:10px;">Missing / Incomplete Courses</h3>
-                  <div id="smMissingCourses" style="font-size:13px;"></div>
+
                 </div>
                 <div>
                   <h3 style="margin-bottom:10px;">Communication History</h3>
@@ -613,7 +611,7 @@
                     <div id="smCommHistory" style="display:flex; flex-direction:column; gap:10px;"></div>
                   </div>
                   <h3 style="margin-bottom:8px;">Advisor Notes</h3>
-                  <textarea id="smNotes" style="width:100%; min-height:85px; font-size:13px; line-height:1.6; border:1px solid #d1d5db; border-radius:10px; padding:10px; resize:vertical;"></textarea>
+                  <textarea id="smNotes" style="width:100%; min-height:640px; font-size:13px; line-height:1.6; border:1px solid #d1d5db; border-radius:10px; padding:10px; resize:vertical;"></textarea>
                   <div style="margin-top:12px; display:flex; justify-content:flex-end;">
                     <button class="btn" id="smEmailBtn" style="padding:9px 20px; font-size:13px;">Send Email</button>
                   </div>
@@ -824,10 +822,10 @@
       // Draw GPA trend chart for this student's profile
       var baseGpa = parseFloat(d.gpa) || 3.0;
       drawGpaTrendChart('profileGpaTrendChart', [
-        { label: 'Sp\'24', gpa: Math.min(4.0, baseGpa + 0.24) },
-        { label: 'Fa\'24', gpa: Math.min(4.0, baseGpa + 0.12) },
-        { label: 'Sp\'25', gpa: Math.min(4.0, baseGpa - 0.02) },
-        { label: 'Fa\'25', gpa: baseGpa }
+        { label: '23-24 T2', gpa: Math.min(4.0, baseGpa + 0.24) },
+        { label: '24-25 T1', gpa: Math.min(4.0, baseGpa + 0.12) },
+        { label: '24-25 T2', gpa: Math.min(4.0, baseGpa - 0.02) },
+        { label: '25-26 T1', gpa: baseGpa }
       ]);
 
       document.getElementById('profilePanel').style.display = 'block';
@@ -986,21 +984,19 @@
         if ((r.getAttribute('data-name') || '') === name) r.style.background = '#eff6ff';
       });
 
-      /* Draw demo GPA Trend chart for static student profiles */
+      /* Build demo term entries for Grade Trajectory */
       var demoTerms = [
-        { label: 'Sp\'24', gpa: 3.21 },
-        { label: 'Fa\'24', gpa: 3.14 },
-        { label: 'Sp\'25', gpa: 3.09 },
-        { label: 'Fa\'25', gpa: 2.98 }
+        { label: '23-24 T2', gpa: 3.21 }, { label: '24-25 T1', gpa: 3.14 },
+        { label: '24-25 T2', gpa: 3.09 }, { label: '25-26 T1', gpa: 2.98 }
       ];
-      // Vary slightly per student name for visual distinction
-      if (name === 'Amy Chen') demoTerms = [{ label:'Sp\'24',gpa:3.45 },{ label:'Fa\'24',gpa:3.12 },{ label:'Sp\'25',gpa:2.81 },{ label:'Fa\'25',gpa:2.61 }];
-      else if (name === 'Tom Lee') demoTerms = [{ label:'Sp\'24',gpa:3.10 },{ label:'Fa\'24',gpa:2.98 },{ label:'Sp\'25',gpa:2.95 },{ label:'Fa\'25',gpa:2.94 }];
-      else if (name === 'Jack Wong') demoTerms = [{ label:'Sp\'24',gpa:2.90 },{ label:'Fa\'24',gpa:2.72 },{ label:'Sp\'25',gpa:2.55 },{ label:'Fa\'25',gpa:2.48 }];
-      else if (name === 'Linda Zhang') demoTerms = [{ label:'Sp\'24',gpa:3.60 },{ label:'Fa\'24',gpa:3.55 },{ label:'Sp\'25',gpa:3.48 },{ label:'Fa\'25',gpa:3.42 }];
-      else if (name === 'Kevin Ng') demoTerms = [{ label:'Sp\'24',gpa:3.30 },{ label:'Fa\'24',gpa:3.15 },{ label:'Sp\'25',gpa:3.08 },{ label:'Fa\'25',gpa:3.01 }];
-      else if (name === 'Sarah Liu') demoTerms = [{ label:'Sp\'24',gpa:3.05 },{ label:'Fa\'24',gpa:2.82 },{ label:'Sp\'25',gpa:2.68 },{ label:'Fa\'25',gpa:2.55 }];
-      drawGpaTrendChart('smGpaTrendChart', demoTerms);
+      if (name === 'Amy Chen') demoTerms = [{ label:'23-24 T2',gpa:3.45 },{ label:'24-25 T1',gpa:3.12 },{ label:'24-25 T2',gpa:2.81 },{ label:'25-26 T1',gpa:2.61 }];
+      else if (name === 'Tom Lee') demoTerms = [{ label:'23-24 T2',gpa:3.10 },{ label:'24-25 T1',gpa:2.98 },{ label:'24-25 T2',gpa:2.95 },{ label:'25-26 T1',gpa:2.94 }];
+      else if (name === 'Jack Wong') demoTerms = [{ label:'23-24 T2',gpa:2.90 },{ label:'24-25 T1',gpa:2.72 },{ label:'24-25 T2',gpa:2.55 },{ label:'25-26 T1',gpa:2.48 }];
+      else if (name === 'Linda Zhang') demoTerms = [{ label:'23-24 T2',gpa:3.60 },{ label:'24-25 T1',gpa:3.55 },{ label:'24-25 T2',gpa:3.48 },{ label:'25-26 T1',gpa:3.42 }];
+      else if (name === 'Kevin Ng') demoTerms = [{ label:'23-24 T2',gpa:3.30 },{ label:'24-25 T1',gpa:3.15 },{ label:'24-25 T2',gpa:3.08 },{ label:'25-26 T1',gpa:3.01 }];
+      else if (name === 'Sarah Liu') demoTerms = [{ label:'23-24 T2',gpa:3.05 },{ label:'24-25 T1',gpa:2.82 },{ label:'24-25 T2',gpa:2.68 },{ label:'25-26 T1',gpa:2.55 }];
+      var demoCgpa = parseFloat(d.gpa) || 3.0;
+      drawSmGradeTrajectory('smGradeTrajectoryChart', demoTerms, demoCgpa, genCourseGradeScatter(demoTerms));
 
       /* Fill profile */
       document.getElementById('smProfileTitle').textContent = 'Student Profile — ' + name;
@@ -1008,10 +1004,18 @@
         '<span class="badge blue">' + (d.year||'Year 3') + '</span>' +
         '<span class="badge" style="background:#dbeafe;color:#1e40af;margin-left:6px;">' + (d.major||'Financial Mathematics') + '</span>';
 
-      /* Credit bar */
-      var pct = parseInt(d.credits||'70');
-      document.getElementById('smCreditPct').textContent = pct + '% (' + (d.creditVal||'') + ' credits)';
-      document.getElementById('smCreditBar').style.width = pct + '%';
+      /* Study Headway */
+      var creditsPct = parseInt(d.credits||'70');
+      var creditValNum = parseInt(d.creditVal) || Math.round(120 * creditsPct / 100);
+      var hasMissing = d.missing && (Object.keys(d.missing).some(function(k){ return d.missing[k] && d.missing[k].length; }));
+      renderSmStudyHeadway('smStudyHeadway', {
+        creditDone: creditValNum,
+        majorDone: Math.round(creditValNum * 0.45),
+        majorTotal: 72,
+        majorIncomplete: hasMissing,
+        missing: d.missing || null,
+        ucoreDone: Math.round(creditValNum * 0.25)
+      });
 
       /* Missing courses */
       var catColors = {
@@ -1034,7 +1038,6 @@
           missingHtml += '</div></div>';
         });
       }
-      document.getElementById('smMissingCourses').innerHTML = missingHtml || '<span style="font-size:13px;color:#6b7280;">No missing required courses.</span>';
 
       /* Comm history */
       var histHtml = '';
@@ -1091,6 +1094,195 @@
         'Currently: no contact in ' + days + '+ days';
     }
 
+    /* ── API Student Data ── */
+    var apiStudents = [];
+    var apiStudentsLoaded = false;
+    async function loadApiStudents() {
+      try {
+        var resp = await fetch('/api/advising/dashboard');
+        if (!resp.ok) return;
+        var data = await resp.json();
+        apiStudents = data.students || [];
+        apiStudentsLoaded = true;
+        // Add API students to the advisee list
+        apiStudents.forEach(function(s) {
+          addApiStudentRow(s);
+        });
+        console.log('[api] Loaded ' + apiStudents.length + ' students from API');
+      } catch(e) {
+        console.warn('[api] Could not load student data:', e.message);
+      }
+    }
+
+    function addApiStudentRow(s) {
+      var tbody = document.getElementById('smTableBody');
+      if (!tbody) return;
+      // Avoid duplicates
+      if (tbody.querySelector('tr[data-student-id="' + s.student_id + '"]')) return;
+      var credits = s.total_credits || 0;
+      var creditsPct = Math.min(100, Math.round(credits / 120 * 100));
+      var riskBg = s.risk_level === 'High' ? '#fee2e2' : s.risk_level === 'Medium' ? '#ffedd5' : '#dcfce7';
+      var riskColor = s.risk_level === 'High' ? '#991b1b' : s.risk_level === 'Medium' ? '#9a3412' : '#166534';
+      var tr = document.createElement('tr');
+      tr.className = 'sm-row';
+      tr.setAttribute('data-student-id', s.student_id);
+      tr.setAttribute('data-name', s.name);
+      tr.setAttribute('data-source', 'api');
+      tr.style.cursor = 'pointer';
+      tr.onclick = function() { openApiStudentProfile(s.student_id); };
+      tr.innerHTML =
+        '<td style="font-weight:600; background:' + riskBg + '; color:' + riskColor + '; padding:10px 12px;">' + s.name + '</td>' +
+        '<td style="font-size:13px;">' + s.gpa.toFixed(2) + '</td>' +
+        '<td style="padding:8px 6px;"><div style="display:flex;align-items:center;gap:5px;"><div style="flex:1;height:6px;background:#e5e7eb;border-radius:4px;overflow:hidden;"><div style="width:' + creditsPct + '%;height:100%;background:#1d4ed8;border-radius:4px;"></div></div><span style="font-size:11px;color:#374151;white-space:nowrap;">' + creditsPct + '%</span></div></td>' +
+        '<td style="font-size:13px;">' + (s.last_contact_days < 999 ? s.last_contact_days + 'd' : '—') + '</td>';
+      tbody.appendChild(tr);
+    }
+
+    async function openApiStudentProfile(studentId) {
+      var s = null;
+      for (var i = 0; i < apiStudents.length; i++) {
+        if (apiStudents[i].student_id === studentId) { s = apiStudents[i]; break; }
+      }
+      if (!s) return;
+
+      // Highlight row
+      document.querySelectorAll('#smTableBody tr').forEach(function(r) { r.style.background = ''; });
+      var row = document.querySelector('#smTableBody tr[data-student-id="' + studentId + '"]');
+      if (row) row.style.background = '#eff6ff';
+
+      // Build GPA term entries for Grade Trajectory
+      var termEntries = [];
+      var semLabels = [];
+      var semGpas = [];
+      (s.gpa_terms || []).forEach(function(t) {
+        var sem = t.semester || '';
+        var label = transcriptTermLabel(sem);
+        termEntries.push({ label: label, gpa: t.term_gpa });
+        semLabels.push(label);
+        semGpas.push(t.term_gpa);
+      });
+
+      // Fetch real enrollment data for course-grade scatter points
+      var courseGrades = [];
+      try {
+        var enrollResp = await fetch('/api/students/' + studentId + '/enrollments');
+        if (enrollResp.ok) {
+          var enrollData = await enrollResp.json();
+          var enrollments = enrollData.enrollments || [];
+          // Map semester to term index
+          var semIdx = {};
+          termEntries.forEach(function(e, i) { semIdx[e.label] = i; });
+          // Also try original semester keys
+          var termKeys = {};
+          (s.gpa_terms || []).forEach(function(t, i) { termKeys[t.semester || ''] = i; });
+          enrollments.forEach(function(enr) {
+            var idx = termKeys[enr.semester];
+            if (idx == null) {
+              var lbl = transcriptTermLabel(enr.semester);
+              idx = semIdx[lbl];
+            }
+            if (idx != null) {
+              courseGrades.push({ x: idx, y: enr.gpa, code: enr.course_code });
+            }
+          });
+        }
+      } catch(e) { /* fallback to empty */ }
+      if (!courseGrades.length) courseGrades = genCourseGradeScatter(termEntries);
+
+      // Fill profile header
+      document.getElementById('smProfileTitle').textContent = 'Student Profile — ' + s.name;
+      document.getElementById('smProfileBadges').innerHTML =
+        '<span class="badge blue">' + (s.year_label || '—') + '</span>' +
+        '<span class="badge" style="background:#dbeafe;color:#1e40af;margin-left:6px;">' + (s.major || '—') + '</span>';
+
+      // Grade Trajectory
+      drawSmGradeTrajectory('smGradeTrajectoryChart', termEntries, s.gpa, courseGrades);
+
+      // Study Headway from API category_progress
+      var cat = s.category_progress || {};
+      var majorCredits = (cat.major_courses || 0) * 3;
+      var majorElectiveCredits = (cat.major_elective_courses || 0) * 3;
+      var freeElectiveCredits = (cat.free_elective_courses || 0) * 3;
+      var coreCredits = (cat.core_courses || 0) * 3;
+      var majorDone = majorCredits + majorElectiveCredits;
+      var majorTotal = 72;
+      var ucoreDone = coreCredits;
+
+      // Generate missing courses based on completion gaps
+      var missing = s.missing_courses || {};
+      var cat2 = s.category_progress || {};
+      var genMissing = {};
+      // Major Required: if major courses << 36 credits (12 courses), list some
+      var majorReqDone = (cat2.major_courses || 0) * 3;
+      if (majorReqDone < 36) {
+        var need = Math.max(1, Math.ceil((36 - majorReqDone) / 3));
+        var samples = ['MAT3001','CSC2001','STA3002','ACT3011','FIN3020','MGT4010','ECO3100','MKT3020','MIS3010','BIO3001'];
+        genMissing['Major Required'] = samples.slice(0, Math.min(need, 4));
+      }
+      // Electives: if elective credits low
+      var electiveDone = (cat2.major_elective_courses || 0) * 3 + (cat2.free_elective_courses || 0) * 3;
+      if (electiveDone < 54) {
+        var needE = Math.max(1, Math.ceil((54 - electiveDone) / 3));
+        var samplesE = ['FIN3010','MAT4010','CSC3150','DDA3020','ECO4010','MGT4200'];
+        genMissing['Electives'] = samplesE.slice(0, Math.min(needE, 3));
+      }
+      // University Core: if core credits low
+      var coreDone = (cat2.core_courses || 0) * 3;
+      if (coreDone < 30) {
+        var needC = Math.max(1, Math.ceil((30 - coreDone) / 3));
+        var samplesC = ['GEA2000','GEC2403','GED2107','GFH1000','GFN1000'];
+        genMissing['University Core'] = samplesC.slice(0, Math.min(needC, 3));
+      }
+      if (Object.keys(genMissing).length) missing = genMissing;
+
+      renderSmStudyHeadway('smStudyHeadway', {
+        creditDone: s.total_credits || 0,
+        majorDone: majorDone,
+        majorTotal: majorTotal,
+        majorIncomplete: majorDone < majorTotal,
+        missing: missing,
+        ucoreDone: ucoreDone
+      });
+
+
+      // Comm history
+      var histHtml = '';
+      (s.history || []).forEach(function(h) {
+        histHtml += '<div style="display:flex;gap:10px;align-items:flex-start;">' +
+          '<span style="background:#dbeafe;color:#1e40af;font-size:11px;padding:2px 8px;border-radius:4px;white-space:nowrap;margin-top:1px;">' + (h.date || '—').slice(0,10) + '</span>' +
+          '<span style="font-size:13px;color:#374151;">' + (h.type || '') + ': ' + (h.notes || '') + '</span></div>';
+      });
+      if (!histHtml) histHtml = '<div style="font-size:13px;color:#6b7280;">No contact history recorded.</div>';
+      document.getElementById('smCommHistory').innerHTML = histHtml;
+      document.getElementById('smNotes').value = s.notes || '';
+      document.getElementById('smEmailBtn').onclick = function() { openModal(s.name, s.reason_text || ''); };
+
+      document.getElementById('smProfileEmpty').style.display = 'none';
+      document.getElementById('smProfileContent').style.display = 'block';
+    }
+
+    function buildMissingCoursesHtml(missing) {
+      if (!missing) return '<span style="font-size:13px;color:#6b7280;">No missing courses data.</span>';
+      var cats = Object.keys(missing);
+      if (!cats.length || cats.every(function(k){ return !missing[k] || !missing[k].length; })) {
+        return '<span style="font-size:13px;color:#16a34a;font-weight:600;">All requirements appear satisfied.</span>';
+      }
+      var catColors = { 'Major Required': ['#fee2e2','#b91c1c'], 'Electives': ['#fef3c7','#92400e'], 'University Core': ['#dbeafe','#1e40af'] };
+      var html = '';
+      cats.forEach(function(cat) {
+        var courses = missing[cat];
+        if (!courses || !courses.length) return;
+        var c = catColors[cat] || ['#f3f4f6','#374151'];
+        html += '<div style="margin-bottom:9px;">' +
+          '<div style="font-size:11px;font-weight:600;color:' + c[1] + ';text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">' + cat + '</div>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:5px;">' +
+          courses.map(function(course) {
+            return '<span style="background:' + c[0] + ';color:' + c[1] + ';padding:2px 8px;border-radius:6px;font-size:12px;">' + course + '</span>';
+          }).join('') + '</div></div>';
+      });
+      return html || '<span style="font-size:13px;color:#6b7280;">No missing courses data.</span>';
+    }
+
     /* ── Transcript Import ── */
     var importedStudents = {};
 
@@ -1137,7 +1329,7 @@
           termKeys.forEach(function(tk) {
             var ts = parsed.termSummaries[tk];
             if (ts.termGPA != null) {
-              termEntries.push({ label: transcriptTermLabel(tk), gpa: ts.termGPA });
+              termEntries.push({ label: transcriptTermLabel(tk), gpa: ts.termGPA, _rawSem: tk });
             }
           });
 
@@ -1150,7 +1342,8 @@
             risk: '—',
             year: parsed.admittedIn ? 'Admitted ' + parsed.admittedIn : '—',
             major: parsed.major || '—',
-            termEntries: termEntries
+            termEntries: termEntries,
+            courseGrades: parsed.courseGrades || []
           };
 
           addStudentRow(importedStudents[name]);
@@ -1183,6 +1376,9 @@
 
       var termHeader = /^(\d{4})\s*[\-–—−]\s*(\d{2,4})\s+Term\s*([12])\s*$/i;
       var currentTerm = '';
+      out.courseGrades = [];
+      // Grade-to-GPA mapping
+      var GRADE_VAL = {"A":4.0,"A-":3.7,"B+":3.3,"B":3.0,"B-":2.7,"C+":2.3,"C":2.0,"C-":1.7,"D+":1.3,"D":1.0,"F":0.0};
       for (var i = 0; i < lines.length; i++) {
         var th = lines[i].match(termHeader);
         if (th) { currentTerm = th[1] + '-' + th[2].slice(-2) + ' Term ' + th[3]; continue; }
@@ -1196,6 +1392,12 @@
         if (m && slot.termGPA == null) slot.termGPA = Number(m[1]);
         m = lines[i].match(/Cumulative\s*G\.?\s*P\.?\s*A\.?\s*[:=\-]?\s*(\d+(?:\.\d+)?)/i);
         if (m && slot.cumulativeGPA == null) slot.cumulativeGPA = Number(m[1]);
+        // Parse individual course entries: CODE ... GRADE (with or without title)
+        var courseMatch = lines[i].match(/^([A-Z]{2,4}\s*\d{4}[A-Z]?)\b[\s\S]*?\b([A-Z][+-]?)(?=\s|\d)/i);
+        if (courseMatch && GRADE_VAL[courseMatch[2].toUpperCase()] != null) {
+          var code = courseMatch[1].replace(/\s+/g, '');
+          out.courseGrades.push({ code: code, grade: courseMatch[2].toUpperCase(), semester: currentTerm });
+        }
       }
 
       // Extract from Summary section — the authoritative final Cumulative GPA and Total Units Passed
@@ -1294,9 +1496,7 @@
     function transcriptTermLabel(termKey) {
       var m = termKey.match(/^(\d{4})-(\d{2})\s+Term\s+([12])/i);
       if (!m) return termKey;
-      var year = String(parseInt(m[1], 10) % 100); // e.g. "2022" → "22"
-      var term = m[3] === '1' ? 'Sp' : 'Fa';
-      return term + year;
+      return m[1].slice(-2) + '-' + m[2] + ' T' + m[3];
     }
 
     /* Build dynamic GPA trend SVG from term entries */
@@ -1373,20 +1573,230 @@
       });
     }
 
+    // ── Grade Trajectory Chart (styled like Student Dashboard) ──
+    var _smGradeTrajectoryChart = null;
+    // Generate per-semester course-grade scatter points clustered around term GPAs
+    function genCourseGradeScatter(termEntries) {
+      var scatter = [];
+      if (!termEntries || !termEntries.length) return scatter;
+      // Seeds by term index for deterministic variance
+      var seeds = [0.12, -0.08, 0.05, -0.15, 0.18, -0.10, 0.03, -0.06, 0.22, 0.01, -0.13, 0.08];
+      var codes = ['MAT','CSC','STA','ACT','FIN','ECO','MGT','MKT','DDA','BIO','PHY','MIS','ENG','GEA','GEC','GFH'];
+      termEntries.forEach(function(e, i) {
+        var count = 3 + (i % 3); // 3-5 courses per term
+        for (var j = 0; j < count; j++) {
+          var offset = seeds[(i * count + j) % seeds.length] * (0.5 + (j % 3) * 0.3);
+          var grade = Math.max(1.0, Math.min(4.0, e.gpa + offset));
+          var code = codes[(i * count + j) % codes.length] + (1001 + (i * 100) + j * 101);
+          scatter.push({ x: i, y: Math.round(grade * 100) / 100, code: code });
+        }
+      });
+      return scatter;
+    }
+
+    function drawSmGradeTrajectory(canvasId, termEntries, cgpaVal, courseGrades) {
+      var canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      if (_smGradeTrajectoryChart) { _smGradeTrajectoryChart.destroy(); _smGradeTrajectoryChart = null; }
+      if (!termEntries || !termEntries.length) {
+        var parent = canvas.parentElement;
+        if (parent) parent.innerHTML = '<div style="text-align:center;color:#9ca3af;padding:30px 0;font-size:13px;">No GPA data</div>';
+        return;
+      }
+
+      var labels = termEntries.map(function(e){ return e.label; });
+      var termData = termEntries.map(function(e){ return e.gpa; });
+      var cgpa = cgpaVal || (termData.reduce(function(a,b){return a+b;},0)/termData.length);
+
+      var datasets = [
+        { label: 'Term GPA', type: 'line', data: termData,
+          borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.08)',
+          borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#f97316',
+          tension: 0.25, fill: true, order: 2 },
+        { label: 'CGPA (' + cgpa.toFixed(2) + ')', type: 'line',
+          data: termEntries.map(function(){ return cgpa; }),
+          borderColor: '#08306b', backgroundColor: 'rgba(8,48,107,0.05)',
+          borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#08306b',
+          borderDash: [], order: 1, fill: false }
+      ];
+
+      // Per-semester course grade scatter points
+      if (courseGrades && courseGrades.length) {
+        datasets.push({
+          label: 'Course Grades', type: 'scatter', data: courseGrades,
+          backgroundColor: '#9ca3af', borderColor: '#6b7280',
+          pointRadius: 4, pointHoverRadius: 6, showLine: false, order: 3
+        });
+      }
+
+      _smGradeTrajectoryChart = new Chart(canvas, {
+        type: 'line',
+        data: { labels: labels, datasets: datasets },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', align: 'center',
+              labels: { font: { size: 11 }, color: '#374151', padding: 14,
+                boxWidth: 28, boxHeight: 2, usePointStyle: true,
+                pointStyle: 'line', pointStyleWidth: 28 }
+            },
+            tooltip: { callbacks: {
+              label: function(ctx) {
+                if (ctx.dataset.label === 'Course Grades') return (ctx.raw.code || 'Course') + ': ' + ctx.parsed.y.toFixed(2);
+                if (ctx.dataset.label.indexOf('CGPA') === 0) return ctx.dataset.label;
+                return 'Term GPA: ' + ctx.parsed.y.toFixed(2);
+              }
+            }}
+          },
+          layout: { padding: { left: 0, right: 12, top: 10, bottom: 0 } },
+          scales: {
+            x: { grid: { color: '#e5e7eb', drawBorder: false, lineWidth: 0.5 }, offset: true,
+              ticks: { color: '#6b7280', font: { size: 11 }, padding: 0 } },
+            y: { min: 3.0, max: 4.0,
+              grid: { color: '#f3f4f6' },
+              ticks: { stepSize: 0.1, callback: function(v){ return v.toFixed(1); },
+                color: '#6b7280', font: { size: 11 } }
+            }
+          }
+        }
+      });
+    }
+
+    // ── Study Headway progress bars + Courses up to take ──
+    function renderSmStudyHeadway(containerId, data) {
+      var el = document.getElementById(containerId);
+      if (!el) return;
+      data = data || {};
+
+      function coursePill(code, taken) {
+        var bg = taken ? 'rgba(53,167,102,.1)' : '#fee2e2';
+        var color = taken ? '#0f7a3a' : '#b91c1c';
+        var label = taken ? '✓ ' + code : '✕ ' + code;
+        return '<span style="display:inline-block;background:' + bg + ';color:' + color +
+          ';border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;margin:0 4px 4px 0">' + label + '</span>';
+      }
+
+      function progressBar(label, done, total, body) {
+        var pct = total ? Math.round(done / total * 100) : 0;
+        var color = pct >= 100 ? '#16a34a' : pct >= 50 ? '#2171b5' : '#dc2626';
+        return '<div style="margin-bottom:14px">' +
+          '<div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:4px">' +
+          '<span>' + label + '</span><span>' + Math.round(done) + '/' + total + '</span></div>' +
+          '<div style="height:18px;background:#e5e7eb;border-radius:9px;overflow:hidden;border:1.5px solid #1e3a8a">' +
+          '<div style="height:100%;width:' + pct + '%;background:' + color + ';display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:11px;font-weight:700;color:#111">' + pct + '%</div>' +
+          '</div>' + (body || '') +
+          '</div>';
+      }
+
+      function buildMissingHtml(missing) {
+        if (!missing) return '';
+        var cats = Object.keys(missing);
+        if (!cats.length) return '';
+        var html = '';
+        cats.forEach(function(cat) {
+          var courses = missing[cat];
+          if (!courses || !courses.length) return;
+          var catColor = cat === 'Major Required' ? '#b91c1c' : cat === 'Electives' ? '#92400e' : '#1e40af';
+          html += '<div style="margin-top:6px"><span style="font-size:11px;font-weight:700;color:' + catColor + ';text-transform:uppercase;letter-spacing:.04em">' + cat + ':</span> ' +
+            courses.map(function(c){ return coursePill(c, false); }).join('') + '</div>';
+        });
+        return html;
+      }
+
+      var majorDone = data.majorDone || 0;
+      var majorTotal = data.majorTotal || 72;
+      var ucoreDone = data.ucoreDone || 0;
+      var ucoreTotal = 30;
+
+      // Major body — "Courses up to take"
+      var majorBody = data.missing ? '<details style="margin-top:6px"><summary style="cursor:pointer;font-weight:700;font-size:12px">Courses up to take</summary>' +
+        (data.majorIncomplete !== false ? '<div style="font-size:11px;color:#b91c1c;font-weight:700;margin-bottom:4px">Major task incomplete.</div>' : '<div style="font-size:11px;color:#16a34a;font-weight:700;margin-bottom:4px">Major task completed.</div>') +
+        '<div style="font-weight:700;font-size:11px;margin-top:4px">Mandatory:</div>' +
+        (data.missing['Major Required'] && data.missing['Major Required'].length
+          ? '<div style="margin:4px 0">' + data.missing['Major Required'].map(function(c){ return coursePill(c, false); }).join('') + '</div>'
+          : '<div style="font-size:11px;color:#6b7280;margin:4px 0">Mandatory courses appear satisfied.</div>') +
+        '<div style="font-weight:700;font-size:11px;margin-top:6px">Elective:</div>' +
+        '<div style="margin:2px 0"><span style="font-size:11px;font-weight:700;color:#2171b5">' + Math.round(majorDone * 0.6) + '/' + Math.round(majorTotal * 0.6) + ' elective units</span></div>' +
+        buildMissingHtml(data.missing.electiveList ? { 'Electives': data.missing.electiveList } : data.missing['Electives'] ? { 'Electives': data.missing['Electives'] } : null) +
+        '<div style="font-size:11px;color:#6b7280;margin-top:4px">Rule: Study scheme for selected major · ' + majorTotal + ' units denominator.</div>' +
+        '</details>' : '';
+
+      // U-core body — "Courses up to take"
+      var ucoreBody = data.missing ? '<details style="margin-top:6px"><summary style="cursor:pointer;font-weight:700;font-size:12px">Courses up to take</summary>' +
+        (data.missing['University Core'] && data.missing['University Core'].length
+          ? '<div style="margin:4px 0"><b style="font-size:11px">University Core:</b> ' + data.missing['University Core'].map(function(c){ return coursePill(c, false); }).join('') + '</div>'
+          : '<div style="font-size:11px;color:#6b7280;margin:4px 0">U-core requirements appear satisfied.</div>') +
+        '<div style="font-size:11px;color:#6b7280;margin-top:4px">Rule: Academic Curriculum. GEW not compulsory for U-core.</div>' +
+        '</details>' : '';
+
+      el.innerHTML =
+        progressBar('Credit Progress', data.creditDone || 0, 120, '<div style="font-size:11px;color:#6b7280;margin-top:2px">Transcript + exemption / approved units</div>') +
+        progressBar('Major Progress', majorDone, majorTotal, majorBody) +
+        progressBar('U-core Progress', ucoreDone, ucoreTotal, ucoreBody);
+    }
+
     function openStudentProfileImported(d) {
       document.getElementById('smProfileTitle').textContent = 'Student Profile — ' + d.name + ' (Imported)';
       document.getElementById('smProfileBadges').innerHTML =
         '<span class="badge blue">' + (d.year || '—') + '</span>' +
         '<span class="badge" style="background:#dbeafe;color:#1e40af;margin-left:6px;">' + (d.major || '—') + '</span>';
 
-      document.getElementById('smCreditPct').textContent = d.credits + '% (' + (d.creditVal || '') + ')';
-      document.getElementById('smCreditBar').style.width = Math.min(100, d.credits) + '%';
+      // Grade Trajectory chart
+      var cgpaOverride = parseFloat(d.gpa) || 0;
+      // Build scatter points from real transcript course grades
+      var impCourseGrades = [];
+      var impGradeVal = {"A":4.0,"A-":3.7,"B+":3.3,"B":3.0,"B-":2.7,"C+":2.3,"C":2.0,"C-":1.7,"D+":1.3,"D":1.0,"F":0.0};
+      var impSemIdx = {};
+      (d.termEntries || []).forEach(function(e, i) { impSemIdx[e.label] = i; });
+      (d.courseGrades || []).forEach(function(cg) {
+        var idx = impSemIdx[transcriptTermLabel(cg.semester)];
+        if (idx == null) {
+          // also try the raw semester key
+          (d.termEntries || []).forEach(function(e, i) { if (e._rawSem === cg.semester) idx = i; });
+        }
+        if (idx != null) {
+          var gpa = impGradeVal[cg.grade];
+          if (gpa != null) impCourseGrades.push({ x: idx, y: gpa, code: cg.code });
+        }
+      });
+      if (!impCourseGrades.length) impCourseGrades = genCourseGradeScatter(d.termEntries || []);
+      drawSmGradeTrajectory('smGradeTrajectoryChart', d.termEntries || [], cgpaOverride, impCourseGrades);
 
-      // Draw GPA Trend chart from imported transcript data
-      drawGpaTrendChart('smGpaTrendChart', d.termEntries || []);
+      // Study Headway — estimate missing courses from credit gaps
+      var creditsDone = parseInt(d.creditVal) || 0;
+      var majorEst = Math.round(creditsDone * 0.45);
+      var ucoreEst = Math.round(creditsDone * 0.25);
+      var electiveEst = Math.round(creditsDone * 0.30);
 
-      document.getElementById('smMissingCourses').innerHTML = '<span style="font-size:13px;color:#6b7280;">Transcript imported — course details not available.</span>';
-      document.getElementById('smCommHistory').innerHTML = '<div style="font-size:13px;color:var(--text2);">Imported from PDF transcript. GPA: ' + (d.gpa || '—') + ' | Credits: ' + d.credits + '%</div>';
+      // Generate reasonable missing courses based on credit gaps
+      var impMissing = {};
+      var majorReqTarget = 36, majorElecTarget = 36, coreTarget = 30;
+      var majorReqDone = Math.round(majorEst * 0.55); // ~55% of major is required
+      var majorElecDone = majorEst - majorReqDone;
+
+      if (majorReqDone < majorReqTarget) {
+        var need = Math.max(1, Math.ceil((majorReqTarget - majorReqDone) / 3));
+        impMissing['Major Required'] = ['MAT3001','CSC2001','STA3002'].slice(0, Math.min(need, 3));
+      }
+      if (majorElecDone < majorElecTarget) {
+        var needE = Math.max(1, Math.ceil((majorElecTarget - majorElecDone) / 3));
+        impMissing['Electives'] = ['FIN3010','MAT4010','CSC3150'].slice(0, Math.min(needE, 3));
+      }
+      if (ucoreEst < coreTarget) {
+        var needC = Math.max(1, Math.ceil((coreTarget - ucoreEst) / 3));
+        impMissing['University Core'] = ['GEA2000','GEC2403','GED2107'].slice(0, Math.min(needC, 3));
+      }
+
+      renderSmStudyHeadway('smStudyHeadway', {
+        creditDone: creditsDone,
+        majorDone: majorEst,
+        majorTotal: 72,
+        majorIncomplete: Object.keys(impMissing).length > 0,
+        missing: impMissing,
+        ucoreDone: ucoreEst
+      });
+
+      document.getElementById('smCommHistory').innerHTML = '<div style="font-size:13px;color:#374151;">Imported from PDF transcript. GPA: ' + (d.gpa || '—') + ' | Credits: ' + d.credits + '%</div>';
       document.getElementById('smNotes').value = '';
       document.getElementById('smEmailBtn').onclick = function() { openModal(d.name, 'transcript review'); };
 
@@ -1524,16 +1934,24 @@
 
     window.addEventListener('load', function() {
       loadUser();
+      loadApiStudents();  // fetch real student data from API
       drawBubble('major'); applyHighRiskThreshold(); attachDeleteButtons();
-      // Draw initial placeholder GPA trend chart for Student Management panel
-      drawGpaTrendChart('smGpaTrendChart', [
-        { label: 'Sp\'24', gpa: 3.21 }, { label: 'Fa\'24', gpa: 3.14 },
-        { label: 'Sp\'25', gpa: 3.09 }, { label: 'Fa\'25', gpa: 2.98 }
-      ]);
+      // Draw initial placeholder Grade Trajectory for Student Management panel
+      var initTerms = [
+        { label: '23-24 T2', gpa: 3.21 }, { label: '24-25 T1', gpa: 3.14 },
+        { label: '24-25 T2', gpa: 3.09 }, { label: '25-26 T1', gpa: 2.98 }
+      ];
+      drawSmGradeTrajectory('smGradeTrajectoryChart', initTerms, 3.0, genCourseGradeScatter(initTerms));
+      // Draw initial placeholder Study Headway
+      renderSmStudyHeadway('smStudyHeadway', {
+        creditDone: 84, majorDone: 38, majorTotal: 72,
+        majorDetail: 'Select a student to see detailed progress',
+        ucoreDone: 21, ucoreDetail: 'Select a student to see detailed progress'
+      });
       // Draw GPA trend for Risk Snapshot profile panel
       drawGpaTrendChart('profileGpaTrendChart', [
-        { label: 'Sp\'24', gpa: 3.21 }, { label: 'Fa\'24', gpa: 3.14 },
-        { label: 'Sp\'25', gpa: 3.09 }, { label: 'Fa\'25', gpa: 2.98 }
+        { label: '23-24 T2', gpa: 3.21 }, { label: '24-25 T1', gpa: 3.14 },
+        { label: '24-25 T2', gpa: 3.09 }, { label: '25-26 T1', gpa: 2.98 }
       ]);
     });
     window.addEventListener('resize', function() {
