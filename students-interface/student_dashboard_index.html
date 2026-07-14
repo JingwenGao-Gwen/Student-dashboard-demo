@@ -317,7 +317,7 @@ table.matrix tr:hover td{background:#f8f9ff}
 @media(max-width:1120px){.intern-board{grid-template-columns:1fr}.intern-hover-skills{grid-template-columns:1fr}.intern-detail{min-height:0}.intern-keyword-panel{min-height:0}}
 
 /* GPA chart */
-.gpa-grid{--gpa-chart-h:680px;--gpa-add-h:170px;display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,32%,360px);grid-template-rows:var(--gpa-add-h) var(--gpa-chart-h);column-gap:24px;row-gap:10px;align-items:start}
+.gpa-grid{--gpa-chart-h:560px;--gpa-add-h:170px;display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,32%,360px);grid-template-rows:var(--gpa-add-h) var(--gpa-chart-h);column-gap:24px;row-gap:10px;align-items:start}
 .gpa-left-pane{min-width:0;display:contents}
 .gpa-add-pane{min-width:0;max-width:none}
 .gpa-add-pane{grid-column:1;grid-row:1}
@@ -3385,8 +3385,8 @@ function renderGPAChart(){
   const coursePoints = rows.map(g => ({x:semIdx[g.sem], y:gradeToGPA(g.grade), label:`${g.code}: ${g.grade} (${gradeToGPA(g.grade).toFixed(1)})`}));
   const goal = Math.min(4.0, parseFloat(document.getElementById('goal-gpa').value) || 3.5);
   const values = [...coursePoints.map(p => p.y), ...semGPA.map(p => p.y), ...cgpaLine.map(p => p.y), goal].filter(Number.isFinite);
-  const minY = Math.max(0, Math.floor((Math.min(...values) - 0.15) * 10) / 10);
-  const maxY = Math.min(4.05, Math.max(3.0, Math.ceil((Math.max(...values) + 0.15) * 10) / 10));
+  const minY = Math.max(0, Math.floor((Math.min(...values) - 0.35) * 10) / 10);
+  const maxY = Math.min(4.05, Math.max(3.0, Math.ceil((Math.max(...values) + 0.35) * 10) / 10));
   const latest = sems[sems.length - 1];
   const xPad = sems.length <= 1 ? 0.75 : 0.55;
   const semCount = sems.length;
