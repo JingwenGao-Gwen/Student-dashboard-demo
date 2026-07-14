@@ -326,6 +326,7 @@ table.matrix tr:hover td{background:#f8f9ff}
 .gpa-recorded-pane{min-width:0;align-self:stretch;display:flex;flex-direction:column;min-height:0;height:calc(var(--gpa-add-h) + var(--gpa-chart-h) + 10px);max-height:calc(var(--gpa-add-h) + var(--gpa-chart-h) + 10px);overflow:hidden;grid-column:2;grid-row:1 / span 2}
 .gpa-chart-pane .canvas-wrap{height:var(--gpa-chart-h);min-height:var(--gpa-chart-h);overflow-x:auto;overflow-y:hidden}
 .gpa-chart-pane .gpa-chart-inner{height:100%;min-width:100%}
+.gpa-chart-pane .canvas-wrap #gpa-chart{width:auto!important;min-width:100%;height:100%!important}
 @media(max-width:1100px){.gpa-grid{grid-template-columns:1fr;grid-template-rows:auto;row-gap:24px}.gpa-left-pane{display:block}.gpa-add-pane,.gpa-chart-pane,.gpa-recorded-pane{max-width:none;grid-column:auto;grid-row:auto}.gpa-chart-pane{margin-top:12px}.gpa-recorded-pane{display:block;height:auto;max-height:none;min-height:0}}
 .gpa-input{display:flex;gap:8px;margin-bottom:14px;align-items:center}
 .gpa-input select, .gpa-input input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;background:var(--surface);outline:none}
@@ -3343,7 +3344,8 @@ function renderGPAChart(){
 // ── Render all (lightweight — matrix renders lazily on filter / view change) ──
 function renderGPAChart(){
   if (gpaChart){ gpaChart.destroy(); gpaChart = null; }
-  const ctx = document.getElementById('gpa-chart').getContext('2d');
+  const gpaCanvas = document.getElementById('gpa-chart');
+  const ctx = gpaCanvas.getContext('2d');
   const chartWrapEl = document.querySelector('#section-gpa .gpa-chart-pane .canvas-wrap');
   const chartInnerEl = document.querySelector('#section-gpa .gpa-chart-pane .gpa-chart-inner');
   const summaryCgpa = transcriptSummary.cgpa;
@@ -3357,6 +3359,7 @@ function renderGPAChart(){
   if (!rows.length){
     ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
     if (chartInnerEl) chartInnerEl.style.minWidth = '100%';
+    if (gpaCanvas) gpaCanvas.style.width = '100%';
     document.getElementById('gpa-stats').innerHTML =
       `<b>CGPA</b>: <b style="color:var(--accent)">${summaryCgpa == null ? '—' : summaryCgpa.toFixed(3)}</b>` +
       ` &nbsp;·&nbsp; <b>MGPA</b>: <b style="color:var(--accent)">${summaryMgpa == null ? '—' : summaryMgpa.toFixed(3)}</b>`;
@@ -3392,12 +3395,14 @@ function renderGPAChart(){
   const axisRotation = denseLabels ? 40 : (mediumLabels ? 35 : 0);
   const axisFontSize = denseLabels ? 10 : (mediumLabels ? 11 : 12);
   if (chartInnerEl){
-    if (semCount > 12){
+    if (semCount > 10){
       const wrapW = chartWrapEl ? chartWrapEl.clientWidth : 0;
-      const targetW = Math.max(wrapW, semCount * 92);
+      const targetW = Math.max(wrapW, semCount * 96);
       chartInnerEl.style.minWidth = `${targetW}px`;
+      if (gpaCanvas) gpaCanvas.style.width = `${targetW}px`;
     } else {
       chartInnerEl.style.minWidth = '100%';
+      if (gpaCanvas) gpaCanvas.style.width = '100%';
     }
   }
   document.getElementById('gpa-stats').innerHTML =
