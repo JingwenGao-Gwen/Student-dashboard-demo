@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -43,12 +43,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 <body data-area="GEC">
 <nav class="topnav">
   <span class="logo">Study Dashboard</span>
-  <a href="student_dashboard_index.html">← Back</a>
+  <a href="student_dashboard_index.html">鈫?Back</a>
   <div class="nav-spacer"></div>
   <div class="lang-toggle">
     <button class="lang-btn" data-lang="en">EN</button>
-    <button class="lang-btn" data-lang="zh-CN">简中</button>
-    <button class="lang-btn" data-lang="zh-TW">繁中</button>
+    <button class="lang-btn" data-lang="zh-CN">绠€涓?/button>
+    <button class="lang-btn" data-lang="zh-TW">绻佷腑</button>
   </div>
 </nav>
 <main class="wrap">
@@ -63,14 +63,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <div id="course-grid"></div>
 </main>
 <script>
+const REMOTE_API_BASE = 'https://student-dashboard-demo.onrender.com';
 const API_BASE = window.location.protocol === 'file:'
   ? 'http://localhost:8080'
-  : (window.location.hostname.endsWith('netlify.app') ? 'https://student-dashboard-demo.onrender.com' : '');
+  : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:8080'
+      : REMOTE_API_BASE);
 const AREA = document.body.dataset.area;
 const AREA_META = {
-  GEB:{en:['GE Area B Courses','Nature, Science and Technology. Choose any eligible course in this area to satisfy the GE Area B requirement.'], 'zh-CN':['GE B 范畴课程','自然、科学与科技。修读该范畴任意符合要求课程即可满足 GE Area B 要求。'], 'zh-TW':['GE B 範疇課程','自然、科學與科技。修讀該範疇任意符合要求課程即可滿足 GE Area B 要求。']},
-  GEC:{en:['GE Area C Courses','Society and Culture. Choose any eligible course in this area to satisfy the GE Area C requirement.'], 'zh-CN':['GE C 范畴课程','社会与文化。修读该范畴任意符合要求课程即可满足 GE Area C 要求。'], 'zh-TW':['GE C 範疇課程','社會與文化。修讀該範疇任意符合要求課程即可滿足 GE Area C 要求。']},
-  GED:{en:['GE Area D Courses','Self and Humanity. Choose any eligible course in this area to satisfy the GE Area D requirement.'], 'zh-CN':['GE D 范畴课程','自我与人文。修读该范畴任意符合要求课程即可满足 GE Area D 要求。'], 'zh-TW':['GE D 範疇課程','自我與人文。修讀該範疇任意符合要求課程即可滿足 GE Area D 要求。']}
+  GEB:{en:['GE Area B Courses','Nature, Science and Technology. Choose any eligible course in this area to satisfy the GE Area B requirement.'], 'zh-CN':['GE B 鑼冪暣璇剧▼','鑷劧銆佺瀛︿笌绉戞妧銆備慨璇昏鑼冪暣浠绘剰绗﹀悎瑕佹眰璇剧▼鍗冲彲婊¤冻 GE Area B 瑕佹眰銆?], 'zh-TW':['GE B 绡勭枃瑾茬▼','鑷劧銆佺瀛歌垏绉戞妧銆備慨璁€瑭茬瘎鐤囦换鎰忕鍚堣姹傝绋嬪嵆鍙豢瓒?GE Area B 瑕佹眰銆?]},
+  GEC:{en:['GE Area C Courses','Society and Culture. Choose any eligible course in this area to satisfy the GE Area C requirement.'], 'zh-CN':['GE C 鑼冪暣璇剧▼','绀句細涓庢枃鍖栥€備慨璇昏鑼冪暣浠绘剰绗﹀悎瑕佹眰璇剧▼鍗冲彲婊¤冻 GE Area C 瑕佹眰銆?], 'zh-TW':['GE C 绡勭枃瑾茬▼','绀炬渻鑸囨枃鍖栥€備慨璁€瑭茬瘎鐤囦换鎰忕鍚堣姹傝绋嬪嵆鍙豢瓒?GE Area C 瑕佹眰銆?]},
+  GED:{en:['GE Area D Courses','Self and Humanity. Choose any eligible course in this area to satisfy the GE Area D requirement.'], 'zh-CN':['GE D 鑼冪暣璇剧▼','鑷垜涓庝汉鏂囥€備慨璇昏鑼冪暣浠绘剰绗﹀悎瑕佹眰璇剧▼鍗冲彲婊¤冻 GE Area D 瑕佹眰銆?], 'zh-TW':['GE D 绡勭枃瑾茬▼','鑷垜鑸囦汉鏂囥€備慨璁€瑭茬瘎鐤囦换鎰忕鍚堣姹傝绋嬪嵆鍙豢瓒?GE Area D 瑕佹眰銆?]}
 };
 let courses = [];
 let lang = 'en';
@@ -85,25 +88,25 @@ function applyLang(){
   const meta = AREA_META[AREA][lang] || AREA_META[AREA].en;
   document.getElementById('page-title').textContent = meta[0];
   document.getElementById('page-sub').textContent = meta[1];
-  document.getElementById('search').placeholder = lang==='en' ? 'Search course code or title...' : '搜索课程代码或标题...';
+  document.getElementById('search').placeholder = lang==='en' ? 'Search course code or title...' : '鎼滅储璇剧▼浠ｇ爜鎴栨爣棰?..';
   render();
 }
 function courseHref(c){return c.has_outline ? `course_detail.html?code=${encodeURIComponent(c.code)}` : '#'}
 function handleCourseClick(e, c){
   if (c.has_outline) return;
   e.preventDefault();
-  alert(lang==='en' ? 'The syllabus for this course has not been provided yet.' : '该课程syllabus尚未提供。');
+  alert(lang==='en' ? 'The syllabus for this course has not been provided yet.' : '璇ヨ绋媠yllabus灏氭湭鎻愪緵銆?);
 }
 function availabilityLabel(available){
-  if (lang === 'zh-CN') return available ? '可查看 syllabus' : '暂无 syllabus';
-  if (lang === 'zh-TW') return available ? '可查看 syllabus' : '暫無 syllabus';
+  if (lang === 'zh-CN') return available ? '鍙煡鐪?syllabus' : '鏆傛棤 syllabus';
+  if (lang === 'zh-TW') return available ? '鍙煡鐪?syllabus' : '鏆劇 syllabus';
   return available ? 'Syllabus available' : 'No syllabus yet';
 }
 function availabilityHeading(available, count){
-  const suffix = lang === 'en' ? `${count} courses` : `${count} 门课程`;
-  if (lang === 'zh-CN') return `${available ? 'Available' : 'No syllabus yet'} · ${suffix}`;
-  if (lang === 'zh-TW') return `${available ? 'Available' : 'No syllabus yet'} · ${suffix}`;
-  return `${available ? 'Available' : 'No syllabus yet'} · ${suffix}`;
+  const suffix = lang === 'en' ? `${count} courses` : `${count} 闂ㄨ绋媊;
+  if (lang === 'zh-CN') return `${available ? 'Available' : 'No syllabus yet'} 路 ${suffix}`;
+  if (lang === 'zh-TW') return `${available ? 'Available' : 'No syllabus yet'} 路 ${suffix}`;
+  return `${available ? 'Available' : 'No syllabus yet'} 路 ${suffix}`;
 }
 function courseCard(c){
   return `<article class="course">
