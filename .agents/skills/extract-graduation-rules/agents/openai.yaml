@@ -1,0 +1,4 @@
+interface:
+  display_name: "Graduation Rule Extractor"
+  short_description: "Extract cohort-specific rules from study schemes"
+  default_prompt: "Use $extract-graduation-rules to extract evidence-grounded graduation rules for each programme and admission cohort."
