@@ -1,0 +1,1133 @@
+[
+  {
+    "id": "u01",
+    "programme": "music_composition",
+    "source": {
+      "file": "MUS/作曲与作曲技术理论/study_scheme_-_music_composition_and_theory_2022-23_and_2023-24_3rd2026_20260720.pdf",
+      "sha256": "bccb7c5fe4e6534eaf02db0e6899d32d00f66a4bfa669730173eb525cd8085f8",
+      "pages": [
+        1
+      ],
+      "applicability": "Applicable to students admitted in 2022-23 and 2023-24"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u02",
+    "programme": "music_composition",
+    "source": {
+      "file": "MUS/作曲与作曲技术理论/study_scheme_-_music_composition_and_theory_2024-25_3rd2026_20260720.pdf",
+      "sha256": "0d5ff8b6fc96b977cf1c75d8630421112333029e7d4f85e8da33beb87bf8d839",
+      "pages": [
+        1
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u03",
+    "programme": "music_composition",
+    "source": {
+      "file": "MUS/作曲与作曲技术理论/study_scheme_-_music_composition_and_theory_2025-26_3rd2026_20260720.pdf",
+      "sha256": "fd26a8e99e24e4fd1b7e54ee2f0dd6f0f0255d93d164201d0e4400702ebd3b2e",
+      "pages": [
+        1
+      ],
+      "applicability": "Applicable to students admitted in 2025-26"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u04",
+    "programme": "music_composition",
+    "source": {
+      "file": "MUS/作曲与作曲技术理论/study_scheme_-_music_composition_and_theory_2026-27_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "4964538d180ef18eb6cd46dd288be1a49e2a46e6eeb202aee121bd5ea1dd8578",
+      "pages": [
+        1
+      ],
+      "applicability": "Applicable to students admitted in 2026-27 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u05",
+    "programme": "musicology",
+    "source": {
+      "file": "MUS/音乐学/study_scheme_-_musicology_2022-23_and_2023-24_3rd2026_20260720.pdf",
+      "sha256": "e85d87cb62603418985cd194efcb20566c117fb68d3563e1cbe6e9f23e14eb8e",
+      "pages": [
+        1
+      ],
+      "applicability": "Applicable to students admitted in 2022-23 and 2023-24"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 68,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u06",
+    "programme": "musicology",
+    "source": {
+      "file": "MUS/音乐学/study_scheme_-_musicology_2024-25_and_2025-26_3rd2026_20260720.pdf",
+      "sha256": "9cdaeee0422a961737640eaab9ae547d77263fc19adb9123f70c22a98d8dc5ff",
+      "pages": [
+        1
+      ],
+      "applicability": "Applicable to students admitted in 2024-25 and 2025-26"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 68,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u07",
+    "programme": "musicology",
+    "source": {
+      "file": "MUS/音乐学/study_scheme_-_musicology_2026-27_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "f70454240ed59febfa2f69e33e8aad23871a01cabee09fd7d0edf975e80938e2",
+      "pages": [
+        1
+      ],
+      "applicability": "Applicable to students admitted in 2026-27 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 68,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u08",
+    "programme": "music_performance",
+    "source": {
+      "file": "MUS/音乐表演/study_scheme_-_music_performance_2023-24_3rd2026_20260720.pdf",
+      "sha256": "964bbcf560bbead356d0cf2c4278cd395cf375bb27d266b566380a8b88e35e56",
+      "pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "applicability": "Applicable to students admitted in 2023-24"
+    },
+    "paths": [
+      {
+        "id": "Voice",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Strings",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Woodwinds",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Brass",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Piano",
+        "total": 69,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Conducting",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": [
+          {
+            "code": "instrumental_units_conflict",
+            "blocking": false,
+            "message": "The secondary-instrument series totals 5 units in the course list, while the major-elective requirement is 7. That option needs programme confirmation; no extra credits are assumed.",
+            "pages": [
+              3,
+              23,
+              24
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Percussion",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u09",
+    "programme": "music_performance",
+    "source": {
+      "file": "MUS/音乐表演/study_scheme_-_music_performance_2024-25_3rd2026_20260720.pdf",
+      "sha256": "b745276cffee75e2260122c70d056c1f8b2ba1e606befee96750ce59f44aa519",
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "Voice",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Strings",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Woodwinds",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Brass",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Piano",
+        "total": 69,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Conducting",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Percussion",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u10",
+    "programme": "music_performance",
+    "source": {
+      "file": "MUS/音乐表演/study_scheme_-_music_performance_2025-26_3rd2026_20260720.pdf",
+      "sha256": "d324a65e214498748b054b2f6eb82e1c7ea3a005f121bc094df2b4efc95245c5",
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "applicability": "Applicable to students admitted in 2025-26"
+    },
+    "paths": [
+      {
+        "id": "Voice",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Strings",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Woodwinds",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Brass",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Piano",
+        "total": 69,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Conducting",
+        "total": 69,
+        "electiveUnits": 0,
+        "issues": [
+          {
+            "code": "conflicting_total",
+            "blocking": true,
+            "message": "The scheme states a minimum of 71 units but its table totals 69. Final completion requires confirmation.",
+            "pages": [
+              3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Percussion",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u11",
+    "programme": "music_performance",
+    "source": {
+      "file": "MUS/音乐表演/study_scheme_-_music_performance_2026-27_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "52bb9ce00e50c36ae23467c6dbb396acc60f88a66f8a09c32db417baa36baec9",
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "applicability": "Applicable to students admitted in 2026-27 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "Voice",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Strings",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Woodwinds",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Brass",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Piano",
+        "total": 69,
+        "electiveUnits": 0,
+        "issues": []
+      },
+      {
+        "id": "Conducting",
+        "total": 69,
+        "electiveUnits": 0,
+        "issues": [
+          {
+            "code": "conflicting_total",
+            "blocking": true,
+            "message": "The scheme states a minimum of 71 units but its table totals 69. Final completion requires confirmation.",
+            "pages": [
+              3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Percussion",
+        "total": 71,
+        "electiveUnits": 0,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u13",
+    "programme": "dsbdt",
+    "source": {
+      "file": "SDS/数据科学与大数据技术/study_scheme_-_dsbdt_2023-24_3rd2026_20260720.pdf",
+      "sha256": "56d841733cad7addc3feffeeafac8fd62f6be670f8dc966fe2d1f101dddf0d59",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2023-24"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 27,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u14",
+    "programme": "dsbdt",
+    "source": {
+      "file": "SDS/数据科学与大数据技术/study_scheme_-_dsbdt_2024-25_3rd2026_20260720.pdf",
+      "sha256": "75ee5ffa6783609d0a3f2aa97f17a09f6f4e2f87745d12b1ff4cd0412d9a8105",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 27,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u15",
+    "programme": "dsbdt",
+    "source": {
+      "file": "SDS/数据科学与大数据技术/study_scheme_-_dsbdt_2025-26_3rd2026_20260720.pdf",
+      "sha256": "6e5cdca6dc56894f14b8e346ef587aed94bf5a05829f73525362711e9c460c8c",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2025-26"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 27,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u16",
+    "programme": "dsbdt",
+    "source": {
+      "file": "SDS/数据科学与大数据技术/study_scheme_-_dsbdt_2026-27_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "63f471e4695217f8c7e5f25c793bab5157922311c505a1cd493732b1ec0d4c34",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2026-27 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 71,
+        "electiveUnits": 30,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u17",
+    "programme": "statistics",
+    "source": {
+      "file": "SDS/统计学/study_scheme_-_stat_2022-23_and_2023-24_3rd2026_20260720.pdf",
+      "sha256": "587587bee5de365f6a66dcfd4daa69555212151c47599a582c97ac39aa525ece",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2022-23 and 2023-24"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 27,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u18",
+    "programme": "statistics",
+    "source": {
+      "file": "SDS/统计学/study_scheme_-_stat_2024-25_3rd2026_20260720.pdf",
+      "sha256": "8e14e775312ccb8ce13e384769d4eb319570ad404eedd9ec0cbe6a7a1492dd85",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 27,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u19",
+    "programme": "statistics",
+    "source": {
+      "file": "SDS/统计学/study_scheme_-_stat_2025-26_3rd2026_20260720.pdf",
+      "sha256": "8624429c76ec44f4c1e43060cf7af24781b58be752e14824f6c64f1d31a09dff",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2025-26"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 27,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u20",
+    "programme": "statistics",
+    "source": {
+      "file": "SDS/统计学/study_scheme_-_stat_2026-27_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "394aa3b28c803f9e448538136dc9e3c03cc7dde565f3a9a9600ad7b7030247f6",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2026-27 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 71,
+        "electiveUnits": 30,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u21",
+    "programme": "cse",
+    "source": {
+      "file": "SDS/计算机科学与技术/study_scheme_-_cse_2023-24_3rd2026_20260720.pdf",
+      "sha256": "5d246c15b5a97fddacb99629bcf366deb74238a33694463662d782fb401d5e7e",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2023-24"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 18,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u22",
+    "programme": "cse",
+    "source": {
+      "file": "SDS/计算机科学与技术/study_scheme_-_cse_2024-25_3rd2026_20260720.pdf",
+      "sha256": "396798f6e338c36266cf66fdd4af16befa43689daf6cd668b1adaeff2119306a",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 25,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u23",
+    "programme": "cse",
+    "source": {
+      "file": "SDS/计算机科学与技术/study_scheme_-_cse_2025-26_3rd2026_20260720.pdf",
+      "sha256": "a6d74ffa8bc340f89309c55a080b8819ab7dd2255481860297d4171df9b4316d",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2025-26"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 25,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u24",
+    "programme": "cse",
+    "source": {
+      "file": "SDS/计算机科学与技术/study_scheme_-_cse_2026-27_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "b8653bbd2884256f735e873834dac4c3e76e6008d6add98c0d740b368247aa4d",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2026-27 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 70,
+        "electiveUnits": 27,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u25",
+    "programme": "chemistry",
+    "source": {
+      "file": "SSE/化学/Study Scheme - Chemistry_2022-23 and 2023-24_Circular (AB2025_C015).pdf",
+      "sha256": "4f8cac6863e5452dd73b62a098869480ba3dfe43c21f0a6a92208b5b6128594d",
+      "pages": [
+        1
+      ],
+      "applicability": "Applicable to students admitted in 2022-23 and 2023-24"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 72,
+        "electiveUnits": 17,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u26",
+    "programme": "chemistry",
+    "source": {
+      "file": "SSE/化学/study_scheme_-_chemistry_2024-25_3rd2026_20260720.pdf",
+      "sha256": "ef85ae30b704c3e79cbe49a1d916c8ba332f93685295ae981116fc79470013b5",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 72,
+        "electiveUnits": 17,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u27",
+    "programme": "chemistry",
+    "source": {
+      "file": "SSE/化学/study_scheme_-_chemistry_2025-26_3rd2026_20260720.pdf",
+      "sha256": "0f60f29da18282c023bc0f81da9d4c60faf9868fe3dee322dedd38e7f7bc90e0",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2025-26"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 72,
+        "electiveUnits": 17,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u28",
+    "programme": "chemistry",
+    "source": {
+      "file": "SSE/化学/study_scheme_-_chemistry_2026-27_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "527f081511169e38ae0e1ab18663f9d57b6a89a13d678d96c85190edf980c88b",
+      "pages": [
+        1
+      ],
+      "applicability": "Applicable to students admitted in 2026-27 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 72,
+        "electiveUnits": 17,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u29",
+    "programme": "math",
+    "source": {
+      "file": "SSE/数学与应用数学/study_scheme_-_math_2023-24_3rd2026_20260720.pdf",
+      "sha256": "6350f4f03336cf0f08f3fc366f2202b8ae1bb311846f320e140a1b475eabce34",
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "applicability": "Applicable to students admitted in 2023-24"
+    },
+    "paths": [
+      {
+        "id": "Pure Mathematics",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      },
+      {
+        "id": "Applied Mathematics",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      },
+      {
+        "id": "Financial Mathematics",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u30",
+    "programme": "math",
+    "source": {
+      "file": "SSE/数学与应用数学/study_scheme_-_math_2024-25_3rd2026_20260720_0.pdf",
+      "sha256": "9f88b005e26efa0b2631bb9f9b3298ccb41bcff49aae77eedc050e984a9ac854",
+      "pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "Pure Mathematics",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      },
+      {
+        "id": "Applied Mathematics",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      },
+      {
+        "id": "Financial Mathematics",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      },
+      {
+        "id": "Mathematical Modeling and AI",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u31",
+    "programme": "math",
+    "source": {
+      "file": "SSE/数学与应用数学/study_scheme_-_math_2025-26_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "4b819c6f3c30ac50e6e5f7ba6cb5f5902c30639bfb2bc4e78847b1f57a55dcce",
+      "pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "applicability": "Applicable to students admitted in 2025-26 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "Pure Mathematics",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      },
+      {
+        "id": "Applied Mathematics",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      },
+      {
+        "id": "Financial Mathematics",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      },
+      {
+        "id": "Mathematical Modeling and AI",
+        "total": 70,
+        "electiveUnits": 21,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u32",
+    "programme": "nese",
+    "source": {
+      "file": "SSE/新能源科学与工程/Study Scheme - ENER_2022-23 and 2023-24_Circular(AB2025_C047).pdf",
+      "sha256": "3dacf136faec59504f1321e18a882f0d39d9d8c685c27db1cb1ffc639d43f6c4",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2022-23 and 2023-24"
+    },
+    "paths": [
+      {
+        "id": "New Energy Science",
+        "total": 72,
+        "electiveUnits": 18,
+        "issues": []
+      },
+      {
+        "id": "New Energy Engineering",
+        "total": 72,
+        "electiveUnits": 18,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u33",
+    "programme": "nese",
+    "source": {
+      "file": "SSE/新能源科学与工程/study_scheme_-_ener_2024-25_3rd2026_20260720.pdf",
+      "sha256": "6c78f858a980eb9ed05f651f862e673942f370ba436299597a8088dfab22d864",
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "New Energy Science",
+        "total": 72,
+        "electiveUnits": 24,
+        "issues": []
+      },
+      {
+        "id": "Intelligent Energy Engineering",
+        "total": 72,
+        "electiveUnits": 18,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u34",
+    "programme": "nese",
+    "source": {
+      "file": "SSE/新能源科学与工程/study_scheme_-_ener_2025-26_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "b70d5c48a6d09da9c4b56b0cc8882e0b6e7ba20aafe305e46fb64843198dbf5a",
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "applicability": "Applicable to students admitted in 2025-26 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "New Energy Science",
+        "total": 72,
+        "electiveUnits": 24,
+        "issues": []
+      },
+      {
+        "id": "Intelligent Energy Engineering",
+        "total": 72,
+        "electiveUnits": 18,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u35",
+    "programme": "physics",
+    "source": {
+      "file": "SSE/物理学/study_scheme_-_phy_2023-24_3rd2026_20260720_0.pdf",
+      "sha256": "aa8155dec9a73544589f7b41e359828b4958f0611be3cec25694980115a1c96b",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2023-24"
+    },
+    "paths": [
+      {
+        "id": "common",
+        "total": 72,
+        "electiveUnits": 12,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u36",
+    "programme": "physics",
+    "source": {
+      "file": "SSE/物理学/study_scheme_-_phy_2024-25_3rd2026_20260720_0.pdf",
+      "sha256": "2261fdfd9799003319462d2ee20b431570b1238fd63073be21e5e956c29d1dcc",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "Physics",
+        "total": 72,
+        "electiveUnits": 12,
+        "issues": []
+      },
+      {
+        "id": "Applied Physics and AI",
+        "total": 72,
+        "electiveUnits": 12,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u37",
+    "programme": "physics",
+    "source": {
+      "file": "SSE/物理学/study_scheme_-_phy_2025-26_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "0bc5ffa7df5293a34ce0e8bd65630ab0a37a0df24073331a5fa0b14e238adbb9",
+      "pages": [
+        1,
+        2
+      ],
+      "applicability": "Applicable to students admitted in 2025-26 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "Physics",
+        "total": 72,
+        "electiveUnits": 12,
+        "issues": []
+      },
+      {
+        "id": "Applied Physics and AI",
+        "total": 72,
+        "electiveUnits": 12,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u38",
+    "programme": "ece",
+    "source": {
+      "file": "SSE/电子与计算机工程/study_scheme_-_ece_2022-23_and_2023-24_3rd2026_20260720.pdf",
+      "sha256": "e3d15d96f294b98c69597b81d6dfea9531c70cf2b37a07260f99937706c152ee",
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "applicability": "Applicable to students admitted in 2022-23 and 2023-24"
+    },
+    "paths": [
+      {
+        "id": "Electronic Engineering",
+        "total": 72,
+        "electiveUnits": 24,
+        "issues": []
+      },
+      {
+        "id": "Computer Engineering",
+        "total": 72,
+        "electiveUnits": 21,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u39",
+    "programme": "ece",
+    "source": {
+      "file": "SSE/电子与计算机工程/study_scheme_-_ece_2024-25_3rd2026_20260720.pdf",
+      "sha256": "c28f87337e507d1b29693e5e0a829859538aabe3c427d57ba5deca2c1568f880",
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "applicability": "Applicable to students admitted in 2024-25"
+    },
+    "paths": [
+      {
+        "id": "Electronic Engineering",
+        "total": 72,
+        "electiveUnits": 24,
+        "issues": []
+      },
+      {
+        "id": "Computer Engineering",
+        "total": 72,
+        "electiveUnits": 24,
+        "issues": []
+      }
+    ]
+  },
+  {
+    "id": "u40",
+    "programme": "ece",
+    "source": {
+      "file": "SSE/电子与计算机工程/study_scheme_-_ece_2025-26_and_thereafter_3rd2026_20260720.pdf",
+      "sha256": "703126137d0dc91f812d6d167bead082a8caaa0f0fc39230d1885bc91583a852",
+      "pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "applicability": "Applicable to students admitted in 2025-26 and thereafter"
+    },
+    "paths": [
+      {
+        "id": "Electronic Engineering",
+        "total": 72,
+        "electiveUnits": 24,
+        "issues": [
+          {
+            "code": "normalized_missing_comma",
+            "blocking": false,
+            "message": "English “5023ECE3040” normalized to AIR5023, ECE3040, confirmed by Chinese p5.",
+            "pages": [
+              1,
+              5
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Computer Engineering",
+        "total": 72,
+        "electiveUnits": 24,
+        "issues": [
+          {
+            "code": "normalized_missing_comma",
+            "blocking": false,
+            "message": "English “5023ECE3040” normalized to AIR5023, ECE3040, confirmed by Chinese p5.",
+            "pages": [
+              1,
+              5
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Microelectronics Science and Engineering",
+        "total": 72,
+        "electiveUnits": 18,
+        "issues": [
+          {
+            "code": "normalized_missing_comma",
+            "blocking": false,
+            "message": "English “5023ECE3040” normalized to AIR5023, ECE3040, confirmed by Chinese p5.",
+            "pages": [
+              1,
+              5
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

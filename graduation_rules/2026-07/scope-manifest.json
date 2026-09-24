@@ -1,0 +1,482 @@
+[
+  {
+    "file": "HSS/国际组织与全球治理/Study Scheme_ IOGG_ 2024-25_3rd(2025)_20250714.pdf",
+    "sha256": "9f9516f324385ea5b62fde7c904d5451202f1a5d77d1fa6bcaaee9f1eee88cbf",
+    "excluded": true,
+    "oldId": "01"
+  },
+  {
+    "file": "HSS/国际组织与全球治理/Study Scheme_ IOGG_ 2025-26 and thereafter_3rd(2025)_20250714.pdf",
+    "sha256": "32d72012d310f3cfc108ba476ce86cb1d1743c1dae22af0b64111671a3dc592a",
+    "excluded": true,
+    "oldId": "02"
+  },
+  {
+    "file": "HSS/城市管理/Study Scheme - UM_2024-25_3rd(2025)_20250714.pdf",
+    "sha256": "754f6873a93c3fdd1449e689373b080717f7a3a14f794aa9499e0c3b0ba57d8e",
+    "excluded": true,
+    "oldId": "03"
+  },
+  {
+    "file": "HSS/城市管理/Study Scheme - UM_2025-26 and thereafter_3rd(2025)_20250714.pdf",
+    "sha256": "cbb068adaf2bb452ed971bc9ca7051a03e4fdb25bd00c36af7fc56c925eb90f5",
+    "excluded": true,
+    "oldId": "04"
+  },
+  {
+    "file": "HSS/应用心理学/Study Scheme - APSY_2020-21 to 2024-25_3rd(2025)_20250714.pdf",
+    "sha256": "4b6a9f7a1e94f93bf0b8f4a0ad8037d1643804091fb891633b8dd67cede30a5a",
+    "excluded": true,
+    "oldId": "05"
+  },
+  {
+    "file": "HSS/应用心理学/Study Scheme - APSY_2025-26 and thereafter_3rd(2025)_20250714.pdf",
+    "sha256": "086aa2dea9472f398fa81d54a0b4bc6ce1baf5fd550fd20bc5c56899b676771e",
+    "excluded": true,
+    "oldId": "06"
+  },
+  {
+    "file": "HSS/翻译/Study Scheme - TRA_2022-23 and thereafter_3rd(2025)_20250714.pdf",
+    "sha256": "46245a790d50a0632e7c301c7a1cbc4fd10df75b47141a2f9c369e2cd7d8d92c",
+    "excluded": true,
+    "oldId": "07"
+  },
+  {
+    "file": "HSS/英语/Study Scheme - English Studies_2021-22 to 2024-25_3rd(2025)_20250714.pdf",
+    "sha256": "58e188895d766924f9c42dbbbf1a3915d498bd0e81f27da7df8e92301571ff0f",
+    "excluded": true,
+    "oldId": "08"
+  },
+  {
+    "file": "HSS/英语/Study Scheme - English Studies_2025-26 and thereafter_3rd(2025)_20250714.pdf",
+    "sha256": "11fb79f927ce8eef32bfd094d4db1e8cbb8835f98d31e8801af067b6f3c62dce",
+    "excluded": true,
+    "oldId": "09"
+  },
+  {
+    "file": "MED/生物信息学/Study Scheme - BIM_2021-22 and thereafter_Circular (AB2024_C036).pdf",
+    "sha256": "0adfdb1ca2a7c0ba338382cd81657b93f0c691808fc9d2e21ee0bb3eb12a254f",
+    "excluded": true,
+    "oldId": "11"
+  },
+  {
+    "file": "MED/生物医学工程/Study Scheme - BME_2023-24 and thereafter_1st(2026)_260121.pdf",
+    "sha256": "2277d3c5c46d80ca8b86b512989056c3ff92b08108cb20c8c63d4b437bcd19e9",
+    "excluded": true,
+    "oldId": "12"
+  },
+  {
+    "file": "MED/生物科学/Study Scheme - BIO_2023-24 and thereafter_1st(2026)_260121_2.pdf",
+    "sha256": "1ff2367c1c3ff6b7b426207101222c58fb83172a18f55dcb33650ec286146901",
+    "excluded": true,
+    "oldId": "13"
+  },
+  {
+    "file": "MED/药学/Study Scheme - PHM_2023-24 and thereafter_Circular(AB2025_C047).pdf",
+    "sha256": "e5aca7c0a5b6e08ae17b9f7250acab725ad77830f4fffd3c9c741bf8b012ce71",
+    "excluded": true,
+    "oldId": "10"
+  },
+  {
+    "file": "MUS/作曲与作曲技术理论/study_scheme_-_music_composition_and_theory_2022-23_and_2023-24_3rd2026_20260720.pdf",
+    "sha256": "bccb7c5fe4e6534eaf02db0e6899d32d00f66a4bfa669730173eb525cd8085f8",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/作曲与作曲技术理论/study_scheme_-_music_composition_and_theory_2024-25_3rd2026_20260720.pdf",
+    "sha256": "0d5ff8b6fc96b977cf1c75d8630421112333029e7d4f85e8da33beb87bf8d839",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/作曲与作曲技术理论/study_scheme_-_music_composition_and_theory_2025-26_3rd2026_20260720.pdf",
+    "sha256": "fd26a8e99e24e4fd1b7e54ee2f0dd6f0f0255d93d164201d0e4400702ebd3b2e",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/作曲与作曲技术理论/study_scheme_-_music_composition_and_theory_2026-27_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "4964538d180ef18eb6cd46dd288be1a49e2a46e6eeb202aee121bd5ea1dd8578",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/音乐学/study_scheme_-_musicology_2022-23_and_2023-24_3rd2026_20260720.pdf",
+    "sha256": "e85d87cb62603418985cd194efcb20566c117fb68d3563e1cbe6e9f23e14eb8e",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/音乐学/study_scheme_-_musicology_2024-25_and_2025-26_3rd2026_20260720.pdf",
+    "sha256": "9cdaeee0422a961737640eaab9ae547d77263fc19adb9123f70c22a98d8dc5ff",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/音乐学/study_scheme_-_musicology_2026-27_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "f70454240ed59febfa2f69e33e8aad23871a01cabee09fd7d0edf975e80938e2",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/音乐表演/study_scheme_-_music_performance_2023-24_3rd2026_20260720.pdf",
+    "sha256": "964bbcf560bbead356d0cf2c4278cd395cf375bb27d266b566380a8b88e35e56",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/音乐表演/study_scheme_-_music_performance_2024-25_3rd2026_20260720.pdf",
+    "sha256": "b745276cffee75e2260122c70d056c1f8b2ba1e606befee96750ce59f44aa519",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/音乐表演/study_scheme_-_music_performance_2025-26_3rd2026_20260720.pdf",
+    "sha256": "d324a65e214498748b054b2f6eb82e1c7ea3a005f121bc094df2b4efc95245c5",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "MUS/音乐表演/study_scheme_-_music_performance_2026-27_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "52bb9ce00e50c36ae23467c6dbb396acc60f88a66f8a09c32db417baa36baec9",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SAI/人工智能/Study scheme - AI_2025-26 and thereafter_Senate20251008.pdf",
+    "sha256": "c9d0c7322088392efab2def890c5d054ff82409fb94e5779499565d7668c05da",
+    "excluded": false,
+    "oldId": "22"
+  },
+  {
+    "file": "SDS/数据科学与大数据技术/study_scheme_-_dsbdt_2023-24_3rd2026_20260720.pdf",
+    "sha256": "56d841733cad7addc3feffeeafac8fd62f6be670f8dc966fe2d1f101dddf0d59",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/数据科学与大数据技术/study_scheme_-_dsbdt_2024-25_3rd2026_20260720.pdf",
+    "sha256": "75ee5ffa6783609d0a3f2aa97f17a09f6f4e2f87745d12b1ff4cd0412d9a8105",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/数据科学与大数据技术/study_scheme_-_dsbdt_2025-26_3rd2026_20260720.pdf",
+    "sha256": "6e5cdca6dc56894f14b8e346ef587aed94bf5a05829f73525362711e9c460c8c",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/数据科学与大数据技术/study_scheme_-_dsbdt_2026-27_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "63f471e4695217f8c7e5f25c793bab5157922311c505a1cd493732b1ec0d4c34",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/统计学/study_scheme_-_stat_2022-23_and_2023-24_3rd2026_20260720.pdf",
+    "sha256": "587587bee5de365f6a66dcfd4daa69555212151c47599a582c97ac39aa525ece",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/统计学/study_scheme_-_stat_2024-25_3rd2026_20260720.pdf",
+    "sha256": "8e14e775312ccb8ce13e384769d4eb319570ad404eedd9ec0cbe6a7a1492dd85",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/统计学/study_scheme_-_stat_2025-26_3rd2026_20260720.pdf",
+    "sha256": "8624429c76ec44f4c1e43060cf7af24781b58be752e14824f6c64f1d31a09dff",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/统计学/study_scheme_-_stat_2026-27_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "394aa3b28c803f9e448538136dc9e3c03cc7dde565f3a9a9600ad7b7030247f6",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/计算机科学与技术/study_scheme_-_cse_2023-24_3rd2026_20260720.pdf",
+    "sha256": "5d246c15b5a97fddacb99629bcf366deb74238a33694463662d782fb401d5e7e",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/计算机科学与技术/study_scheme_-_cse_2024-25_3rd2026_20260720.pdf",
+    "sha256": "396798f6e338c36266cf66fdd4af16befa43689daf6cd668b1adaeff2119306a",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/计算机科学与技术/study_scheme_-_cse_2025-26_3rd2026_20260720.pdf",
+    "sha256": "a6d74ffa8bc340f89309c55a080b8819ab7dd2255481860297d4171df9b4316d",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SDS/计算机科学与技术/study_scheme_-_cse_2026-27_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "b8653bbd2884256f735e873834dac4c3e76e6008d6add98c0d740b368247aa4d",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SME/会计学/study_scheme_-_acct_2023-2024_2nd2024_20240408.pdf",
+    "sha256": "91a792921df3c3b2bb674706e30a9c56aab462f2c0bfcf13f0c56ae085175cba",
+    "excluded": true,
+    "oldId": "30"
+  },
+  {
+    "file": "SME/会计学/study_scheme_-_acct_2024-25_and_2025-26_1st2026_260121.pdf",
+    "sha256": "6d02dc709b402a2595bc0167952156bafa46277d3821aac551a76e719cb6207a",
+    "excluded": true,
+    "oldId": "31"
+  },
+  {
+    "file": "SME/会计学/study_scheme_-_acct_2026-27_and_thereafter_1st2026_260121.pdf",
+    "sha256": "3821144d4557f7d9abf29754f427432edd11fcaa250c2bac892defaec2d10670",
+    "excluded": true,
+    "oldId": "32"
+  },
+  {
+    "file": "SME/国际商务/Study Scheme - GBS_2022-23 and 2023-24_Circular(AB2024_C049).pdf",
+    "sha256": "bef236176823a639f4080d717826c276ec6f9b95cc594398b31455f52515f84f",
+    "excluded": true,
+    "oldId": "33"
+  },
+  {
+    "file": "SME/国际商务/study_scheme_-_gbs_2024-25_1st2027_260121.pdf",
+    "sha256": "ae1d8c2a442eb956aab5c9036682601cd2414db4012577f6d03200e4103d2944",
+    "excluded": true,
+    "oldId": "34"
+  },
+  {
+    "file": "SME/国际商务/study_scheme_-_gbs_2025-26_1st2027_260121_0.pdf",
+    "sha256": "f74a747380e319bf714bdb42fa96ff1f725408ba9e55fb521dfce782d4df1937",
+    "excluded": true,
+    "oldId": "35"
+  },
+  {
+    "file": "SME/国际商务/study_scheme_-_gbs_2026-27_and_thereafter_1st2027_260121.pdf",
+    "sha256": "789d723af6b13b89fa7b9fb919a47cf238527e9ee58e2302b455478eaca50b8e",
+    "excluded": true,
+    "oldId": "36"
+  },
+  {
+    "file": "SME/大数据管理与应用/study_scheme_-_bma_2025-26_1st2026_260121.pdf",
+    "sha256": "bd6a62183331e6d853310081b934efad43ef6d72c42e24e93e4f16fe11eac5a2",
+    "excluded": true,
+    "oldId": "37"
+  },
+  {
+    "file": "SME/大数据管理与应用/study_scheme_-_bma_2026-27_and_thereafter_1st2026_260121.pdf",
+    "sha256": "8fdbc6577ae2be7a24036d7eecfe65dcc1d7281d6f134bf782daa26a6cc8f9f3",
+    "excluded": true,
+    "oldId": "38"
+  },
+  {
+    "file": "SME/市场营销/Study Scheme - MKTG_2021-22, 2022-23 and 2023-24.pdf",
+    "sha256": "034c941ae40ddebe4568aaabc909f823ef4fe8d2f15fb266c0b802de0446365e",
+    "excluded": true,
+    "oldId": "39"
+  },
+  {
+    "file": "SME/市场营销/study_scheme_-_mktg_2024-25_and_2025-26_1st2026_260121.pdf",
+    "sha256": "591d6c2a89a68bd64e80699ddef8b225940d042a3be42699246d490f3837a9a5",
+    "excluded": true,
+    "oldId": "40"
+  },
+  {
+    "file": "SME/市场营销/study_scheme_-_mktg_2026-27_and_thereafter_1st2026_260121.pdf",
+    "sha256": "ea1d2d58be16fc6ce737911aceb478f515576b40abc9f546c9ee7f0514ee76c7",
+    "excluded": true,
+    "oldId": "41"
+  },
+  {
+    "file": "SME/经济学/Study Scheme - ECON_2023-24_Circular(AB2024_C049).pdf",
+    "sha256": "ace977d98227271afa44afc7981233476afd209656ef7496800281de42a52ba2",
+    "excluded": true,
+    "oldId": "42"
+  },
+  {
+    "file": "SME/经济学/study_scheme_-_econ_2024-25_1st2026_260121.pdf",
+    "sha256": "78bcc06cba8eb0fe952d7aeebc32fd56f3d07696f84875154e5821e4c843bd86",
+    "excluded": true,
+    "oldId": "43"
+  },
+  {
+    "file": "SME/经济学/study_scheme_-_econ_2025-26_1st2026_260121.pdf",
+    "sha256": "7cb8e38678e399b321171229021b7738461f475b837f8b6a04bfa52ae15e5eb3",
+    "excluded": true,
+    "oldId": "44"
+  },
+  {
+    "file": "SME/经济学/study_scheme_-_econ_2026-27_and_thereafter_1st2026_260121.pdf",
+    "sha256": "47f6f8906cc36844a6637c8d4ace79c5fbfb277e03c497d0a32c6a8316692498",
+    "excluded": true,
+    "oldId": "45"
+  },
+  {
+    "file": "SME/金融学/Study Scheme - FINA_2023-24_Circular(AB2024_C049).pdf",
+    "sha256": "16bafd0c0740798c128785eaccb28b61a1dde2f1fc96f54316537f4a770e5ea7",
+    "excluded": true,
+    "oldId": "46"
+  },
+  {
+    "file": "SME/金融学/study_scheme_-_fina_2024-25_1st2026_260121.pdf",
+    "sha256": "1655bd15f13245b4f9d5f8d2a5b7396340a126e9d1ea5ed0afe285e00e4e26f4",
+    "excluded": true,
+    "oldId": "47"
+  },
+  {
+    "file": "SME/金融学/study_scheme_-_fina_2025-26_1st2026_260121_0.pdf",
+    "sha256": "63a695442a71c6c840fdb8bed57ef10156e50d68e73fd03ce5de231cd2e3d777",
+    "excluded": true,
+    "oldId": "48"
+  },
+  {
+    "file": "SME/金融学/study_scheme_-_fina_2026-27_and_thereafter_1st2026_260121.pdf",
+    "sha256": "18876a4812c905bc30142d39af8bdf1aa44fa34d0262d32528d4d93f5891cc87",
+    "excluded": true,
+    "oldId": "49"
+  },
+  {
+    "file": "SSE/化学/Study Scheme - Chemistry_2022-23 and 2023-24_Circular (AB2025_C015).pdf",
+    "sha256": "4f8cac6863e5452dd73b62a098869480ba3dfe43c21f0a6a92208b5b6128594d",
+    "excluded": false,
+    "oldId": "50"
+  },
+  {
+    "file": "SSE/化学/study_scheme_-_chemistry_2024-25_3rd2026_20260720.pdf",
+    "sha256": "ef85ae30b704c3e79cbe49a1d916c8ba332f93685295ae981116fc79470013b5",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/化学/study_scheme_-_chemistry_2025-26_3rd2026_20260720.pdf",
+    "sha256": "0f60f29da18282c023bc0f81da9d4c60faf9868fe3dee322dedd38e7f7bc90e0",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/化学/study_scheme_-_chemistry_2026-27_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "527f081511169e38ae0e1ab18663f9d57b6a89a13d678d96c85190edf980c88b",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/数学与应用数学/study_scheme_-_math_2023-24_3rd2026_20260720.pdf",
+    "sha256": "6350f4f03336cf0f08f3fc366f2202b8ae1bb311846f320e140a1b475eabce34",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/数学与应用数学/study_scheme_-_math_2024-25_3rd2026_20260720_0.pdf",
+    "sha256": "9f88b005e26efa0b2631bb9f9b3298ccb41bcff49aae77eedc050e984a9ac854",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/数学与应用数学/study_scheme_-_math_2025-26_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "4b819c6f3c30ac50e6e5f7ba6cb5f5902c30639bfb2bc4e78847b1f57a55dcce",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/新能源科学与工程/Study Scheme - ENER_2022-23 and 2023-24_Circular(AB2025_C047).pdf",
+    "sha256": "3dacf136faec59504f1321e18a882f0d39d9d8c685c27db1cb1ffc639d43f6c4",
+    "excluded": false,
+    "oldId": "54"
+  },
+  {
+    "file": "SSE/新能源科学与工程/study_scheme_-_ener_2024-25_3rd2026_20260720.pdf",
+    "sha256": "6c78f858a980eb9ed05f651f862e673942f370ba436299597a8088dfab22d864",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/新能源科学与工程/study_scheme_-_ener_2025-26_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "b70d5c48a6d09da9c4b56b0cc8882e0b6e7ba20aafe305e46fb64843198dbf5a",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/材料科学与工程/Study Scheme - MSE_2023-24_Circular(AB2025_C047)_2.pdf",
+    "sha256": "53505348142b8ee0104d69b9b0310808e5f198555b2071146d534084727f3fec",
+    "excluded": true,
+    "oldId": "56"
+  },
+  {
+    "file": "SSE/材料科学与工程/Study Scheme - MSE_2024-25 and thereafter_Circular(AB2025_C047).pdf",
+    "sha256": "12940636a295fd5e16cb7b6c3b023dac2de0e0fc01d796bb9bf87d488c9884ea",
+    "excluded": true,
+    "oldId": "57"
+  },
+  {
+    "file": "SSE/物理学/study_scheme_-_phy_2023-24_3rd2026_20260720_0.pdf",
+    "sha256": "aa8155dec9a73544589f7b41e359828b4958f0611be3cec25694980115a1c96b",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/物理学/study_scheme_-_phy_2024-25_3rd2026_20260720_0.pdf",
+    "sha256": "2261fdfd9799003319462d2ee20b431570b1238fd63073be21e5e956c29d1dcc",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/物理学/study_scheme_-_phy_2025-26_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "0bc5ffa7df5293a34ce0e8bd65630ab0a37a0df24073331a5fa0b14e238adbb9",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/电子与计算机工程/study_scheme_-_ece_2022-23_and_2023-24_3rd2026_20260720.pdf",
+    "sha256": "e3d15d96f294b98c69597b81d6dfea9531c70cf2b37a07260f99937706c152ee",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/电子与计算机工程/study_scheme_-_ece_2024-25_3rd2026_20260720.pdf",
+    "sha256": "c28f87337e507d1b29693e5e0a829859538aabe3c427d57ba5deca2c1568f880",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "SSE/电子与计算机工程/study_scheme_-_ece_2025-26_and_thereafter_3rd2026_20260720.pdf",
+    "sha256": "703126137d0dc91f812d6d167bead082a8caaa0f0fc39230d1885bc91583a852",
+    "excluded": false,
+    "oldId": null
+  },
+  {
+    "file": "UcoreForAllUndergrad/Academic Curriculum of the Undergraduate Programmes (for students admitted in 2023-24 to 2024-25)_3rd(2025)_20250714.pdf",
+    "sha256": "b2b484ee1e0ab5ac78c148c57561b6676b38ce37d38882cfb2b05b9fe09fd178",
+    "excluded": false,
+    "oldId": "63"
+  },
+  {
+    "file": "UcoreForAllUndergrad/Academic Curriculum of the Undergraduate Programmes (for students admitted in 2025-26 and thereafter)_Circular(AB2025_C037).pdf",
+    "sha256": "da31be01762c5684af7803acc3609d962d03cf9e4b6b6bf89175d98815ea24b6",
+    "excluded": false,
+    "oldId": "64"
+  },
+  {
+    "file": "金融工程/study_scheme_-_fe_2021-22_2022-23_2023-24_and_2024-25_circular_ab2026_c014.pdf",
+    "sha256": "46e6463af632c4097fc92600b80baaeb26b5414f71521b6d7c3a96e4b4a7fe87",
+    "excluded": false,
+    "oldId": "65"
+  },
+  {
+    "file": "金融工程/study_scheme_-_fe_2025-26_circular_ab2026_c014.pdf",
+    "sha256": "762f9dc7e8871eac8bd186d4d40fdf677300a877d388d6d72174d386b8cb0fc6",
+    "excluded": false,
+    "oldId": "66"
+  },
+  {
+    "file": "金融工程/study_scheme_-_fe_2026-27_and_thereafter_circular_ab2026_c014.pdf",
+    "sha256": "c581b7fd62659b07ba9602543bdd8bf23eb7d0123daf2e6f2d2a2ceaf1d40167",
+    "excluded": false,
+    "oldId": "67"
+  }
+]

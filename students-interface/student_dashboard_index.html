@@ -451,6 +451,7 @@ table.matrix tr:hover td{background:#f8f9ff}
       <div class="headway-controls">
         <label>Admitted in
           <select id="admission-year-select" onchange="studyAdmissionYear=this.value;renderStudyHeadway();saveState()">
+            <option value="2022">2022</option>
             <option value="2023">2023</option>
             <option value="2024">2024</option>
             <option value="2025">2025</option>
@@ -659,6 +660,9 @@ table.matrix tr:hover td{background:#f8f9ff}
 
 <script src="competency_data.js"></script>
 <script src="intern_prep_data.js"></script>
+<script src="/students-interface/study_headway_rules.js"></script>
+<script src="/students-interface/study_headway_engine.js"></script>
+<script src="/students-interface/study_headway_view.js"></script>
 <script>
 // ── API-backed SIS course catalogue ──
 const REMOTE_API_BASE = 'https://student-dashboard-demo.onrender.com';
@@ -1089,6 +1093,7 @@ let selectedCodes = new Set();
 let majorDept = 'ACT';
 let studyAdmissionYear = '2023';
 let studyMajorKey = 'statistics';
+let studyPathSelections = {};
 let matrixSortCol = null, matrixSortDir = 'desc';
 let gpaRecords = [];
 let transcriptSummary = { cgpa:null, mgpa:null, totalUnits:null, termSummaries:{} };
@@ -1124,7 +1129,7 @@ const LS_KEY = 'cuhksz_portfolio';
 function saveState(){
   try {
     const transcriptCourses = DATA.courses.filter(c => c.transcript_only);
-    localStorage.setItem(LS_KEY, JSON.stringify({selected:[...selectedCodes],schools:[...activeSchools],initial:activeInitial,majorDept,studyAdmissionYear,studyMajorKey,gpa:gpaRecords,transcriptSummary,transcriptCourses}));
+    localStorage.setItem(LS_KEY, JSON.stringify({selected:[...selectedCodes],schools:[...activeSchools],initial:activeInitial,majorDept,studyAdmissionYear,studyMajorKey,studyPathSelections,gpa:gpaRecords,transcriptSummary,transcriptCourses}));
   } catch(e){}
 }
 function loadState(){
@@ -1148,6 +1153,7 @@ function loadState(){
     if(s.majorDept && DATA.departments[s.majorDept]) majorDept = s.majorDept;
     if(s.studyAdmissionYear) studyAdmissionYear = String(s.studyAdmissionYear);
     if(s.studyMajorKey) studyMajorKey = String(s.studyMajorKey);
+    if(s.studyPathSelections && typeof s.studyPathSelections === 'object' && !Array.isArray(s.studyPathSelections)) studyPathSelections = s.studyPathSelections;
     if(s.gpa) gpaRecords = s.gpa;
     if(s.transcriptSummary) transcriptSummary = {...transcriptSummary, ...s.transcriptSummary};
   } catch(e){}
@@ -1698,7 +1704,7 @@ function creditProgressUnits(){
   return Array.from(completedCourseMap().values()).reduce((s,u) => s + u, 0);
 }
 function selectedMajorRule(){
-  const base = STUDY_MAJOR_RULES[studyMajorKey] || STUDY_MAJOR_RULES.statistics;
+  const base = STUDY_MAJOR_RULES[studyMajorKey] || window.STUDY_HEADWAY_RULES?.programmes[studyMajorKey] || STUDY_MAJOR_RULES.statistics;
   const year = Number(studyAdmissionYear || 2023);
   const variant = (base.variants || []).find(v => year >= Number(v.from || 0) && (v.to == null || year <= Number(v.to)));
   return variant ? {...base, ...variant, baseLabel:base.label} : base;
@@ -1706,12 +1712,13 @@ function selectedMajorRule(){
 function fillStudyMajorSelect(){
   const sel = document.getElementById('study-major-select');
   if (!sel) return;
-  const opts = Object.entries(STUDY_MAJOR_RULES)
+  const majorOptions = {...STUDY_MAJOR_RULES, ...(window.STUDY_HEADWAY_RULES?.programmes || {})};
+  const opts = Object.entries(majorOptions)
     .sort((a,b) => (a[1].school + a[1].label).localeCompare(b[1].school + b[1].label))
     .map(([key, rule]) => `<option value="${key}">${rule.school} - ${rule.label}</option>`)
     .join('');
   sel.innerHTML = opts;
-  if (!STUDY_MAJOR_RULES[studyMajorKey]) studyMajorKey = inferStudyMajorKey();
+  if (!majorOptions[studyMajorKey]) studyMajorKey = inferStudyMajorKey();
   sel.value = studyMajorKey;
   const yearSel = document.getElementById('admission-year-select');
   if (yearSel) yearSel.value = studyAdmissionYear;
@@ -1972,6 +1979,31 @@ function majorProgress(completed, rule){
 function renderStudyHeadway(){
   const el = document.getElementById('headway-content');
   if (!el) return;
+  const revisedKeys = ['music_composition','musicology','music_performance','dsbdt','statistics','cse','chemistry','math','nese','physics','ece'];
+  if (revisedKeys.includes(studyMajorKey) && !window.STUDY_HEADWAY_RULES) {
+    el.textContent = 'Updated study scheme rules could not load. Please reload the page.';
+    return;
+  }
+  const updatedProgramme = window.STUDY_HEADWAY_RULES?.programmes[studyMajorKey];
+  if (updatedProgramme) {
+    if (!window.StudyHeadwayEngine || !window.renderUpdatedStudyHeadway) {
+      el.textContent = 'Study scheme rules could not load. Please reload the page.';
+      return;
+    }
+    return window.renderUpdatedStudyHeadway(el, {
+      programme:updatedProgramme, major:studyMajorKey, year:studyAdmissionYear, records:gpaRecords,
+      selections:studyPathSelections, isPassing:isPassingGrade, esc, courseLink, progressBlock,
+      onSelection:(key, value) => { studyPathSelections[key] = value; saveState(); renderStudyHeadway(); },
+      resize:updateHeadwayMaxHeight,
+      ucoreHtml:(earned, programme) => {
+        if (Number(studyAdmissionYear) < 2023) return '<p>U-core: no verified rule for this admission year is included in the supplied U-core files.</p>';
+        const completed = new Map([...earned].map(([code,units]) => [normalizeCourseCode(code),units]));
+        const ucore = ucoreProgress(completed, programme);
+        const body = ucore.missing.map(x => `<div><b>${esc(x.label)}:</b> ${x.missing.map(renderMissingRequirement).join(' ')}</div>`).join('');
+        return progressBlock('U-core Progress', ucore.done, ucore.total, body + `<p class="headway-muted">${esc(ucore.source)}. U-core rules are unchanged in this update.</p>`);
+      }
+    });
+  }
   const rule = selectedMajorRule();
   const completed = completedCourseMap();
   const creditDone = creditProgressUnits();
