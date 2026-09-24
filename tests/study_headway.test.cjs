@@ -116,3 +116,31 @@ test('dashboard and standalone browser scripts parse; new assets are loaded befo
   for (const file of ['study_headway_engine.js','study_headway_view.js','study_headway_rules.js']) {new vm.Script(fs.readFileSync(path.join(__dirname,'../students-interface',file),'utf8'));assert.ok(html.includes(`/students-interface/${file}`));}
   assert.ok(html.indexOf('/students-interface/study_headway_rules.js')<html.indexOf('const REMOTE_API_BASE'));
 });
+test('elective rows identify counted courses, mandatory overlap and low-level exclusions', () => {
+  const [v,p]=get('dsbdt',2026),e=allPassed(v,p),r=engine.evaluate(v,p,e);
+  const statuses=r.pools.flatMap(q=>q.courseStatuses);
+  assert.ok(statuses.some(s=>s.counted && s.completed && s.units>0));
+  for (const excluded of r.excluded) assert.ok(statuses.some(s=>s.code===excluded.code && s.completed && !s.counted && s.reason==='level_limit'));
+  const empty=engine.evaluate(v,p,new Map());
+  assert.ok(empty.pools.every(q=>q.courseStatuses.every(s=>!s.completed && s.reason==='not_completed')));
+  const [cv,cp]=get('chemistry',2026),cr=engine.evaluate(cv,cp,new Map());
+  assert.deepEqual(cr.pools.map(q=>q.unitsShort),[2,6,9]);
+});
+test('energy elective view exposes its actual 18-unit target, full pool and completion statuses', () => {
+  const [v,p]=get('nese',2023,'New Energy Science');
+  const mandatory=new Set(p.components.flatMap(c=>c.groups).flatMap(g=>g.options.flat()));
+  const code=p.pools[0].groups.flatMap(g=>g.options.flat()).find(c=>!mandatory.has(c) && v.courseUnits[c]);
+  const context={window:{StudyHeadwayEngine:engine}};vm.createContext(context);
+  vm.runInContext(fs.readFileSync(path.join(__dirname,'../students-interface/study_headway_view.js'),'utf8'),context);
+  const el={innerHTML:'',querySelector:()=>null};
+  context.window.renderUpdatedStudyHeadway(el,{
+    programme:rules.programmes.nese,major:'nese',year:2023,records:[{code,credit:v.courseUnits[code],grade:'P'}],
+    selections:{['nese:'+v.id]:{path:p.id}},onSelection:()=>{},isPassing:g=>g==='P',esc:s=>String(s??''),
+    courseLink:c=>`<a>${c}</a>`,progressBlock:(title,done,total,body)=>`${title} ${done}/${total}${body}`,ucoreHtml:()=>'',resize:()=>{}
+  });
+  assert.match(el.innerHTML,/Elective requirements/);
+  assert.match(el.innerHTML,/\/18 elective units/);assert.doesNotMatch(el.innerHTML,/30 elective units/);
+  assert.match(el.innerHTML,/headway-course done/);assert.match(el.innerHTML,/✓ completed/);assert.match(el.innerHTML,/to take/);
+  assert.match(el.innerHTML,/Still need \d+ eligible elective units/);
+  for(const group of p.pools[0].groups) for(const c of group.options.flat()) assert.ok(el.innerHTML.includes(`<a>${c}</a>`));
+});

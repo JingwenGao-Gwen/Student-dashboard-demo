@@ -81,7 +81,20 @@
       }
       choose(0, []); counted = best;
     }
-    const pools = statsFor(counted), checks = checksFor(pools);
+    const countedIds = new Set(counted.map(c => c.id));
+    const pools = statsFor(counted).map(p => ({...p,
+      unitsShort: Math.max(0, p.minUnits - p.units),
+      coursesShort: Math.max(0, p.minCourses - p.count),
+      courseStatuses: p.groups.map(group => {
+        const ids = [...new Set(codes(group).map(find))];
+        const countedMatch = ids.find(id => countedIds.has(id));
+        const earnedMatch = countedMatch || ids.find(id => available.has(id));
+        const match = earnedMatch ? available.get(earnedMatch) : null;
+        return {group, counted: !!countedMatch, completed: !!match, code: match?.code || null,
+          units: match?.units || 0,
+          reason: countedMatch ? 'counted' : match ? (used.has(earnedMatch) ? 'mandatory' : 'level_limit') : 'not_completed'};
+      })
+    })), checks = checksFor(pools);
     const electiveUnits = sum(counted.map(c => c.units));
     const excluded = candidates.filter(c => !counted.includes(c));
     const blocking = path.issues.filter(i => i.blocking);
